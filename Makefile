@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/05/30 18:43:57 by rchahban         ###   ########.fr        #
+#    Updated: 2024/05/30 19:06:09 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ $(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp
 	@$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 # Rule to generate the object files from the source files
-%.o: %.cpp irc_serv.hpp
+%.o: %.cpp irc_serv.hpp Client.hpp Server.hpp
 	@$(CPP) $(CPPFLAGS) -c $< -o $@
 
 # Clean target to remove generated files
