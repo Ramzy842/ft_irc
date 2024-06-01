@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/05/30 19:00:26 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:43:57 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ Server& Server::operator=(const Server& original)
 
 Server::~Server()
 {
-	std::cout << "Client destructor called" << std::endl;
+	std::cout << "Server destructor called" << std::endl;
 }
 
 void Server::init() {

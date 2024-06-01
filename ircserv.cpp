@@ -6,11 +6,12 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 18:52:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/05/29 21:20:58 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/01 19:16:48 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "irc_serv.hpp"
+#include "./Server.hpp"
 
 int	main (int argc, char **argv)
 {
@@ -25,7 +26,6 @@ int	main (int argc, char **argv)
 	
 	port = static_cast<int>(std::strtod(argv[1], NULL));
 	password = argv[2];
-	std::cout << port << std::endl;
-	std::cout << password << std::endl;
+	Server ser(port, password);
 	return (0);
 }
