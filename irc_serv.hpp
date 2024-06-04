@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 18:52:16 by rchahban          #+#    #+#             */
-/*   Updated: 2024/05/31 19:36:37 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:44:11 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-// #include "./Server.hpp"
-// #include "./Client.hpp"
+
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
 
 
 #endif

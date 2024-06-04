@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/02 20:05:40 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:53:44 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 class Channel {
 	private:
+		int id;
 		std::string name;
 	public:
 		Channel();
@@ -24,6 +25,11 @@ class Channel {
 		~Channel();
 		Channel(const Channel& original);
 		Channel& operator=(const Channel& original);
+		// GETTERS AND SETTERS
+		void setId();
+		int getId();
+		std::string getName();
+		void setName();
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/05/31 21:03:06 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:51:17 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,13 @@ class Server {
 		Server& operator=(const Server& original);
 		~Server();
 		void init();
-		
+		// GETTERS AND SETTERS
+		int getPort();
+		void setPort(int _port);
+		std::string getPassword();
+		void setPassword(std::string _password);
+		std::vector<Client> getClients();
+		void setClients(std::vector<Client> _clients);
 };
 
 #endif

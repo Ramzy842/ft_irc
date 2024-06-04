@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/05/31 19:43:57 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:52:13 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,12 @@ Server::~Server()
 void Server::init() {
 	std::cout << "Initializing server..." << std::endl;
 	std::cout << "Server initialized" << std::endl;
-} 
+}
+
+
+int getPort();
+void setPort(int _port);
+std::string getPassword();
+void setPassword(std::string _password);
+std::vector<Client> getClients();
+void setClients(std::vector<Client> _clients);
