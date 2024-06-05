@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 18:52:16 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/04 16:44:11 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/06 00:11:40 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 
 #include <iostream>
 #include <vector>
+#include <list>
 #include <algorithm>
 
 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <poll.h>
+#include <fcntl.h>
+#include <arpa/inet.h>
 
 
 #endif
