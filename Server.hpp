@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/06 00:09:24 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/07 06:00:24 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class Server {
 		std::string password;
 		int fd;
 		std::vector<Client> clients;
-		std::list<struct pollfd> fileDescriptors;
+		std::vector<struct pollfd> fds;
 	public:
 		Server();
 		Server(int port, std::string& password);

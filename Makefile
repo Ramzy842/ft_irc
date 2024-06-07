@@ -6,7 +6,7 @@
 #    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/05/30 19:06:09 by rchahban         ###   ########.fr        #
+#    Updated: 2024/06/07 06:54:31 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = ircserv.cpp Client.cpp Server.cpp
+SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
@@ -29,11 +29,11 @@ NAME = ircserv
 all: $(NAME)
 
 # Rule to generate the ircserv executable from the object files
-$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp
+$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp
 	@$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 # Rule to generate the object files from the source files
-%.o: %.cpp irc_serv.hpp Client.hpp Server.hpp
+%.o: %.cpp irc_serv.hpp Client.hpp Server.hpp Channel.hpp
 	@$(CPP) $(CPPFLAGS) -c $< -o $@
 
 # Clean target to remove generated files

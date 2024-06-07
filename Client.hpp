@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/05 20:51:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/07 06:42:11 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ class Client {
 		std::string ip_address;
 		int fd;
 		bool isOperator;
+		// bool isRegistered;
+		// bool isLoggedin;
+		std::string username;
+		std::string nickname;
+		std::string buffer;
 	public:
 		Client();
 		Client(const Client& original);

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/04 21:11:07 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/07 06:15:57 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 class Channel {
 	private:
-		int id;
+		int is_invite_only;
 		std::string name;
 	public:
 		Channel();
