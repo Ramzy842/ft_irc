@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/05 21:20:39 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:18:58 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 Client::Client() : ip_address(""),  fd(-1), isOperator(false)
 {
-	std::cout << "Client constructor called" << std::endl;
 }
 Client::Client(const Client& original) : ip_address(original.ip_address),  fd(original.fd), isOperator(original.isOperator)
 {
-	std::cout << "Client copy constructor called" << std::endl;
 }
 Client& Client::operator=(const Client& original) {
 	if (this != &original)
@@ -28,11 +26,9 @@ Client& Client::operator=(const Client& original) {
 		this->isOperator = original.isOperator;
 	}
 	return *this;
-	std::cout << "Client copy assignment operator called" << std::endl;
 }
 
 Client::~Client() {
-	std::cout << "Client destructor called" << std::endl;
 }
 
 int Client::getFd() {

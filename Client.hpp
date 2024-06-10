@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/07 06:42:11 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/07 19:48:10 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CLIENT_HPP
 
 #include "./irc_serv.hpp"
+#include "./Channel.hpp"
 
 class Client {
 	private:
@@ -25,6 +26,7 @@ class Client {
 		std::string username;
 		std::string nickname;
 		std::string buffer;
+		// std::vector<Channel*> Channels;
 	public:
 		Client();
 		Client(const Client& original);

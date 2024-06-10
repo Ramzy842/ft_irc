@@ -6,16 +6,15 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/07 07:05:05 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:15:41 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./Server.hpp"
-#include <sys/types.h>
+// #include <sys/types.h>
 
 Server::Server() : port(3000), password("1234"), fd(-1), clients(std::vector<Client>())
 {
-	std::cout << "Server constructor called" << std::endl;
 }
 
 Server::Server(int port, std::string& password)
@@ -24,11 +23,9 @@ Server::Server(int port, std::string& password)
 	this->password = password;
 	this->clients = std::vector<Client>();
 	this->fd = -1;
-	std::cout << "Server parametrized constructor called" << std::endl;
 }
 Server::Server(const Server& original) : port(original.port), password(original.password), fd(-1), clients(original.clients)
 {
-	std::cout << "Server copy constructor called" << std::endl;
 }
 Server& Server::operator=(const Server& original)
 {
@@ -39,22 +36,18 @@ Server& Server::operator=(const Server& original)
 		this->fd = original.fd;
 		this->clients = original.clients;
 	}
-	std::cout << "Server copy assignment operator called" << std::endl;
 	return *this;
 }
 
 Server::~Server()
 {
-	std::cout << "Server destructor called" << std::endl;
 }
 
-// void performSocketOps()
-// {	
-// }
 
 void Server::init() {
 	std::cout << "Initializing server..." << std::endl;
 	std::cout << "Server initialized" << std::endl;
+	Client client;
 	int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (serverSocket == -1) {
 		std::cout << "Error: Couldn't create unbound socket!" << std::endl;
@@ -93,19 +86,60 @@ void Server::init() {
 		pfd.fd = this->fd;
 		pfd.events = POLLIN;
 		this->fds.push_back(pfd);
+		
 		while(1) {
-			int clientSocket = accept(this->fd, NULL, NULL);
-			char buffer[1024] = {0};
-			int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
-			if (bytesReceived <= 0)
+			if((poll(&fds[0],fds.size(),-1) == -1)) //-> wait for an event
+				throw(std::runtime_error("poll() faild"));
+			for (unsigned int x = 0; x < this->fds.size(); x++)
 			{
-				std::cout << "Client disconnected." << std::endl;
-				return;
+				if (fds[x].revents && fds[x].revents == POLLIN)
+				{
+					if (fds[x].fd == this->fd)
+					{
+						std::cout << "New Clients wants to connect" << std::endl;
+						
+						struct sockaddr_in client_addr;
+    					socklen_t addr_size;
+						addr_size = sizeof(client_addr);
+						int clientSocket = accept(this->fd, (sockaddr *)&client_addr, &addr_size);
+						if(fcntl(clientSocket, F_SETFL, O_NONBLOCK) == -1)
+						{
+							std::cout << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
+							return ;
+						}
+						struct pollfd client_fd;
+						client_fd.fd = clientSocket;
+						client_fd.events = POLLIN;
+						client_fd.revents = 0;
+						client.setFd(clientSocket);
+						client.setIpAddress(inet_ntoa(client_addr.sin_addr));
+						AddToClients(client);
+						this->fds.push_back(client_fd);
+						std::cout << "New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << std::endl;
+					}
+					else
+					{
+						char buff[1024];
+						memset(buff, 0, sizeof(buff));
+					
+						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff) , 0);
+					
+						if(receivedBytes <= 0) {
+							std::cout << "Client disconnected." << std::endl;
+							// ClearClients(fd); //-> clear the client
+							close(fd); //-> close the client socket
+						}
+					
+						else {
+							buff[receivedBytes] = '\0';
+							std::cout << "Client <" << fds[x].fd << "> and ip address <" << client.getIpAddress() << "> Data: " << buff;
+							// Add code to process the received data: parse, check, authenticate, handle the command, etc...
+						}
+					}
+				}
 			}
-			buffer[bytesReceived] = '\0';
-			std::cout << buffer;
-			close(clientSocket);
-		}	
+		}
+		
 		close(this->fd);
 	}
 }
@@ -124,16 +158,20 @@ std::string Server::getPassword() {
 void Server::setPassword(std::string _password) {
 	this->password = _password;
 }
-std::vector<Client> Server::getClients() {
-	return this->clients;
-}
-void Server::setClients(std::vector<Client> _clients) {
-	this->clients = _clients;
-}
+// std::vector<Client> Server::getClients() {
+// 	return this->clients;
+// }
+// void Server::setClients(std::vector<Client> _clients) {
+// 	this->clients = _clients;
+// }
 
 int Server::getFd() {
 	return this->fd;
 }
 void Server::setFd(int _fd) {
 	this->fd = _fd;
+}
+
+void Server::AddToClients(Client& client) {
+	this->clients.push_back(client);
 }

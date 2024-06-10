@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/07 06:15:57 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/07 19:47:48 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 # define CHANNEL_HPP
 
 #include <iostream>
+#include "./Client.hpp"
 
 class Channel {
 	private:
 		int is_invite_only;
 		std::string name;
+		std::string password;
+		std::string topic;
+		// std::vector<Client*> operators;
+		// std::vector<Client*> members;
+		std::string created_at;
+		
 	public:
 		Channel();
 		Channel(std::string& name);

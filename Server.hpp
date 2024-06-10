@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/07 06:00:24 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:15:46 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Server {
 		void setClients(std::vector<Client> _clients);
 		int getFd();
 		void setFd(int _fd);
-		void AddNewClient();
+		void AddToClients(Client& client);
 };
 
 #endif
