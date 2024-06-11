@@ -12,22 +12,23 @@
 
 #include "./Server.hpp"
 // #include <sys/types.h>
+#include <cstring>
 
 Server::Server() : port(3000), password("1234"), fd(-1), clients(std::vector<Client>())
 {
 }
 
-Server::Server(int port, std::string& password)
+Server::Server(int port, std::string &password)
 {
 	this->port = port;
 	this->password = password;
 	this->clients = std::vector<Client>();
 	this->fd = -1;
 }
-Server::Server(const Server& original) : port(original.port), password(original.password), fd(-1), clients(original.clients)
+Server::Server(const Server &original) : port(original.port), password(original.password), fd(-1), clients(original.clients)
 {
 }
-Server& Server::operator=(const Server& original)
+Server &Server::operator=(const Server &original)
 {
 	if (this != &original)
 	{
@@ -43,15 +44,16 @@ Server::~Server()
 {
 }
 
-
-void Server::init() {
+void Server::init()
+{
 	std::cout << "Initializing server..." << std::endl;
 	std::cout << "Server initialized" << std::endl;
-	Client client;
+	Client new_client;
 	int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-	if (serverSocket == -1) {
+	if (serverSocket == -1)
+	{
 		std::cout << "Error: Couldn't create unbound socket!" << std::endl;
-		return ;
+		return;
 	}
 	else
 	{
@@ -62,58 +64,57 @@ void Server::init() {
 		serverAddress.sin_addr.s_addr = INADDR_ANY;
 
 		int option_value = 1;
-		if(fcntl(this->fd, F_SETFL, O_NONBLOCK) == -1)
+		if (fcntl(this->fd, F_SETFL, O_NONBLOCK) == -1)
 		{
 			std::cout << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
-			return ;
+			return;
 		}
 		if (setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &option_value, sizeof(option_value)) == -1)
 		{
 			std::cout << "Error: Couldn't set the socket options!" << std::endl;
-			return ;
+			return;
 		}
-		else if (bind(this->fd, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1)
+		else if (bind(this->fd, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
 		{
 			std::cout << "Error: Couldn't bind a name to the socket!" << std::endl;
-			return ;
+			return;
 		}
 		else if (listen(this->fd, SOMAXCONN) == -1)
 		{
 			std::cout << "Error: Couldn't listen for socket connections!" << std::endl;
-			return ;
+			return;
 		}
 		struct pollfd pfd;
 		pfd.fd = this->fd;
 		pfd.events = POLLIN;
 		this->fds.push_back(pfd);
-		
-		while(1) {
-			if((poll(&fds[0],fds.size(),-1) == -1)) //-> wait for an event
+
+		while (1)
+		{
+			if ((poll(&fds[0], fds.size(), POLLIN | POLLHUP) == -1)) //-> wait for an event
 				throw(std::runtime_error("poll() faild"));
 			for (unsigned int x = 0; x < this->fds.size(); x++)
 			{
-				if (fds[x].revents && fds[x].revents == POLLIN)
+				if (fds[x].revents && POLLIN)
 				{
 					if (fds[x].fd == this->fd)
 					{
-						std::cout << "New Clients wants to connect" << std::endl;
-						
 						struct sockaddr_in client_addr;
-    					socklen_t addr_size;
+						socklen_t addr_size;
 						addr_size = sizeof(client_addr);
 						int clientSocket = accept(this->fd, (sockaddr *)&client_addr, &addr_size);
-						if(fcntl(clientSocket, F_SETFL, O_NONBLOCK) == -1)
+						if (fcntl(clientSocket, F_SETFL, O_NONBLOCK) == -1)
 						{
 							std::cout << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
-							return ;
+							return;
 						}
 						struct pollfd client_fd;
 						client_fd.fd = clientSocket;
 						client_fd.events = POLLIN;
 						client_fd.revents = 0;
-						client.setFd(clientSocket);
-						client.setIpAddress(inet_ntoa(client_addr.sin_addr));
-						AddToClients(client);
+						new_client.setFd(clientSocket);
+						new_client.setIpAddress(inet_ntoa(client_addr.sin_addr));
+						AddToClients(new_client);
 						this->fds.push_back(client_fd);
 						std::cout << "New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << std::endl;
 					}
@@ -121,57 +122,108 @@ void Server::init() {
 					{
 						char buff[1024];
 						memset(buff, 0, sizeof(buff));
-					
-						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff) , 0);
-					
-						if(receivedBytes <= 0) {
-							std::cout << "Client disconnected." << std::endl;
-							// ClearClients(fd); //-> clear the client
-							close(fd); //-> close the client socket
+						Client *client = getClient(fds[x].fd);
+						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff) -1, 0);
+						std::cout << "received bytes: " << receivedBytes << std::endl;
+						if (receivedBytes <= 0)
+						{
+							removeClient(fds[x].fd);
+							removeFd(fds[x].fd);
+							std::cout << "closed connection" << std::endl;
 						}
-					
-						else {
-							buff[receivedBytes] = '\0';
-							std::cout << "Client <" << fds[x].fd << "> and ip address <" << client.getIpAddress() << "> Data: " << buff;
+						else
+						{
+							client->setBuffer(buff);
+							std::cout << "Client <" << fds[x].fd << "> and ip address <" << client->getIpAddress() << "> Data: " << client->getBuffer();
+							if (client)
+								getClient(fds[x].fd)->clearBuffer();
 							// Add code to process the received data: parse, check, authenticate, handle the command, etc...
 						}
+						std::cout << "Remaining clients: " << getClients().size() << std::endl;
+						for (unsigned int x = 0; x < this->clients.size(); x++)
+						{
+							std::cout << "Client fd: " << clients[x].getFd() << std::endl;
+						}
 					}
+
 				}
 			}
 		}
-		
-		close(this->fd);
+
+		for (unsigned int x = 0; x < this->clients.size(); x++)
+		{
+			close(this->clients[x].getFd());
+		}
 	}
 }
 
+Client *Server::getClient(int _fd)
+{
+	for (unsigned int x = 0; x < this->clients.size(); x++)
+	{
+		if (this->clients[x].getFd() == _fd)
+			return &this->clients[x];
+	}
+	return NULL;
+}
+
+void Server::removeFd(int _fd)
+{
+	for (unsigned int x = 0; x < this->fds.size(); x++)
+	{
+		if (this->fds[x].fd == _fd)
+		{
+			this->fds.erase(this->fds.begin() + x);
+			return ;
+		}
+	}
+}
+
+void Server::removeClient(int _fd)
+{
+	for (unsigned int x = 0; x < this->clients.size(); x++)
+	{
+		if (this->clients[x].getFd() == _fd)
+		{
+			this->clients.erase(this->clients.begin() + x);
+			return ;
+		}
+	}
+}
 
 // GETTERS AND SETTERS
-int Server::getPort() {
+int Server::getPort()
+{
 	return this->port;
 }
-void Server::setPort(int _port) {
+void Server::setPort(int _port)
+{
 	this->port = _port;
 }
-std::string Server::getPassword() {
+std::string Server::getPassword()
+{
 	return this->password;
 }
-void Server::setPassword(std::string _password) {
+void Server::setPassword(std::string _password)
+{
 	this->password = _password;
 }
-// std::vector<Client> Server::getClients() {
-// 	return this->clients;
-// }
-// void Server::setClients(std::vector<Client> _clients) {
-// 	this->clients = _clients;
-// }
 
-int Server::getFd() {
+int Server::getFd()
+{
 	return this->fd;
 }
-void Server::setFd(int _fd) {
+void Server::setFd(int _fd)
+{
 	this->fd = _fd;
 }
 
-void Server::AddToClients(Client& client) {
+void Server::AddToClients(Client &client)
+{
 	this->clients.push_back(client);
+}
+
+std::vector<Client> Server::getClients()
+{
+	return this->clients;
 }

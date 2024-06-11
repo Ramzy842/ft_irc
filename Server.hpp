@@ -40,6 +40,9 @@ class Server {
 		int getFd();
 		void setFd(int _fd);
 		void AddToClients(Client& client);
+		void removeClient(int _fd);
+		void removeFd(int _fd);
+		Client *getClient(int _fd);
 };
 
 #endif

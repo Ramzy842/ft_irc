@@ -43,3 +43,14 @@ std::string Client::getIpAddress() {
 void Client::setIpAddress(std::string _ipAddress) {
 	this->ip_address = _ipAddress;
 }
+
+void Client::setBuffer(std::string str) {
+	this->buffer = str;
+}
+std::string Client::getBuffer() {
+	return this->buffer;
+}
+
+void Client::clearBuffer() {
+	this->buffer.clear();
+}

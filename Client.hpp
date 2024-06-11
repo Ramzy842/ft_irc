@@ -37,6 +37,9 @@ class Client {
 		void setFd(int _fd);
 		std::string getIpAddress();
 		void setIpAddress(std::string _ipAddress);
+		void setBuffer(std::string str);
+		std::string getBuffer();
+		void clearBuffer();
 };
 
 #endif
