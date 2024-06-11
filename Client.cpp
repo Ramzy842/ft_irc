@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/10 17:18:58 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:50:15 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,8 @@ std::string Client::getBuffer() {
 
 void Client::clearBuffer() {
 	this->buffer.clear();
+}
+
+void Client::setIsLoggedIn() {
+	this->isLoggedin = true;
 }

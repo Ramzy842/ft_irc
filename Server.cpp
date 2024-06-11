@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/10 18:15:41 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/11 22:22:20 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,26 +123,29 @@ void Server::init()
 						char buff[1024];
 						memset(buff, 0, sizeof(buff));
 						Client *client = getClient(fds[x].fd);
-						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff) -1, 0);
-						std::cout << "received bytes: " << receivedBytes << std::endl;
+						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff), 0);
 						if (receivedBytes <= 0)
 						{
+							std::cout << "closed connection by client <" << fds[x].fd << ">" << std::endl;
 							removeClient(fds[x].fd);
 							removeFd(fds[x].fd);
-							std::cout << "closed connection" << std::endl;
 						}
 						else
 						{
 							client->setBuffer(buff);
-							std::cout << "Client <" << fds[x].fd << "> and ip address <" << client->getIpAddress() << "> Data: " << client->getBuffer();
+							if (client->getBuffer()[0] == 'p'
+								&& client->getBuffer()[1] == 'a'
+								&& client->getBuffer()[2] == 's'
+								&& client->getBuffer()[3] == 's'
+							)
+							{
+								std::cout << "enter password.." << std::endl;
+								client->setIsLoggedIn();
+							}
+							std::cout << "Client <" << fds[x].fd << ">: " << client->getBuffer();
 							if (client)
 								getClient(fds[x].fd)->clearBuffer();
 							// Add code to process the received data: parse, check, authenticate, handle the command, etc...
-						}
-						std::cout << "Remaining clients: " << getClients().size() << std::endl;
-						for (unsigned int x = 0; x < this->clients.size(); x++)
-						{
-							std::cout << "Client fd: " << clients[x].getFd() << std::endl;
 						}
 					}
 
@@ -155,6 +158,13 @@ void Server::init()
 			close(this->clients[x].getFd());
 		}
 	}
+}
+
+
+
+bool Server::passwordsMatch(std::string _password)
+{
+	return (this->password == _password);
 }
 
 Client *Server::getClient(int _fd)

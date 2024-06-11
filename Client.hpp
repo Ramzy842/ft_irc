@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/07 19:48:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:49:04 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class Client {
 		int fd;
 		bool isOperator;
 		// bool isRegistered;
-		// bool isLoggedin;
+		bool isLoggedin;
 		std::string username;
 		std::string nickname;
 		std::string buffer;
@@ -40,6 +40,7 @@ class Client {
 		void setBuffer(std::string str);
 		std::string getBuffer();
 		void clearBuffer();
+		void setIsLoggedIn();
 };
 
 #endif

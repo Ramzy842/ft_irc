@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/10 17:15:46 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:45:03 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class Server {
 		void removeClient(int _fd);
 		void removeFd(int _fd);
 		Client *getClient(int _fd);
+		bool passwordsMatch(std::string _password);
 };
 
 #endif
