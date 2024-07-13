@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/13 21:17:08 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:34:32 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,28 @@ void Server::invite(std::string &msg, int fd)
 {
 	(void) fd;
 	std::vector<std::string> cmd = split_command(msg);
-	std::cout << "invite command ->" << cmd[0] << std::endl;
+	// std::cout << "invite command ->" << cmd[0] << std::endl;
+	if(cmd.size() < 3)
+	{
+		send(fd, "461 Not enough parameters.\n", 27, 0);
+		return;
+	}
+	if(this->clients[fd].isLoggedin == false)
+	{
+		send(fd, "530 Please login with USER and PASS.\n", 37, 0);
+		return;
+	}
+	std::string channel = cmd[2].substr(1);
+	if (channel.empty() || !channel.compare(0, 1, "#") == 0 || this->channels.find(channel) == this->channels.end())
+	{
+		send(fd, ":No such Channel\n", 27, 0);
+		return;
+	}
+	if (t)
+	{
+		send(fd, ":No such Channel\n", 27, 0);
+		return;
+	}
 	// if(this->users[fd].is_logged == false)
 	// {
 	// 	send(fd, "530 Please login with USER and PASS.\n", 37, 0);

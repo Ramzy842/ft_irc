@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 07:24:05 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:35:34 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class Server {
 		std::string password;
 		int fd;
 		std::vector<Client> clients;
+		std::vector<Channel> channels;
 		std::vector<struct pollfd> fds;
 	public:
 		Server();
