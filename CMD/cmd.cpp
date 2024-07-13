@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/13 07:23:03 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:20:01 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void Server::cmd_parser(std::string &msg, int fd)
 {
+	
 	std::cout << "Client " << fd << " sent: " << msg << std::endl;
 	if (!msg.compare(0, 4, "BONG") || !msg.compare(0, 4, "bong"))
 		return;
@@ -50,7 +51,7 @@ void Server::cmd_parser(std::string &msg, int fd)
 	else if (!msg.compare(0, 4, "QUIT") || !msg.compare(0, 4, "quit"))
 		// cmd::quit(fd);
 		std::cout << "QUIT :" << msg << std::endl;
-	else if (!msg.compare(0, 4, "INVITE") || !msg.compare(0, 4, "invite"))
+	else if (!msg.compare(0, 6, "INVITE") || !msg.compare(0, 6, "invite"))
 		Server::invite(msg, fd);
 		// std::cout << "INVITE :" << msg << std::endl;
 	else

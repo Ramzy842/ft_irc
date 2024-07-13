@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 05:42:57 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:08:14 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CHANNEL_HPP
 
 #include <iostream>
+#include <vector>
 #include "./Client.hpp"
 
 class Channel {

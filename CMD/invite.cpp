@@ -6,30 +6,38 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/13 01:42:59 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 21:17:08 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
 
-void cmd::invite(std::string &msg, int fd)
+void Server::invite(std::string &msg, int fd)
 {
-	std::string channel = msg.substr(6);
-	if (channel.empty())
-	{
-		send(fd, "461 Not enough parameters.\n", 27, 0);
-		// return;
-	}
-	if (channel.find(" ") != std::string::npos)
-	{
-		send(fd, "461 Not enough parameters.\n", 27, 0);
-		// return;
-	}
-	if (channel[0] != '#')
-	{
-		send(fd, "403 No such channel.\n", 21, 0);
-		// return;
-	}
+	(void) fd;
+	std::vector<std::string> cmd = split_command(msg);
+	std::cout << "invite command ->" << cmd[0] << std::endl;
+	// if(this->users[fd].is_logged == false)
+	// {
+	// 	send(fd, "530 Please login with USER and PASS.\n", 37, 0);
+	// 	return;
+	// }
+	// std::string channel = msg.substr(6);
+	// if (channel.empty())
+	// {
+	// 	send(fd, "461 Not enough parameters.\n", 27, 0);
+	// 	// return;
+	// }
+	// if (channel.find(" ") != std::string::npos)
+	// {
+	// 	send(fd, "461 Not enough parameters.\n", 27, 0);
+	// 	// return;
+	// }
+	// if (channel[0] != '#')
+	// {
+	// 	send(fd, "403 No such channel.\n", 21, 0);
+	// 	// return;
+	// }
 	// if (this->users[fd].is_logged == false)
 	// {
 	// 	send(fd, "530 Please login with USER and PASS.\n", 37, 0);

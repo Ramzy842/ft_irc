@@ -1,12 +1,15 @@
 #pragma once
 
 #include "../Server.hpp"
+#include <sstream>
+
+std::vector<std::string> split_command(std::string &msg);
 
 class cmd
 {
 
 	public:
-		void invite(std::string &msg, int fd);
+		// void invite(std::string &msg, int fd);
 		void pass(std::string &msg, int fd);
 		void user(std::string &msg, int fd);
 		void nick(std::string &msg, int fd);

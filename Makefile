@@ -6,7 +6,7 @@
 #    By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/07/13 06:22:06 by yaidriss         ###   ########.fr        #
+#    Updated: 2024/07/13 21:15:50 by yaidriss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp CMD/cmd.cpp CMD/topic.cpp CMD/invite.cpp 
+SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp CMD/cmd.cpp CMD/topic.cpp CMD/invite.cpp CMD/utils.cpp 
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
