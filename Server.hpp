@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 05:48:27 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 07:24:05 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ class Server {
 		bool passwordsMatch(std::string _password);
 		void cmd_parser(std::string &msg, int fd);
 		void topic(std::string &msj, int fd);
+
+		//****** IRC COMMANDS ******//
+		void invite(std::string &msg, int fd);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/13 05:45:55 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 07:23:03 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		// cmd::privmsg(msg, fd);
 		std::cout << "PRIVMSG :" << msg << std::endl;
 	else if (!msg.compare(0, 5, "TOPIC") || !msg.compare(0, 5, "topic"))
-		this->topic(msg, fd);
+		// this->topic(msg, fd);
+		std::cout << "TOPIC :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "MODE") || !msg.compare(0, 4, "mode"))
 		// cmd::mode(msg, fd);
 		std::cout << "MODE :" << msg << std::endl;
@@ -50,8 +51,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		// cmd::quit(fd);
 		std::cout << "QUIT :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "INVITE") || !msg.compare(0, 4, "invite"))
-		// cmd::invite(msg, fd);
-		std::cout << "INVITE :" << msg << std::endl;
+		Server::invite(msg, fd);
+		// std::cout << "INVITE :" << msg << std::endl;
 	else
 		send(fd, "500 Command not recognized.\n", 28, 0);
 }
