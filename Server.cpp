@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 03:52:31 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 05:51:58 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ Server::~Server()
 
 void Server::init()
 {
-	std::cout << "Initializing server..." << std::endl;
-	std::cout << "Server initialized" << std::endl;
+	std::cout << YELLOW <<"Initializing server..." << std::endl;
+	std::cout << CYAN << "Server initialized" << std::endl;
 	Client new_client;
 	std::string buffer;
 	int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -117,7 +117,7 @@ void Server::init()
 						new_client.setIpAddress(inet_ntoa(client_addr.sin_addr));
 						AddToClients(new_client);
 						this->fds.push_back(client_fd);
-						std::cout << "New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << std::endl;
+						std::cout << GREEN << "New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << RESET << std::endl;
 					}
 					else
 					{
@@ -127,7 +127,7 @@ void Server::init()
 						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff), 0);
 						if (receivedBytes <= 0)
 						{
-							std::cout << "closed connection by client <" << fds[x].fd << ">" << std::endl;
+							std::cout << RED <<"closed connection by client <" << fds[x].fd << ">" << std::endl;
 							removeClient(fds[x].fd);
 							removeFd(fds[x].fd);
 						}
@@ -143,7 +143,7 @@ void Server::init()
 								std::cout << "enter password.." << std::endl;
 								client->setIsLoggedIn();
 							}
-							std::cout << "Client <" << fds[x].fd << ">: " << client->getBuffer();
+							// std::cout << "Client <" << fds[x].fd << ">: " << client->getBuffer();
 							if (client)
 							buffer = client->getBuffer();
 							this->cmd_parser(buffer, fds[x].fd);

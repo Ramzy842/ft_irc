@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 01:23:08 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 05:48:27 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 
 #include "./irc_serv.hpp"
 #include "./Client.hpp"
+
+
+#define RED "\033[0;31m"
+#define GREEN "\033[0;32m"
+#define RESET "\033[0m"
+#define YELLOW "\033[0;33m"
+#define BLUE "\033[0;34m"
+#define CYAN "\033[0;36m"
+
 
 class Server {
 	private:
