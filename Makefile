@@ -6,7 +6,7 @@
 #    By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/07/13 01:45:02 by yaidriss         ###   ########.fr        #
+#    Updated: 2024/07/13 06:22:06 by yaidriss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp cmd.cpp topic.cpp invite.cpp 
+SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp CMD/cmd.cpp CMD/topic.cpp CMD/invite.cpp 
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
@@ -29,21 +29,29 @@ NAME = ircserv
 all: $(NAME)
 
 # Rule to generate the ircserv executable from the object files
-$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp
+$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp CMD/cmd.hpp
 	@$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
-
+	@echo "\033[92m░░███╗░░██████╗░██████╗░███████╗\033[0m███╗░░░███╗███████╗██████╗░"
+	@echo "\033[92m░████║░░╚════██╗╚════██╗╚════██║\033[0m████╗░████║██╔════╝██╔══██╗"
+	@echo "\033[92m██╔██║░░░█████╔╝░█████╔╝░░░░██╔╝\033[0m██╔████╔██║█████╗░░██║░░██║"
+	@echo "\033[92m╚═╝██║░░░╚═══██╗░╚═══██╗░░░██╔╝░\033[0m██║╚██╔╝██║██╔══╝░░██║░░██║"
+	@echo "\033[92m███████╗██████╔╝██████╔╝░░██╔╝░░\033[0m██║░╚═╝░██║███████╗██████╔╝"
+	@echo "\033[92m╚══════╝╚═════╝░╚═════╝░░░╚═╝░░░\033[0m╚═╝░░░░░╚═╝╚══════╝╚═════╝░"
+	@echo "\033[92mCREATING .O FILES AND exuctubel of $(NAME) ⌛\033[0m"
+	@echo "\033[93mIRC SERVER IS READY TO USE 🚀\033[0m"
 # Rule to generate the object files from the source files
-%.o: %.cpp irc_serv.hpp Client.hpp Server.hpp Channel.hpp
+%.o: %.cpp irc_serv.hpp Client.hpp Server.hpp Channel.hpp CMD/cmd.hpp
 	@$(CPP) $(CPPFLAGS) -c $< -o $@
 
 # Clean target to remove generated files
 clean:
-	rm -f $(OBJ)
+	@rm -f $(OBJ)
+	@echo "\033[31m Delete object files🗑\033[31m"
 
 # Fclean target to remove executable files and finally perform clean
 fclean: clean
-	rm -f $(NAME)
-
+	@rm -f $(NAME)
+	@echo "\033[31m Delete exucted file🗑\033[31m"
 # Re target to rebuild the project from scratch
 re: fclean all
 
