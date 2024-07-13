@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/11 19:45:03 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/13 01:23:08 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ class Server {
 		void removeFd(int _fd);
 		Client *getClient(int _fd);
 		bool passwordsMatch(std::string _password);
+		void cmd_parser(std::string &msg, int fd);
+		void topic(std::string &msj, int fd);
 };
 
 #endif

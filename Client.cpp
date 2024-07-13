@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/11 19:50:15 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/13 01:37:02 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,8 @@ void Client::clearBuffer() {
 
 void Client::setIsLoggedIn() {
 	this->isLoggedin = true;
+}
+
+bool Client::getIsLoggedIn() {
+	return this->isLoggedin;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/11 22:22:20 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/13 03:52:31 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void Server::init()
 	std::cout << "Initializing server..." << std::endl;
 	std::cout << "Server initialized" << std::endl;
 	Client new_client;
+	std::string buffer;
 	int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (serverSocket == -1)
 	{
@@ -144,7 +145,8 @@ void Server::init()
 							}
 							std::cout << "Client <" << fds[x].fd << ">: " << client->getBuffer();
 							if (client)
-								getClient(fds[x].fd)->clearBuffer();
+							buffer = client->getBuffer();
+							this->cmd_parser(buffer, fds[x].fd);
 							// Add code to process the received data: parse, check, authenticate, handle the command, etc...
 						}
 					}
@@ -153,7 +155,7 @@ void Server::init()
 			}
 		}
 
-		for (unsigned int x = 0; x < this->clients.size(); x++)
+		for (unsigned int x = 0; x < this->clients.size();  x++)
 		{
 			close(this->clients[x].getFd());
 		}
