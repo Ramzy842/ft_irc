@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 13:36:49 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 18:23:26 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "invite.hpp"
+
+// Error message macros
+#define ERR_NOTPARAMS "461 :Not enough parameters\n"
+#define ERR_NOSUCHCHANNEL(channel) "403 " + channel + " :No such channel\n"
+#define ERR_NOTONCHANNEL(channel) "442 " + channel + " :You're not on that channel\n"
+#define ERR_USERALREADYINCHANNEL(channel) "443 " + channel + " :User is already on channel\n"
+#define ERR_CHANOPRIVSNEEDED(channel) "482 " + channel + " :You're not channel operator\n"
+#define ERR_LOGIN "530 Please login with USER and PASS\n"
 
 Channel* Server::inviteErreurHandler(std::vector<std::string> cmd, int fd)
 {

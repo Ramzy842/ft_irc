@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 17:20:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 18:31:25 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ Server::~Server()
 
 
 void Server::init() {
-	std::cout << "Initializing server..." << std::endl;
-	std::cout << "Server initialized" << std::endl;
+	std::cout << CYAN << "Initializing server..." << std::endl;
+	std::cout << GREEN <<"Server initialized" << RESET << std::endl;
 	Client client;
 	int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (serverSocket == -1) {
-		std::cout << "Error: Couldn't create unbound socket!" << std::endl;
+		std::cout << RED << "Error: Couldn't create unbound socket!" << std::endl;
 		return ;
 	}
 	else
@@ -64,22 +64,22 @@ void Server::init() {
 		int option_value = 1;
 		if(fcntl(this->fd, F_SETFL, O_NONBLOCK) == -1)
 		{
-			std::cout << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
+			std::cout << RED << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
 			return ;
 		}
 		if (setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &option_value, sizeof(option_value)) == -1)
 		{
-			std::cout << "Error: Couldn't set the socket options!" << std::endl;
+			std::cout << RED << "Error: Couldn't set the socket options!" << std::endl;
 			return ;
 		}
 		else if (bind(this->fd, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1)
 		{
-			std::cout << "Error: Couldn't bind a name to the socket!" << std::endl;
+			std::cout << RED << "Error: Couldn't bind a name to the socket!" << std::endl;
 			return ;
 		}
 		else if (listen(this->fd, SOMAXCONN) == -1)
 		{
-			std::cout << "Error: Couldn't listen for socket connections!" << std::endl;
+			std::cout << RED << "Error: Couldn't listen for socket connections!" << std::endl;
 			return ;
 		}
 		struct pollfd pfd;
@@ -96,7 +96,7 @@ void Server::init() {
 				{
 					if (fds[x].fd == this->fd)
 					{
-						std::cout << "New Clients wants to connect" << std::endl;
+						std::cout << YELLOW << "New Clients wants to connect" << RESET <<std::endl;
 						
 						struct sockaddr_in client_addr;
     					socklen_t addr_size;
@@ -104,7 +104,7 @@ void Server::init() {
 						int clientSocket = accept(this->fd, (sockaddr *)&client_addr, &addr_size);
 						if(fcntl(clientSocket, F_SETFL, O_NONBLOCK) == -1)
 						{
-							std::cout << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
+							std::cout << RED << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
 							return ;
 						}
 						struct pollfd client_fd;
@@ -115,7 +115,7 @@ void Server::init() {
 						client.setIpAddress(inet_ntoa(client_addr.sin_addr));
 						AddToClients(client);
 						this->fds.push_back(client_fd);
-						std::cout << "New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << std::endl;
+						std::cout << YELLOW <<"New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << std::endl;
 					}
 					else
 					{
