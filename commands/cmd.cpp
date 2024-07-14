@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/13 21:20:01 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 09:56:11 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void Server::cmd_parser(std::string &msg, int fd)
 		// cmd::quit(fd);
 		std::cout << "QUIT :" << msg << std::endl;
 	else if (!msg.compare(0, 6, "INVITE") || !msg.compare(0, 6, "invite"))
-		Server::invite(msg, fd);
+		this->invite(msg, fd);
 		// std::cout << "INVITE :" << msg << std::endl;
 	else
 		send(fd, "500 Command not recognized.\n", 28, 0);

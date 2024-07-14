@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 05:08:44 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 14:30:12 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,15 @@ class Server {
 		Client *getClient(int _fd);
 		bool passwordsMatch(std::string _password);
 		void cmd_parser(std::string &msg, int fd);
-		void topic(std::string &msj, int fd);
 		Channel* getChannelByName(std::string name);
 		Client* getClientByName(std::string nick);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);
-		Channel* erreur_handler(std::vector<std::string> cmd, int fd);
+		void topic(std::string &msg, int fd);
+		Channel* inviteErreurHandler(std::vector<std::string> cmd, int fd);
+		Channel* topicErreurHandler(std::vector<std::string> cmd, int fd);
+		//****** utils funciton ******//
 };
 
 #endif
