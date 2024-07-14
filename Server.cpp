@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 05:37:35 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 17:20:50 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,11 @@ void Server::init() {
 						}
 					
 						else {
-							buff[receivedBytes] = '\0';
-							std::cout << "Client <" << fds[x].fd << "> and ip address <" << client.getIpAddress() << "> Data: " << buff;
+							// buff[receivedBytes] = '\0';
+							// std::cout << "Client <" << fds[x].fd << "> and ip address <" << client.getIpAddress() << "> Data: " << buff;
 							// Add code to process the received data: parse, check, authenticate, handle the command, etc...
+							std::string buff_str(buff);
+							cmd_parser(buff_str, fds[x].fd);
 						}
 					}
 				}

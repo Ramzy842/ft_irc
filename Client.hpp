@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 04:55:19 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 17:49:14 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "./irc_serv.hpp"
 #include "./Channel.hpp"
+
+class Channel;
 
 class Client {
 	private:
@@ -26,7 +28,7 @@ class Client {
 		std::string username;
 		std::string nickname;
 		std::string buffer;
-		// std::vector<Channel*> Channels;
+		std::vector<Channel *> channels;
 	public:
 		Client();
 		Client(const Client& original);
@@ -52,9 +54,10 @@ class Client {
 		void setIsRegistered(bool _isRegistered);
 		void sendMsgClient(std::string msg);
 		Client *getMembeByName(std::string name);
-		// std::vector<Channel*> getChannels();
-		// void setChannels(std::vector<Channel*> _channels);
-		// void addChannel(Channel* channel);
+		void removeChannel(Channel* channel);
+		std::vector<Channel*> getChannels();
+		void setChannels(std::vector<Channel*> _channels);
+		void addChannel(Channel* channel);
 		
 };
 

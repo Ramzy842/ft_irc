@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Server.hpp"
+#include "../Client.hpp"
 #include <sstream>
 
 std::vector<std::string> split_command(std::string &msg);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 09:56:11 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 17:23:02 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void Server::cmd_parser(std::string &msg, int fd)
 		// cmd::part(msg, fd);
 		std::cout << "PART :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "KICK") || !msg.compare(0, 4, "kick"))
-		// cmd::kick(msg, fd);
-		std::cout << "KICK :" << msg << std::endl;
+		this->kick(msg, fd);
+		// std::cout << "KICK :" << msg << std::endl;
 	else if (!msg.compare(0, 6, "PRIVMSG") || !msg.compare(0, 6, "privmsg"))
 		// cmd::privmsg(msg, fd);
 		std::cout << "PRIVMSG :" << msg << std::endl;
 	else if (!msg.compare(0, 5, "TOPIC") || !msg.compare(0, 5, "topic"))
-		// this->topic(msg, fd);
-		std::cout << "TOPIC :" << msg << std::endl;
+		this->topic(msg, fd);
+		// std::cout << "TOPIC :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "MODE") || !msg.compare(0, 4, "mode"))
 		// cmd::mode(msg, fd);
 		std::cout << "MODE :" << msg << std::endl;
