@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 01:37:24 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 02:51:53 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class Client {
 		std::string ip_address;
 		int fd;
 		bool isOperator;
-		// bool isRegistered;
+		bool isRegistered;
 		bool isLoggedin;
 		std::string username;
 		std::string nickname;
@@ -42,6 +42,19 @@ class Client {
 		void clearBuffer();
 		void setIsLoggedIn();
 		bool getIsLoggedIn();
+		std::string getUsername();
+		void setUsername(std::string _username);
+		std::string getNickname();
+		void setNickname(std::string _nickname);
+		bool getIsOperator();
+		void setIsOperator(bool _isOperator);
+		bool getIsRegistered();
+		void setIsRegistered(bool _isRegistered);
+		void sendMsg(std::string msg);
+		// std::vector<Channel*> getChannels();
+		// void setChannels(std::vector<Channel*> _channels);
+		// void addChannel(Channel* channel);
+		
 };
 
 #endif

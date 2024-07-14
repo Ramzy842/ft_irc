@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/13 05:51:58 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/13 23:32:50 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,4 +238,14 @@ void Server::AddToClients(Client &client)
 std::vector<Client> Server::getClients()
 {
 	return this->clients;
+}
+
+Channel* Server::getChannelByName(std::string name)
+{
+	for (unsigned int i = 0; i < this->channels.size(); i++)
+	{
+		if (this->channels[i].getName() == name)
+			return &this->channels[i];
+	}
+	return NULL;
 }

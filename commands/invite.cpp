@@ -6,38 +6,63 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/13 21:34:32 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 02:55:32 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
 
+void Server::erreur_handler(std::vector<std::string> cmd, int fd)
+{
+	if(cmd.size() != 4)
+	{
+		// failedsend = send(fd, "461 Not enough parameters.\n", 27, 0);
+		senderreur(fd, "461 Not enough parameters.\n");
+	}
+	if(this->clients[fd].getIsLoggedIn() == false)
+	{
+		// failedsend = send(fd, "530 Please login with USER and PASS.\n", 37, 0);
+		senderreur(fd, "530 Please login with USER and PASS.\n");
+	}
+	Channel *channel = getChannelByName(cmd[2]);
+	if(cmd[2][0] != '#' || !channel)
+	{
+		// failedsend = send(fd, "403 No such channel.\n", 21, 0);
+		senderreur(fd, "403 No such channel.\n");
+	}
+	if(channel->getIsInviteOnly() == false)
+	{
+		// failedsend = send(fd, "482 You're not allowed to invite users.\n", 40, 0);
+		senderreur(fd, "482 You're not allowed to invite users.\n");
+	}
+	if(this->getClientByName(cmd[1]))
+		senderreur(fd, "401 No such nick.\n");
+	if(channel->getMembersByName(cmd[1]))
+		senderreur(fd, "443 User is already on channel.\n");
+	if(channel->getIsInviteOnly() == true || !channel->getOperatorByName(cmd[1]))
+		senderreur(fd, "482 You're not allowed to invite users.\n");
+}
+
 void Server::invite(std::string &msg, int fd)
 {
-	(void) fd;
+	//! still need to add if else for erreur but i need other commands to be implemented first
 	std::vector<std::string> cmd = split_command(msg);
 	// std::cout << "invite command ->" << cmd[0] << std::endl;
-	if(cmd.size() < 3)
-	{
-		send(fd, "461 Not enough parameters.\n", 27, 0);
-		return;
-	}
-	if(this->clients[fd].isLoggedin == false)
-	{
-		send(fd, "530 Please login with USER and PASS.\n", 37, 0);
-		return;
-	}
-	std::string channel = cmd[2].substr(1);
-	if (channel.empty() || !channel.compare(0, 1, "#") == 0 || this->channels.find(channel) == this->channels.end())
-	{
-		send(fd, ":No such Channel\n", 27, 0);
-		return;
-	}
-	if (t)
-	{
-		send(fd, ":No such Channel\n", 27, 0);
-		return;
-	}
+	erreur_handler(cmd, fd);
+	channel->addMember(this->getClientByName(cmd[1]));
+	
+	
+	// std::string channel = cmd[2].substr(1);
+	// if (channel.empty() || !channel.compare(0, 1, "#") == 0 || this->channels.find(channel) == this->channels.end())
+	// {
+	// 	send(fd, ":No such Channel\n", 27, 0);
+	// 	return;
+	// }
+	// if (t)
+	// {
+	// 	send(fd, ":No such Channel\n", 27, 0);
+	// 	return;
+	// }
 	// if(this->users[fd].is_logged == false)
 	// {
 	// 	send(fd, "530 Please login with USER and PASS.\n", 37, 0);

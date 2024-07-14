@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/13 21:16:36 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 01:50:25 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,11 @@ std::vector<std::string> split_command(std::string& msg)
 	}
 	cmd.push_back(word);
 	return cmd;
+}
+
+void senderreur(int fd, std::string msg)
+{
+	int failedsend = send(fd, msg.c_str(), msg.size(), 0);
+	if (failedsend == -1)
+		std::cerr << "Failed to send message" << std::endl;
 }

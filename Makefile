@@ -6,7 +6,7 @@
 #    By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/07/13 21:15:50 by yaidriss         ###   ########.fr        #
+#    Updated: 2024/07/13 22:33:29 by yaidriss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp CMD/cmd.cpp CMD/topic.cpp CMD/invite.cpp CMD/utils.cpp 
+SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp commands/cmd.cpp commands/topic.cpp commands/invite.cpp commands/utils.cpp 
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
@@ -29,7 +29,7 @@ NAME = ircserv
 all: $(NAME)
 
 # Rule to generate the ircserv executable from the object files
-$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp CMD/cmd.hpp
+$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp commands/cmd.hpp
 	@$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 	@echo "\033[92m░░███╗░░██████╗░██████╗░███████╗\033[0m███╗░░░███╗███████╗██████╗░"
 	@echo "\033[92m░████║░░╚════██╗╚════██╗╚════██║\033[0m████╗░████║██╔════╝██╔══██╗"
@@ -40,7 +40,7 @@ $(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp CMD/cmd.hpp
 	@echo "\033[92mCREATING .O FILES AND exuctubel of $(NAME) ⌛\033[0m"
 	@echo "\033[93mIRC SERVER IS READY TO USE 🚀\033[0m"
 # Rule to generate the object files from the source files
-%.o: %.cpp irc_serv.hpp Client.hpp Server.hpp Channel.hpp CMD/cmd.hpp
+%.o: %.cpp irc_serv.hpp Client.hpp Server.hpp Channel.hpp commands/commands.hpp
 	@$(CPP) $(CPPFLAGS) -c $< -o $@
 
 # Clean target to remove generated files

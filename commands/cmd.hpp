@@ -4,6 +4,7 @@
 #include <sstream>
 
 std::vector<std::string> split_command(std::string &msg);
+void senderreur(int fd, std::string msg);
 
 class cmd
 {
