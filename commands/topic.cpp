@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 14:36:26 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 14:44:18 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void Server::topic(std::string &msj, int fd)
 	if (!channel)
 		return;
 	std::string rps;
+	std::string newtopic = msj.substr(msj.find(":", 1) + 1);
 	if (cmd.size() == 2)
 	{
 		std::string topic = channel->getTopic();
@@ -48,7 +49,6 @@ void Server::topic(std::string &msj, int fd)
 	}
 	else
 	{
-		std::string newtopic = msj.substr(msj.find(":", 1) + 1);
 		channel->setTopic(newtopic);
 		std::string rps = ":" + this->clients[fd].getNickname() + " TOPIC " + channel->getName() + " :" + newtopic + "\n";
 		sendMsg(channel->getId(), rps);
