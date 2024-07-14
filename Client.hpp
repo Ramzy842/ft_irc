@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 04:22:43 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 04:55:19 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ class Client {
 		void setIsOperator(bool _isOperator);
 		bool getIsRegistered();
 		void setIsRegistered(bool _isRegistered);
-		void sendMsg(std::string msg);
+		void sendMsgClient(std::string msg);
 		Client *getMembeByName(std::string name);
 		// std::vector<Channel*> getChannels();
 		// void setChannels(std::vector<Channel*> _channels);

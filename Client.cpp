@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 02:28:10 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 04:55:19 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void Client::setIsRegistered(bool _isRegistered) {
 	this->isRegistered = _isRegistered;
 }
 
-void Client::sendMsg(std::string msg) {
+void Client::sendMsgClient(std::string msg) {
 	send(this->fd, msg.c_str(), msg.length(), 0);
 }
 

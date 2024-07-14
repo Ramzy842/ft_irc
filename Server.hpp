@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 04:31:09 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 05:08:44 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ class Server {
 		// GETTERS AND SETTERS
 		int getPort();
 		void setPort(int _port);
+		int getFd();
+		void setFd(int _fd);
 		std::string getPassword();
 		void setPassword(std::string _password);
 		std::vector<Client> getClients();
 		void setClients(std::vector<Client> _clients);
-		int getFd();
-		void setFd(int _fd);
 		void AddToClients(Client& client);
 		void removeClient(int _fd);
 		void removeFd(int _fd);

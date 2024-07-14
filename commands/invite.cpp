@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 04:37:52 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 05:35:24 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ void Server::invite(std::string &msg, int fd)
 	// std::cout << "invite command ->" << cmd[0] << std::endl;
 	Channel* channel = erreur_handler(cmd, fd);
     channel->addMember(this->getClientByName(cmd[1]));
-	
-	
+	//! need to check message ot send
+	std::string Clientrps = ": 341 " + this->getClient(fd)->getNickname() + " " + this->getClient(fd)->getNickname()+ " " + cmd[2] + "\r\n";
+	std::string Channelrps = ":" + this->clients[fd].getNickname() + " INVITE " +  + " " + cmd[2] + "\n";
+	sendMsg(fd, Clientrps);
+	sendMsg(channel->getId(), Channelrps);
 	// std::string channel = cmd[2].substr(1);
 	// if (channel.empty() || !channel.compare(0, 1, "#") == 0 || this->channels.find(channel) == this->channels.end())
 	// {

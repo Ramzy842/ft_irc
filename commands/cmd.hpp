@@ -5,6 +5,7 @@
 
 std::vector<std::string> split_command(std::string &msg);
 void senderreur(int fd, std::string msg);
+void sendMsg(int fd, std::string msg);
 
 class cmd
 {

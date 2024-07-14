@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 04:48:19 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 05:37:35 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,12 +158,21 @@ std::string Server::getPassword() {
 void Server::setPassword(std::string _password) {
 	this->password = _password;
 }
-// std::vector<Client> Server::getClients() {
-// 	return this->clients;
-// }
-// void Server::setClients(std::vector<Client> _clients) {
-// 	this->clients = _clients;
-// }
+std::vector<Client> Server::getClients() {
+	return this->clients;
+}
+void Server::setClients(std::vector<Client> _clients) {
+	this->clients = _clients;
+}
+
+Client* Server::getClient(int _fd) {
+	for (std::vector<Client>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
+	{
+		if (it->getFd() == _fd)
+			return &(*it);
+	}
+	return NULL;
+}
 
 int Server::getFd() {
 	return this->fd;
@@ -192,4 +201,15 @@ Client* Server::getClientByName(std::string name) {
 			return &(*it);
 	}
 	return NULL;
+}
+
+void Server::removeClient(int _fd) {
+	for (std::vector<Client>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
+	{
+		if (it->getFd() == _fd)
+		{
+			this->clients.erase(it);
+			break;
+		}
+	}
 }

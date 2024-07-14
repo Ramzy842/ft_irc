@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 04:26:54 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/14 05:11:41 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class Channel {
 	private:
 		bool is_invite_only;
 		int limit;
+		int id;
 		std::string name;
 		std::string password;
 		std::string topic;
@@ -39,7 +40,7 @@ class Channel {
 		Channel& operator=(const Channel& original);
 
 		//******GETTERS AND SETTERS ******//
-		void setId();
+		void setId(int _id);
 		int getId();
 		std::string getName();
 		void setName(std::string _name);
