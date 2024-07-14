@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 17:23:02 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 18:18:06 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		this->topic(msg, fd);
 		// std::cout << "TOPIC :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "MODE") || !msg.compare(0, 4, "mode"))
-		// cmd::mode(msg, fd);
-		std::cout << "MODE :" << msg << std::endl;
+		this->mode(msg, fd);
+		// std::cout << "MODE :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "QUIT") || !msg.compare(0, 4, "quit"))
 		// cmd::quit(fd);
 		std::cout << "QUIT :" << msg << std::endl;
