@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 02:55:32 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 04:37:52 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
 
-void Server::erreur_handler(std::vector<std::string> cmd, int fd)
+Channel* Server::erreur_handler(std::vector<std::string> cmd, int fd)
 {
 	if(cmd.size() != 4)
 	{
@@ -24,7 +24,7 @@ void Server::erreur_handler(std::vector<std::string> cmd, int fd)
 		// failedsend = send(fd, "530 Please login with USER and PASS.\n", 37, 0);
 		senderreur(fd, "530 Please login with USER and PASS.\n");
 	}
-	Channel *channel = getChannelByName(cmd[2]);
+	Channel *channel = this->getChannelByName(cmd[2]);
 	if(cmd[2][0] != '#' || !channel)
 	{
 		// failedsend = send(fd, "403 No such channel.\n", 21, 0);
@@ -37,10 +37,11 @@ void Server::erreur_handler(std::vector<std::string> cmd, int fd)
 	}
 	if(this->getClientByName(cmd[1]))
 		senderreur(fd, "401 No such nick.\n");
-	if(channel->getMembersByName(cmd[1]))
+	if(channel->getMemberByName(cmd[1]))
 		senderreur(fd, "443 User is already on channel.\n");
 	if(channel->getIsInviteOnly() == true || !channel->getOperatorByName(cmd[1]))
 		senderreur(fd, "482 You're not allowed to invite users.\n");
+	return (channel);
 }
 
 void Server::invite(std::string &msg, int fd)
@@ -48,8 +49,8 @@ void Server::invite(std::string &msg, int fd)
 	//! still need to add if else for erreur but i need other commands to be implemented first
 	std::vector<std::string> cmd = split_command(msg);
 	// std::cout << "invite command ->" << cmd[0] << std::endl;
-	erreur_handler(cmd, fd);
-	channel->addMember(this->getClientByName(cmd[1]));
+	Channel* channel = erreur_handler(cmd, fd);
+    channel->addMember(this->getClientByName(cmd[1]));
 	
 	
 	// std::string channel = cmd[2].substr(1);

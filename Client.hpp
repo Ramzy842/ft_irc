@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 02:51:53 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 04:22:43 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class Client {
 		bool getIsRegistered();
 		void setIsRegistered(bool _isRegistered);
 		void sendMsg(std::string msg);
+		Client *getMembeByName(std::string name);
 		// std::vector<Channel*> getChannels();
 		// void setChannels(std::vector<Channel*> _channels);
 		// void addChannel(Channel* channel);

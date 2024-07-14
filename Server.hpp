@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 02:55:17 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/14 04:31:09 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ class Server {
 		void cmd_parser(std::string &msg, int fd);
 		void topic(std::string &msj, int fd);
 		Channel* getChannelByName(std::string name);
-		Client* getClientByNick(std::string nick);
+		Client* getClientByName(std::string nick);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);
-		void erreur_handler(std::vector<std::string> cmd, int fd);
+		Channel* erreur_handler(std::vector<std::string> cmd, int fd);
 };
 
 #endif
