@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 18:31:25 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:33:50 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,4 +214,11 @@ void Server::removeClient(int _fd) {
 			break;
 		}
 	}
+}
+
+bool Server::checkpass(std::string _pass)
+{
+	if (_pass == this->getPassword())
+		return true;
+	return false;
 }

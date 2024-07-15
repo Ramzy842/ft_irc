@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 18:18:06 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:14:47 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		// cmd::ping(fd, cmd);
 		std::cout << "PING :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "PASS") || !msg.compare(0, 4, "pass"))
-		// cmd::pass(msg, fd);
-		std::cout << "PASS :" << msg << std::endl;
+		this->pass(msg, fd);
+		// std::cout << "PASS :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "USER") || !msg.compare(0, 4, "user"))
 		// cmd::user(msg, fd);
 		std::cout << "USER :" << msg << std::endl;

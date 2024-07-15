@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 18:18:42 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:33:23 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,13 @@ class Server {
 		void topic(std::string &msg, int fd);
 		void kick(std::string &msg, int fd);
 		void mode(std::string &msg, int fd);
+		void pass(std::string &msg, int fd);
 		Channel* inviteErreurHandler(std::vector<std::string> cmd, int fd);
 		Channel* topicErreurHandler(std::vector<std::string> cmd, int fd);
 		Channel* handlerkickcommand(std::vector<std::string> cmd, int fd);
 		Channel* handlermodecommand(std::vector<std::string> cmd, int fd);
+		bool handlerpasscommand(std::vector<std::string> cmd, int fd);	
+		bool checkpass(std::string pass);
 		//****** utils funciton ******//
 };
 

@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 18:48:21 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:40:29 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ std::vector<std::string> split_command(std::string& msg)
 		else
 			word += msg[i];
 	}
+	word = word.substr(0, word.size() - 1);
 	cmd.push_back(word);
 	return cmd;
 }
