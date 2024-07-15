@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/15 11:33:09 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 13:48:16 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ class Client {
 		bool isLoggedin;
 		std::string username;
 		std::string nickname;
+		std::string hostname;
+		std::string servername;
+		std::string realname;
 		std::string buffer;
 		std::vector<Channel *> channels;
 	public:
@@ -59,6 +62,10 @@ class Client {
 		void setChannels(std::vector<Channel*> _channels);
 		void addChannel(Channel* channel);
 		void ckeckpass(std::string pass);
+		void user(std::string &msg, int fd);
+		void setHostname(std::string hostname);
+		void setServername(std::string servername);
+		void setRealname(std::string realname);
 };
 
 #endif

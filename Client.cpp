@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/15 11:59:05 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 13:46:11 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,16 @@ void Client::removeChannel(Channel* channel) {
 			break;
 		}
 	}
+}
+
+void Client::setHostname(std::string _hostname) {
+	this->hostname = _hostname;
+}
+
+void Client::setServername(std::string _servername) {
+	this->servername = _servername;
+}
+
+void Client::setRealname(std::string _realname) {
+	this->realname = _realname;
 }

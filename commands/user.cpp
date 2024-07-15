@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nick.cpp                                           :+:      :+:    :+:   */
+/*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/15 11:44:23 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 13:51:48 by yaidriss         ###   ########.fr       */
+/*   Created: 2024/07/15 13:17:42 by yaidriss          #+#    #+#             */
+/*   Updated: 2024/07/15 13:50:49 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
+//! need to devlope
 
-#define ERR_NEEDMOREPARAMS(command) "461 " + command + " :Not enough parameters"
+// Error message macros
+#define ERR_NEEDMOREPARAMS "461 USER :Not enough parameters"
 #define ERR_ALREADYREGISTRED "462 :You may not reregister"
 
 
-bool Server::handlernickcommand(std::vector<std::string> cmd, int fd)
-{
-	if (cmd.size() < 2)
-		return senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
-	if (this->getClient(fd)->getIsRegistered())
-		return senderreur(fd, ERR_ALREADYREGISTRED);
-	// std::cout << "im here " << this->getClient(fd)->getIsRegistered() << std::endl;
-	return true;
-}
-
-
-void Server::nick(std::string &msg, int fd)
-{
+void Server::user(std::string &msg, int fd) {
 	std::vector<std::string> cmd = split_command(msg);
-	if(!handlernickcommand(cmd, fd))
+	if (cmd.size() < 5) {
+		sendMsg(fd, ERR_NEEDMOREPARAMS);
 		return;
-	this->getClient(fd)->setNickname(cmd[1]);
+	}
+
+	if (this->getClient(fd)->getIsRegistered()) {
+		sendMsg(fd, ERR_ALREADYREGISTRED);
+		return;
+	}
+
+	this->getClient(fd)->setUsername(cmd[1]);
+	this->getClient(fd)->setHostname(cmd[2]);
+	this->getClient(fd)->setServername(cmd[3]);
+	this->getClient(fd)->setRealname(cmd[4]);
+
 	sendMsg(fd, "001 :Welcome to the Internet Relay Network " + this->getClient(fd)->getNickname());
+	this->getClient(fd)->setIsRegistered(true);
 }
