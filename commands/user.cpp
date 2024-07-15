@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 13:17:42 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 13:50:49 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:58:58 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,16 @@
 
 // Error message macros
 #define ERR_NEEDMOREPARAMS "461 USER :Not enough parameters"
-#define ERR_ALREADYREGISTRED "462 :You may not reregister"
+#define ERR_ALREADYREGISTRED "462 :You Already registered"
 
 
 void Server::user(std::string &msg, int fd) {
 	std::vector<std::string> cmd = split_command(msg);
+	if(!this->getClient(fd)->getIsLoggedIn())
+	{
+		sendMsg(fd, "YOU NEED TO LOGIN FIRST");
+		return;
+	}
 	if (cmd.size() < 5) {
 		sendMsg(fd, ERR_NEEDMOREPARAMS);
 		return;

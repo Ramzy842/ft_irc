@@ -6,18 +6,20 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:44:23 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 13:51:48 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:01:41 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
 
 #define ERR_NEEDMOREPARAMS(command) "461 " + command + " :Not enough parameters"
-#define ERR_ALREADYREGISTRED "462 :You may not reregister"
+#define ERR_ALREADYREGISTRED "462 :You Already registered"
 
 
 bool Server::handlernickcommand(std::vector<std::string> cmd, int fd)
 {
+	if(!this->getClient(fd)->getIsLoggedIn())
+		return senderreur(fd, "YOU NEED TO LOGIN FIRST");
 	if (cmd.size() < 2)
 		return senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
 	if (this->getClient(fd)->getIsRegistered())

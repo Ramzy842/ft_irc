@@ -6,21 +6,21 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:49:41 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 13:52:55 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:51:50 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
 
 #define ERR_NEEDMOREPARAMS(command) "461 " + command + " :Not enough parameters"
-#define ERR_ALREADYREGISTRED "462 :You may not reregister"
+#define ERR_ALREADYLOGGEDIN "462 :You Already logged in"
 
 bool Server::handlerpasscommand(std::vector<std::string> cmd, int fd)
 {
 	if (cmd.size() < 2)
 		return senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
-	if (this->getClient(fd)->getIsRegistered())
-		return senderreur(fd, ERR_ALREADYREGISTRED);
+	if (this->getClient(fd)->getIsLoggedIn())
+		return senderreur(fd, ERR_ALREADYLOGGEDIN);
 	return true;
 }
 
@@ -33,7 +33,7 @@ void Server::pass(std::string &msg, int fd)
 	if (this->checkpass(cmd[1]))
 	{
 		sendMsg(fd, "001 :Welcome to the Internet Relay Network " + this->getClient(fd)->getNickname());
-		this->getClient(fd)->setIsRegistered(true);
+		this->getClient(fd)->setIsLoggedIn();
 	}
 	else 
 		senderreur(fd, "464 :Password incorrect ");
