@@ -6,13 +6,13 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/15 11:33:34 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:59:05 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./Client.hpp"
 
-Client::Client() : ip_address(""),  fd(-1), isOperator(false)
+Client::Client() : ip_address(""),  fd(-1), isOperator(false), isRegistered(false), isLoggedin(false)
 {
 }
 Client::Client(const Client& original) : ip_address(original.ip_address),  fd(original.fd), isOperator(original.isOperator)

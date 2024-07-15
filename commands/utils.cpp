@@ -6,19 +6,19 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 11:40:29 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:52:29 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
-
-std::vector<std::string> split_command(std::string& msg)
+//! ADD other parammetres number of params to set last words in one string 
+std::vector<std::string> split_command(std::string& msg) // , int parm )
 {
 	std::vector<std::string> cmd;
 	std::string word = "";
 	for (size_t i = 0; i < msg.size(); i++)
 	{
-		if (msg[i] == ' ')
+		if (msg[i] == ' ') //* && parm > i);
 		{
 			cmd.push_back(word);
 			word = "";

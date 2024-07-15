@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 11:14:47 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/15 11:54:20 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		// cmd::user(msg, fd);
 		std::cout << "USER :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "NICK") || !msg.compare(0, 4, "nick"))
-		// cmd::nick(msg, fd);
-		std::cout << "NICK :" << msg << std::endl;
+		this->nick(msg, fd);
+		// std::cout << "NICK :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "JOIN") || !msg.compare(0, 4, "join"))
 		// cmd::join(msg, fd);
 		std::cout << "JOIN :" << msg << std::endl;
