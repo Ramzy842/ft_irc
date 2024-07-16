@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+         #
+#    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/07/15 13:39:00 by yaidriss         ###   ########.fr        #
+#    Updated: 2024/07/16 16:54:10 by rchahban         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp commands/cmd.cpp commands/topic.cpp commands/invite.cpp commands/utils.cpp commands/kick.cpp commands/mode.cpp commands/pass.cpp commands/nick.cpp commands/user.cpp
+SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp commands/cmd.cpp commands/join.cpp commands/topic.cpp commands/invite.cpp commands/utils.cpp commands/kick.cpp commands/mode.cpp commands/pass.cpp commands/nick.cpp commands/user.cpp
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
@@ -37,7 +37,7 @@ $(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp commands/cmd.hpp
 	@echo "\033[92m╚═╝██║░░░╚═══██╗░╚═══██╗░░░██╔╝░\033[0m██║╚██╔╝██║██╔══╝░░██║░░██║"
 	@echo "\033[92m███████╗██████╔╝██████╔╝░░██╔╝░░\033[0m██║░╚═╝░██║███████╗██████╔╝"
 	@echo "\033[92m╚══════╝╚═════╝░╚═════╝░░░╚═╝░░░\033[0m╚═╝░░░░░╚═╝╚══════╝╚═════╝░"
-	@echo "\033[92mCREATING .O FILES AND exuctubel of $(NAME) ⌛\033[0m"
+	@echo "\033[92mCREATING .O FILES AND exuctubal of $(NAME) ⌛\033[0m"
 	@echo "\033[93mIRC SERVER IS READY TO USE 🚀\033[0m"
 # Rule to generate the object files from the source files
 %.o: %.cpp irc_serv.hpp Client.hpp Server.hpp Channel.hpp commands/cmd.hpp

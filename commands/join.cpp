@@ -3,12 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 10:49:27 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:11:02 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
 
+void Server::join(std::string &msg, int fd)
+{
+	(void)msg;
+	(void)fd;
+	std::cout << "Join fn" <<  std::endl;
+}
