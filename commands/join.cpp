@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/17 22:10:13 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:15:43 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ void Server::handleNonExistingChannel(std::vector<std::pair<std::string, std::st
 	// newChannel.set_createiontime();
 	this->channels.push_back(newChannel);
 	// notifiy that the client joined the channel
-    sendResponse(RPL_JOINMSG(getClient(fd)->getHostname(),getClient(fd)->getIpAddress(),newChannel.getName())) +\
-	RPL_NAMREPLY(getClient(fd)->getNickname(),newChannel.getName(),newChannel.clientChannel_list()) + \
-    RPL_ENDOFNAMES(getClient(fd)->getNickname(),newChannel.getName()),fd);
+    // sendResponse(RPL_JOINMSG(getClient(fd)->getHostname(),getClient(fd)->getIpAddress(),newChannel.getName())) +\
+	// RPL_NAMREPLY(getClient(fd)->getNickname(),newChannel.getName(),newChannel.clientChannel_list()) + \
+    // RPL_ENDOFNAMES(getClient(fd)->getNickname(),newChannel.getName()),fd);
 }
 
 void Server::join(std::string &msg, int fd)

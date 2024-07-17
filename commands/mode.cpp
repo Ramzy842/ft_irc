@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 18:21:13 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:17:50 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void Server::mode(std::string &msg, int fd)
 				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));
 				return;
 			}
-			channel->addOperator(client);
+			channel->addOperator(*client);
 		}
 	}
 	else if (cmd[2][0] == '-')
@@ -86,7 +86,7 @@ void Server::mode(std::string &msg, int fd)
 				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));
 				return;
 			}
-			channel->removeOperator(client);
+			channel->removeOperator(*client);
 		}
 	}
 }

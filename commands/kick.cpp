@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 17:43:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:17:33 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ void Server::kick(std::string &msg, int fd)
     Channel* channel = handlerkickcommand(cmd,fd);
     if(!channel)
         return;
-    channel->removeMember(channel->getMemberByName(cmd[2]));
-    channel->removeOperator(channel->getOperatorByName(cmd[2]));
-    this->getClient(fd)->removeChannel(channel);
+    channel->removeMember(*channel->getMemberByName(cmd[2]));
+    channel->removeOperator(*channel->getOperatorByName(cmd[2]));
+    this->getClient(fd)->removeChannel(*channel);
     
     std::string kickmsg = "KICK " + channel->getName() + " " + cmd[2] + " :" + cmd[3] + "\n";
     for (size_t i = 0; i < channel->getMembers().size(); i++)
     {
-        if(channel->getMembers()[i]->getFd() != fd)
-            sendMsg(channel->getMembers()[i]->getFd(), kickmsg);
+        if(channel->getMembers()[i].getFd() != fd)
+            sendMsg(channel->getMembers()[i].getFd(), kickmsg);
     }
     
 }
