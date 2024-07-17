@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:51 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/14 05:11:09 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/17 22:04:05 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,34 @@ std::string Channel::getName() {
 	return this->name;
 }
 
-std::vector <Client *> Channel::getMembers() {
+std::vector <Client> Channel::getMembers() {
 	return this->members;
 }
 
-std::vector <Client *> Channel::getOperators() {
+std::vector <Client> Channel::getOperators() {
 	return this->operators;
 }
 
-void Channel::addMember(Client* client) {
+void Channel::addMember(Client& client) {
 	this->members.push_back(client);
 }
 
-void Channel::addOperator(Client* client) {
+void Channel::addOperator(Client& client) {
 	this->operators.push_back(client);
 }
 
-void Channel::removeMember(Client* client) {
+void Channel::removeMember(Client& client) {
 	for (size_t i = 0; i < this->members.size(); i++) {
-		if (this->members[i] == client) {
+		if (this->members[i].getFd() == client.getFd()) {
 			this->members.erase(this->members.begin() + i);
 			return;
 		}
 	}
 }
 
-void Channel::removeOperator(Client* client) {
+void Channel::removeOperator(Client& client) {
 	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (this->operators[i] == client) {
+		if (this->operators[i].getFd() == client.getFd()) {
 			this->operators.erase(this->operators.begin() + i);
 			return;
 		}
@@ -77,13 +77,13 @@ void Channel::removeOperator(Client* client) {
 
 void Channel::sendToMembers(std::string msg) {
 	for (size_t i = 0; i < this->members.size(); i++) {
-		this->members[i]->sendMsgClient(msg);
+		this->members[i].sendMsgClient(msg);
 	}
 }
 
 void Channel::sendToOperators(std::string msg) {
 	for (size_t i = 0; i < this->operators.size(); i++) {
-		this->operators[i]->sendMsgClient(msg);
+		this->operators[i].sendMsgClient(msg);
 	}
 }
 
@@ -93,58 +93,58 @@ void Channel::sendToAll(std::string msg) {
 }
 
 
-void Channel::sendToAllExcept(std::string msg, int fd) {
-	for (size_t i = 0; i < this->members.size(); i++) {
-		if (this->members[i]->getFd() != fd) {
-			this->members[i]->sendMsgClient(msg);
-		}
-	}
-	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (this->operators[i]->getFd() != fd) {
-			this->operators[i]->sendMsgClient(msg);
-		}
-	}
-}
+// void Channel::sendToAllExcept(std::string msg, int fd) {
+// 	for (size_t i = 0; i < this->members.size(); i++) {
+// 		if (this->members[i].getFd() != fd) {
+// 			this->members[i].sendMsgClient(msg);
+// 		}
+// 	}
+// 	for (size_t i = 0; i < this->operators.size(); i++) {
+// 		if (this->operators[i].getFd() != fd) {
+// 			this->operators[i].sendMsgClient(msg);
+// 		}
+// 	}
+// }
 
-void Channel::sendToAllExcept(std::string msg, Client* client) {
-	for (size_t i = 0; i < this->members.size(); i++) {
-		if (this->members[i] != client) {
-			this->members[i]->sendMsgClient(msg);
-		}
-	}
-	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (this->operators[i] != client) {
-			this->operators[i]->sendMsgClient(msg);
-		}
-	}
-}
+// void Channel::sendToAllExcept(std::string msg, Client* client) {
+// 	for (size_t i = 0; i < this->members.size(); i++) {
+// 		if (this->members[i].getFd() != client->getFd()) {
+// 			this->members[i].sendMsgClient(msg);
+// 		}
+// 	}
+// 	for (size_t i = 0; i < this->operators.size(); i++) {
+// 		if (this->operators[i].getFd() != client->getFd()) {
+// 			this->operators[i].sendMsgClient(msg);
+// 		}
+// 	}
+// }
 
 
-void Channel::sendToAllExcept(std::string msg, std::vector<Client*> clients) {
-	for (size_t i = 0; i < this->members.size(); i++) {
-		if (std::find(clients.begin(), clients.end(), this->members[i]) == clients.end()) {
-			this->members[i]->sendMsgClient(msg);
-		}
-	}
-	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (std::find(clients.begin(), clients.end(), this->operators[i]) == clients.end()) {
-			this->operators[i]->sendMsgClient(msg);
-		}
-	}
-}
+// void Channel::sendToAllExcept(std::string msg, std::vector<Client*> clients) {
+// 	for (size_t i = 0; i < this->members.size(); i++) {
+// 		if (std::find(clients.begin(), clients.end(), this->members[i]) == clients.end()) {
+// 			this->members[i].sendMsgClient(msg);
+// 		}
+// 	}
+// 	for (size_t i = 0; i < this->operators.size(); i++) {
+// 		if (std::find(clients.begin(), clients.end(), this->operators[i]) == clients.end()) {
+// 			this->operators[i].sendMsgClient(msg);
+// 		}
+// 	}
+// }
 
-void Channel::sendToAllExcept(std::string msg, std::vector<int> fds) {
-	for (size_t i = 0; i < this->members.size(); i++) {
-		if (std::find(fds.begin(), fds.end(), this->members[i]->getFd()) == fds.end()) {
-			this->members[i]->sendMsgClient(msg);
-		}
-	}
-	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (std::find(fds.begin(), fds.end(), this->operators[i]->getFd()) == fds.end()) {
-			this->operators[i]->sendMsgClient(msg);
-		}
-	}
-}
+// void Channel::sendToAllExcept(std::string msg, std::vector<int> fds) {
+// 	for (size_t i = 0; i < this->members.size(); i++) {
+// 		if (std::find(fds.begin(), fds.end(), this->members[i].getFd()) == fds.end()) {
+// 			this->members[i]->sendMsgClient(msg);
+// 		}
+// 	}
+// 	for (size_t i = 0; i < this->operators.size(); i++) {
+// 		if (std::find(fds.begin(), fds.end(), this->operators[i]->getFd()) == fds.end()) {
+// 			this->operators[i]->sendMsgClient(msg);
+// 		}
+// 	}
+// }
 
 
 void Channel::setIsInviteOnly(bool _is_invite_only) {
@@ -189,19 +189,18 @@ void Channel::setName(std::string _name) {
 	this->name = _name;
 }
 
-Client *Channel::getMemberByName(std::string name) {
-	for (size_t i = 0; i < this->members.size(); i++) {
-		if (this->members[i]->getNickname() == name) {
-			return this->members[i];
-		}
-	}
-	return NULL;
+Client * Channel::getMemberByName(std::string name) {
+    for (size_t i = 0; i < this->members.size(); i++) {
+        if (this->members[i].getNickname() == name) {
+            return &this->members[i];
+        }
+    }
+	return (NULL);
 }
-
-Client *Channel::getOperatorByName(std::string name) {
+Client * Channel::getOperatorByName(std::string name) {
 	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (this->operators[i]->getNickname() == name) {
-			return this->operators[i];
+		if (this->operators[i].getNickname() == name) {
+			return &this->operators[i];
 		}
 	}
 	return NULL;
@@ -215,4 +214,34 @@ int Channel::getId()
 void Channel::setId(int _id)
 {
 	this->id = _id;
+}
+
+Client * Channel::getClientInChannel(std::string name)
+{
+	for (std::vector<Client>::iterator it = this-> members.begin(); it != this->members.end(); ++it){
+		if (it->getNickname() == name)
+			return &(*it);
+	}
+	for (std::vector<Client>::iterator it = operators.begin(); it != operators.end(); ++it){
+		if (it->getNickname() == name)
+			return &(*it);
+	}
+	return NULL;
+}
+
+std::string Channel::clientChannel_list(){
+	std::string list;
+	for(size_t i = 0; i < operators.size(); i++){
+		list += "@" + operators[i].getNickname();
+		if((i + 1) < operators.size())
+			list += " ";
+	}
+	if(this->members.size())
+		list += " ";
+	for(size_t i = 0; i < this->members.size(); i++){
+		list += this->members[i].getNickname();
+		if((i + 1) < this->members.size())
+			list += " ";
+	}
+	return list;
 }

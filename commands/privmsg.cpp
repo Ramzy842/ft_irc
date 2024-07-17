@@ -1,13 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.cpp                                           :+:      :+:    :+:   */
+/*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/12 02:28:12 by yassine           #+#    #+#             */
-/*   Updated: 2024/07/12 02:29:24 by yassine          ###   ########.fr       */
+/*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
+/*   Updated: 2024/07/16 21:44:14 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void exec()
+
+#include "./cmd.hpp"
+
+void Server::privmsg(std::string &msg, int fd) {
+	void privmsg(std::string &msg, int fd);
+}

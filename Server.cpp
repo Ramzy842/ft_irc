@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/16 17:12:23 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:41:48 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,4 +222,10 @@ bool Server::checkpass(std::string _pass)
 	if (_pass == this->getPassword())
 		return true;
 	return false;
+}
+
+void Server::sendResponse(std::string response, int fd)
+{
+	if(send(fd, response.c_str(), response.size(), 0) == -1)
+		std::cerr << "Response send() failed" << std::endl;
 }

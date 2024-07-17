@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/16 16:52:56 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/17 19:14:29 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ class Server {
 		void pass(std::string &msg, int fd);
 		void user(std::string &msg, int fd);
 		void join(std::string &msg, int fd);
+		void privmsg(std::string &msg, int fd);
 		Channel* inviteErreurHandler(std::vector<std::string> cmd, int fd);
 		Channel* topicErreurHandler(std::vector<std::string> cmd, int fd);
 		Channel* handlerkickcommand(std::vector<std::string> cmd, int fd);
@@ -74,7 +75,14 @@ class Server {
 		bool handlerpasscommand(std::vector<std::string> cmd, int fd);	
 		bool handlernickcommand(std::vector<std::string> cmd, int fd);
 		bool checkpass(std::string pass);
+		void handleNonExistingChannel(std::vector<std::pair<std::string, std::string> >&token, int i, int fd);
+		void createChannel(int fd, std::vector<std::pair<std::string, std::string> >&tokens, int x);
 		//****** utils funciton ******//
+		int splitJoinArgs(std::vector<std::pair<std::string, std::string> >& tokens, std::string msg, int fd);
+		void sendError(int code, std::string clientName, std::string channelName, int fd, std::string msg);
+		void sendError(int code, std::string clientname, int fd, std::string msg);
+		void sendResponse(std::string response, int fd);
+		int SearchForClients(std::string nickName);
 };
 
 #endif

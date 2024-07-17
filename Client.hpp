@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/15 13:48:16 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/17 20:00:43 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Client {
 		std::string servername;
 		std::string realname;
 		std::string buffer;
-		std::vector<Channel *> channels;
+		std::vector<Channel> channels;
 	public:
 		Client();
 		Client(const Client& original);
@@ -57,15 +57,16 @@ class Client {
 		void setIsRegistered(bool _isRegistered);
 		void sendMsgClient(std::string msg);
 		Client *getMembeByName(std::string name);
-		void removeChannel(Channel* channel);
-		std::vector<Channel*> getChannels();
-		void setChannels(std::vector<Channel*> _channels);
-		void addChannel(Channel* channel);
+		void removeChannel(Channel& channel);
+		std::vector<Channel>& getChannels();
+		void setChannels(std::vector<Channel>& _channels);
+		void addChannel(Channel& channel);
 		void ckeckpass(std::string pass);
 		void user(std::string &msg, int fd);
 		void setHostname(std::string hostname);
 		void setServername(std::string servername);
 		void setRealname(std::string realname);
+		std::string getHostname();
 };
 
 #endif

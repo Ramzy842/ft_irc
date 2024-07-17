@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 18:52:16 by rchahban          #+#    #+#             */
-/*   Updated: 2024/06/07 05:21:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/16 19:11:39 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <sstream>
 
 
 #include <sys/socket.h>
