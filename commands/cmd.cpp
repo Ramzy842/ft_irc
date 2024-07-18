@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/17 22:29:51 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 01:08:55 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void Server::cmd_parser(std::string &msg, int fd)
 	else if (!msg.compare(0, 4, "KICK") || !msg.compare(0, 4, "kick"))
 		this->kick(msg, fd);
 		// std::cout << "KICK :" << msg << std::endl;
-	else if (!msg.compare(0, 6, "PRIVMSG") || !msg.compare(0, 6, "privmsg"))
-		// this->privmsg(msg, fd);
-		std::cout << "PRIVMSG :" << msg << std::endl;
+	else if (!msg.compare(0, 7, "PRIVMSG") || !msg.compare(0, 7, "privmsg"))
+		this->privmsg(msg, fd);
+		// std::cout << "PRIVMSG :" << msg << std::endl;
 	else if (!msg.compare(0, 5, "TOPIC") || !msg.compare(0, 5, "topic"))
 		this->topic(msg, fd);
 		// std::cout << "TOPIC :" << msg << std::endl;

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+         #
+#    By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/07/16 16:54:10 by rchahban         ###   ########.fr        #
+#    Updated: 2024/07/18 00:56:40 by yaidriss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CPP = c++
 CPPFLAGS = -Werror -Wall -Wextra -std=c++98
 
 # Source files
-SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp commands/cmd.cpp commands/join.cpp commands/topic.cpp commands/invite.cpp commands/utils.cpp commands/kick.cpp commands/mode.cpp commands/pass.cpp commands/nick.cpp commands/user.cpp
+SRC = ircserv.cpp Client.cpp Server.cpp Channel.cpp commands/cmd.cpp commands/join.cpp commands/topic.cpp commands/invite.cpp commands/utils.cpp commands/kick.cpp commands/mode.cpp commands/pass.cpp commands/nick.cpp commands/user.cpp commands/privmsg.cpp
 
 # Object files generated from source files
 OBJ = $(SRC:.cpp=.o)
