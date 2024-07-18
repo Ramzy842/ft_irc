@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 01:03:37 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 02:40:59 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void Server::privmsg(std::string &msg, int fd) {
 		Client *client = getClientByName(cmd[1]);
 		if (!client)
 		{
-			
 			senderreur(fd, ERR_NOSUCHNICK(cmd[1]));
 			return;
 		}

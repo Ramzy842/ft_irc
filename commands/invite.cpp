@@ -6,11 +6,11 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/17 22:16:47 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 03:39:51 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "invite.hpp"
+#include "cmd.hpp"
 
 // Error message macros
 #define ERR_NOTPARAMS "461 :Not enough parameters"

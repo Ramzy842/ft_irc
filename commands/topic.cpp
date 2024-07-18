@@ -3,18 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/14 14:44:18 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/18 03:38:27 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "topic.hpp"
+#include "cmd.hpp"
+
+
+#define ERR_NOSUCHCHANNEL(channel) "403 " + channel + " :No such channel"
+#define ERR_NOTONCHANNEL(channel) "442 " + channel + " :You're not on that channel"
+#define ERR_CHANOPRIVSNEEDED(channel) "482 " + channel + " :You're not channel operator"
+#define ERR_NEEDMOREPARAMS(command) "461 " + command + " :Not enough parameters"
 
 Channel *Server::topicErreurHandler(std::vector<std::string> cmd, int fd)
 {
-	if (cmd.size() < 2)
+	if (cmd.size() < 2 || !isEmpyCmd(cmd))
 	{
 		senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
 		return NULL;

@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/15 11:52:29 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 03:33:24 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,15 @@ void sendMsg(int fd, std::string msg)
 	int failedsend = send(fd, msg.c_str(), msg.size(), 0);
 	if (failedsend == -1)
 		std::cerr << RED << "Failed to send message" << RESET << std::endl;
+}
+
+
+bool isEmpyCmd(std::vector<std::string> cmd)
+{
+	for (size_t i = 1; i < cmd.size(); i++)
+	{
+		if (!cmd[i].empty())
+			return false;
+	}
+	return true;
 }

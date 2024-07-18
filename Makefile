@@ -6,7 +6,7 @@
 #    By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 18:50:50 by rchahban          #+#    #+#              #
-#    Updated: 2024/07/18 00:56:40 by yaidriss         ###   ########.fr        #
+#    Updated: 2024/07/18 03:41:11 by yaidriss         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ NAME = ircserv
 all: $(NAME)
 
 # Rule to generate the ircserv executable from the object files
-$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp commands/cmd.hpp commands/topic.hpp commands/invite.hpp
+$(NAME): $(OBJ) irc_serv.hpp Client.hpp Server.hpp  Channel.hpp commands/cmd.hpp 
 	@ $(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 	@echo "\033[92m░░███╗░░██████╗░██████╗░███████╗\033[0m███╗░░░███╗███████╗██████╗░"
 	@echo "\033[92m░████║░░╚════██╗╚════██╗╚════██║\033[0m████╗░████║██╔════╝██╔══██╗"

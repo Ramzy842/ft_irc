@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/17 20:01:55 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/18 03:26:32 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./Client.hpp"
 
-Client::Client() : ip_address(""),  fd(-1), isOperator(false), isRegistered(false), isLoggedin(false)
+Client::Client() : ip_address(""),  fd(-1), isOperator(false), isRegistered(false), isLoggedin(false), isNickSet(false)
 {
 }
 Client::Client(const Client& original) : ip_address(original.ip_address),  fd(original.fd), isOperator(original.isOperator)
@@ -139,4 +139,12 @@ void Client::setRealname(std::string _realname) {
 
 std::string Client::getHostname(){
 	return this->hostname;
+}
+
+bool Client::getIsNickSet() {
+	return this->isNickSet;
+}
+
+void Client::setIsNickSet(bool _isNickSet) {
+	this->isNickSet = _isNickSet;
 }

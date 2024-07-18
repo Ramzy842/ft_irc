@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/17 20:00:43 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/18 02:44:21 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Client {
 		bool isOperator;
 		bool isRegistered;
 		bool isLoggedin;
+		bool isNickSet;
 		std::string username;
 		std::string nickname;
 		std::string hostname;
@@ -67,6 +68,8 @@ class Client {
 		void setServername(std::string servername);
 		void setRealname(std::string realname);
 		std::string getHostname();
+		bool getIsNickSet();
+		void setIsNickSet(bool _isNickSet);
 };
 
 #endif

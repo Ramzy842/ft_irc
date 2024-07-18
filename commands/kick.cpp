@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/17 22:17:33 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 03:39:39 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 Channel *Server::handlerkickcommand(std::vector<std::string> cmd, int fd)
 {
-    if (cmd.size() < 2)
+    if (cmd.size() < 2 || !isEmpyCmd(cmd))
     {
         senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
         return NULL;
