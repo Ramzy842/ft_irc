@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 01:15:02 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 01:50:26 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void Server::init() {
 						if(receivedBytes <= 0) {
 							std::cout << "Client disconnected." << std::endl;
 							// ClearClients(fd); //-> clear the client
-							close(fd); //-> close the client socket
+							// close(fd); //-> close the client socket
 						}
 					
 						else {
