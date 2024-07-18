@@ -6,21 +6,19 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/17 22:15:43 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 09:10:37 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
-#include "../Server.hpp"
 
-void Server::sendError(int code, std::string clientname, std::string channelname, int fd, std::string msg)
-{
-	std::stringstream ss;
-	ss << ":localhost " << code << " " << clientname << " " << channelname << msg;
-	std::string resp = ss.str();
-	if(send(fd, resp.c_str(), resp.size(),0) == -1)
-		std::cerr << "send() faild" << std::endl;
-}
+#define ERR_NOSUCHCHANNEL(channel) "403 " + channel + " :No such channel"
+#define ERR_TOOMANYCHANNELS "405 :You have joined too many channels"
+#define ERR_BADCHANNELKEY(channel) "475 " + channel + " :Cannot join channel (incorrect key)"
+#define ERR_CHANNELISFULL(channel) "471 " + channel + " :Cannot join channel (channel is full)"
+#define ERR_INVITEONLYCHAN(channel) "473 " + channel + " :Cannot join channel (invite only)"
+#define ERR_BANNEDFROMCHAN(channel) "474 " + channel + " :Cannot join channel (banned)"
+#define ERR_NEEDMOREPARAMS(command) "461 " + command + " :Not enough parameters"
 
 int Server::splitJoinArgs(std::vector<std::pair<std::string, std::string> >& tokens, std::string msg, int fd)
 {
@@ -53,123 +51,81 @@ int Server::splitJoinArgs(std::vector<std::pair<std::string, std::string> >& tok
 	// 	{if (tokens[i].first.empty())tokens.erase(tokens.begin() + i--);}
 	// for (size_t i = 0; i < tokens.size(); i++){ //ERR_NOSUCHCHANNEL (403) // if the channel doesn't exist
 	// 	if (*(tokens[i].first.begin()) != '#')
-	// 		{sendError(403, this->getClient(fd)->getNickname(), tokens[i].first, this->getClient(fd)->getFd(), " :No such channel\r\n"); tokens.erase(tokens.begin() + i--);}
+	// 		{senderreur(403, this->getClient(fd)->getNickname(), tokens[i].first, this->getClient(fd)->getFd(), " :No such channel\r\n"); tokens.erase(tokens.begin() + i--);}
 	// 	else
 	// 		tokens[i].first.erase(tokens[i].first.begin());
 	// }
 	return 1;
 }
 
-void Server::sendError(int code, std::string clientname, int fd, std::string msg)
-{
-	std::stringstream ss;
-	ss << ":localhost " << code << " " << clientname << msg;
-	std::string resp = ss.str();
-	if(send(fd, resp.c_str(), resp.size(),0) == -1)
-		std::cerr << "send() faild" << std::endl;
-}
-
-
-
-// void Server::ExistCh(std::vector<std::pair<std::string, std::string> >&token, int i, int j, int fd)
-// {
-// 	if (this->channels[j].GetClientInChannel(GetClient(fd)->GetNickName()))// if the client is already registered
-// 		return;
-// 	if (SearchForClients(GetClient(fd)->GetNickName()) >= 10)//ERR_TOOMANYCHANNELS (405) // if the client is already in 10 channels
-// 		{senderror(405, GetClient(fd)->GetNickName(), GetClient(fd)->GetFd(), " :You have joined too many channels\r\n"); return;}
-// 	if (!this->channels[j].GetPassword().empty() && this->channels[j].GetPassword() != token[i].second){// ERR_BADCHANNELKEY (475) // if the password is incorrect
-// 		if (!IsInvited(GetClient(fd), token[i].first, 0))
-// 			{senderror(475, GetClient(fd)->GetNickName(), "#" + token[i].first, GetClient(fd)->GetFd(), " :Cannot join channel (+k) - bad key\r\n"); return;}
-// 	}
-// 	if (this->channels[j].GetInvitOnly()){// ERR_INVITEONLYCHAN (473) // if the channel is invit only
-// 		if (!IsInvited(GetClient(fd), token[i].first, 1))
-// 			{senderror(473, GetClient(fd)->GetNickName(), "#" + token[i].first, GetClient(fd)->GetFd(), " :Cannot join channel (+i)\r\n"); return;}
-// 	}
-// 	if (this->channels[j].GetLimit() && this->channels[j].GetClientsNumber() >= this->channels[j].GetLimit())// ERR_CHANNELISFULL (471) // if the channel reached the limit of number of clients
-// 		{senderror(471, GetClient(fd)->GetNickName(), "#" + token[i].first, GetClient(fd)->GetFd(), " :Cannot join channel (+l)\r\n"); return;}
-// 	// add the client to the channel
-// 	Client *cli = GetClient(fd);
-// 	this->channels[j].add_client(*cli);
-// 	if(channels[j].GetTopicName().empty())
-// 		_sendResponse(RPL_JOINMSG(GetClient(fd)->getHostname(),GetClient(fd)->getIpAdd(),token[i].first) + \
-// 			RPL_NAMREPLY(GetClient(fd)->GetNickName(),channels[j].GetName(),channels[j].clientChannel_list()) + \
-// 			RPL_ENDOFNAMES(GetClient(fd)->GetNickName(),channels[j].GetName()),fd);
-// 	else
-// 		_sendResponse(RPL_JOINMSG(GetClient(fd)->getHostname(),GetClient(fd)->getIpAdd(),token[i].first) + \
-// 			RPL_TOPICIS(GetClient(fd)->GetNickName(),channels[j].GetName(),channels[j].GetTopicName()) + \
-// 			RPL_NAMREPLY(GetClient(fd)->GetNickName(),channels[j].GetName(),channels[j].clientChannel_list()) + \
-// 			RPL_ENDOFNAMES(GetClient(fd)->GetNickName(),channels[j].GetName()),fd);
-//     channels[j].sendTo_all(RPL_JOINMSG(GetClient(fd)->getHostname(),GetClient(fd)->getIpAdd(),token[i].first), fd);
-// }
-
-void Server::createChannel(int fd, std::vector<std::pair<std::string, std::string> >&tokens,int x)
-{
-	Channel newChannel;
-	newChannel.setName(tokens[x].first);
-	newChannel.addOperator(*this->getClient(fd));
-	// newChannel.set_createiontime();
-	this->channels.push_back(newChannel);
-}
-
-int Server::SearchForClients(std::string nickName)
-{
-	int count = 0;
-	for (size_t i = 0; i < this->channels.size(); i++){
-		if (this->channels[i].getClientInChannel(nickName))
-			count++;
-	}
-	return count;
-}
-
-
-
-void Server::handleNonExistingChannel(std::vector<std::pair<std::string, std::string> >&tokens, int i, int fd)
-{
-	if (SearchForClients(this->getClient(fd)->getNickname()) >= 10)//ERR_TOOMANYCHANNELS (405) // if the client is already in 10 channels
-	{
-		sendError(405, this->getClient(fd)->getNickname(), this->getClient(fd)->getFd(), " :You have joined too many channels\r\n");
-		return;
-	}
-	Channel newChannel;
-	newChannel.setName(tokens[i].first);
-	newChannel.addOperator(*this->getClient(fd));
-	// newChannel.set_createiontime();
-	this->channels.push_back(newChannel);
-	// notifiy that the client joined the channel
-    // sendResponse(RPL_JOINMSG(getClient(fd)->getHostname(),getClient(fd)->getIpAddress(),newChannel.getName())) +\
-	// RPL_NAMREPLY(getClient(fd)->getNickname(),newChannel.getName(),newChannel.clientChannel_list()) + \
-    // RPL_ENDOFNAMES(getClient(fd)->getNickname(),newChannel.getName()),fd);
-}
-
 void Server::join(std::string &msg, int fd)
 {
-	std::vector<std::pair<std::string, std::string> > tokens;
-	if (!splitJoinArgs(tokens, msg, fd))
-		return ;
-	std::cout << tokens.size() << std::endl;
-	for (unsigned int x= 0; x < tokens.size(); x++)
+	std::vector<std::string> cmd = split_command(msg);
+	if (cmd.size() < 2)
 	{
-		std::cout << "First: (" << tokens[x].first << "), Second: (" << tokens[x].second  << ")" <<  std::endl;
-	}
-	if (tokens.size() > 10) //ERR_TOOMANYTARGETS (407) // if more than 10 Channels
-	{
-		sendError(407, this->getClient(fd)->getNickname(), this->getClient(fd)->getFd(), " :Too many channels\r\n");
+		senderreur(fd, "461 JOIN :Not enough parameters\r\n");
 		return;
 	}
-	// for (size_t i = 0; i < tokens.size(); i++){
-	// 	// bool flag = false;
-	// 	// for (size_t j = 0; j < this->channels.size(); j++){
-	// 	// 	if (this->channels[j].getName() == tokens[i].first){
-	// 	// 		// ExistCh(tokens, i, j, fd);
-	// 	// 		std::cout << "Channel:" << this->channels[j].getName() << std::endl;
-	// 	// 		flag = true; break;
-	// 	// 	}
-	// 	// }
-	// 	// if (!flag)
-	// 	// {
-	// 	// 	std::cout << "Channel:" << this->channels[i].getName() << "Does not exist" << std::endl;
-	// 	// 	// NotExistCh(tokens, i, fd);
-	// 	// }
-	// }
-	
+	std::vector<std::pair<std::string, std::string> > tokens;
+	if(!splitJoinArgs(tokens, msg, fd))
+	{
+		senderreur(fd, "461 JOIN :Not enough parameters\r\n");
+		return;
+	}
+	for (size_t i = 0; i < tokens.size(); i++)
+	{
+		if (tokens[i].first.empty())
+			continue;
+		if (*(tokens[i].first.begin()) != '#')
+		{
+			senderreur(fd, "461 JOIN :Not enough parameters\r\n");
+			// senderreur(403, this->getClient(fd)->getNickname(), tokens[i].first, fd, " :No such channel\r\n");
+			continue;
+		}
+		tokens[i].first.erase(tokens[i].first.begin());
+		Channel *channel = this->getChannelByName(tokens[i].first);
+		if (!channel)
+		{
+			channel = new Channel(tokens[i].first);
+			this->channels.push_back(*channel);
+		}
+		if (channel->getMemberByName(this->getClient(fd)->getNickname()))
+			continue;
+		if (this->getClient(fd)->getChannels().size() >= 10)
+		{
+			senderreur(fd, "461 JOIN :Not enough parameters\r\n");
+			// senderreur(405, this->getClient(fd)->getNickname(), fd, " :You have joined too many channels\r\n");
+			continue;
+		}
+		if (!channel->getPassword().empty() && channel->getPassword() != tokens[i].second)
+		{
+			// if (!channel->isInvited(this->getClient(fd), 0))
+			// {
+				senderreur(fd, "461 JOIN :Not enough parameters\r\n");
+				// senderreur(475, this->getClient(fd)->getNickname(), fd, " :Cannot join channel (+k) - bad key\r\n");
+				continue;
+			// }
+		}
+		if (channel->getIsInviteOnly())
+		{
+			// senderreur(473, this->getClient(fd)->getNickname(), fd, " :Cannot join channel (invite only)\r\n");
+			senderreur(fd, "461 JOIN :Not enough parameters\r\n");
+			continue;
+		}
+		if (channel->getIsInviteOnly())
+		//! if (channel->isBanned(this->getClient(fd)->getNickname()))
+		{
+			senderreur(fd, "461 JOIN :Not enough parameters\r\n");
+			// senderreur(474, this->getClient(fd)->getNickname(), fd, " :Cannot join channel (banned)\r\n");
+			continue;
+		}
+		if (channel->getMembers().size() >= 10)
+		{
+			senderreur(fd, "461 JOIN :Not enough parameters\r\n");
+			// senderreur(471, this->getClient(fd)->getNickname(), fd, " :Cannot join channel (channel is full)\r\n");
+			continue;
+		}
+		channel->addMember(*this->getClient(fd));
+		channel->sendToAll(":" + this->getClient(fd)->getNickname() + " JOIN " + channel->getName() + "\r\n");
+	}
 }

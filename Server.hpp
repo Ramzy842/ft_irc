@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 04:13:44 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 00:26:31 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ class Server {
 		void cmd_parser(std::string &msg, int fd);
 		Channel* getChannelByName(std::string name);
 		Client* getClientByName(std::string nick);
+		Channel* getChannelByID(int id);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);
@@ -84,6 +85,10 @@ class Server {
 		void sendResponse(std::string response, int fd);
 		int SearchForClients(std::string nickName);
 		void quit(std::string &msg, int fd);
+		int SplitJoin(std::vector<std::pair<std::string, std::string> > &token, std::string cmd, int fd);
+		void NotExistCh(std::vector<std::pair<std::string, std::string> > &token, int i, int fd);
+		void ExistCh(std::vector<std::pair<std::string, std::string> > &token, int i, int j, int fd);
+		void join1(std::string cmd, int fd);
 };
 
 #endif

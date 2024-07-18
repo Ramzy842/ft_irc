@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 13:17:42 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 03:37:09 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 09:20:00 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void Server::user(std::string &msg, int fd) {
 	}
 	if (cmd.size() < 5 || !isEmpyCmd(cmd)) {
 		sendMsg(fd, ERR_NEEDMOREPARAMS);
-		return;
+		// return;
 	}
 
 	if (this->getClient(fd)->getIsRegistered()) {

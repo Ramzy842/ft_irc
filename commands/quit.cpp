@@ -11,6 +11,8 @@ void Server::quit(std::string &msg, int fd)
 			if (it->getMemberByName(client->getNickname()))
 			{
 				it->removeMember(*client);
+				if(it->getOperatorByName(client->getNickname()))
+					it->removeOperator(*client);
 				if(cmd.size() > 1)
 					it->sendToAll(client->getNickname() + " has quit (" + cmd[1] + ")");
 				else

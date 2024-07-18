@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 04:13:58 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 00:28:51 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void Server::cmd_parser(std::string &msg, int fd)
 	else if (!msg.compare(0, 4, "PING") || !msg.compare(0, 4, "ping"))
 		std::cout << "PING :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "JOIN") || !msg.compare(0, 4, "join"))
-		this->join(msg, fd);
+		this->join1(msg, fd);
 		// std::cout << "JOIN :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "PART") || !msg.compare(0, 4, "part"))
 		// this->part(msg, fd);
@@ -52,10 +52,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		// std::cout << "MODE :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "QUIT") || !msg.compare(0, 4, "quit"))
 		this->quit(msg, fd);
-		// std::cout << "QUIT :" << msg << std::endl;
 	else if (!msg.compare(0, 6, "INVITE") || !msg.compare(0, 6, "invite"))
 		this->invite(msg, fd);
-		// std::cout << "INVITE :" << msg << std::endl;
 	else
 		senderreur(fd, "421 :Unknown command");
 }

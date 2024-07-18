@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 03:26:17 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 06:13:48 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,4 +228,14 @@ void Server::sendResponse(std::string response, int fd)
 {
 	if(send(fd, response.c_str(), response.size(), 0) == -1)
 		std::cerr << "Response send() failed" << std::endl;
+}
+
+Channel* Server::getChannelByID(int id)
+{
+	for (std::vector<Channel>::iterator it = this->channels.begin(); it != this->channels.end(); ++it)
+	{
+		if (it->getId() == id)
+			return &(*it);
+	}
+	return NULL;
 }
