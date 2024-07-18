@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/17 19:14:29 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/18 04:13:44 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ class Server {
 		void sendError(int code, std::string clientname, int fd, std::string msg);
 		void sendResponse(std::string response, int fd);
 		int SearchForClients(std::string nickName);
+		void quit(std::string &msg, int fd);
 };
 
 #endif
