@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 03:26:17 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:30:18 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void Server::init() {
 					
 						if(receivedBytes <= 0) {
 							std::cout << "Client disconnected." << std::endl;
-							// ClearClients(fd); //-> clear the client
+							// this->quit("",fd); //-> clear the client
 							// close(fd); //-> close the client socket
 						}
 					

@@ -6,39 +6,52 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:51 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/17 22:04:05 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:00:10 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./Channel.hpp"
 
-Channel::Channel() : name("Default")
+Channel::Channel()
 {
-	std::cout << "Channel constructor called" << std::endl;
+	is_invite_only = false;
+	limit = 0,
+	name = "";
+	password = "";
+	topic = "";
+	init_time = "";
+	created_at = "";
+	// std::cout << "Channel constructor called" << std::endl;
 }
 
-Channel::Channel(std::string& name) : name(name)
+Channel::Channel(std::string name)
 {
-	std::cout << "Channel parametrized constructor called" << std::endl;
+	is_invite_only = false;
+	limit = 0,
+	this->name = name;
+	password = "";
+	topic = "";
+	init_time = "";
+	created_at = "";
 }
 Channel::~Channel()
 {
-	std::cout << "Channel destructor called" << std::endl;
+	// std::cout << "Channel destructor called" << std::endl;
 }
 Channel::Channel(const Channel& original) {
 	(void) original;
-	std::cout << "Channel copy constructor called" << std::endl;
+	// std::cout << "Channel copy constructor called" << std::endl;
 }
 
 Channel& Channel::operator=(const Channel& original) {
 	(void) original;
-	std::cout << "Channel copy assignment operator called" << std::endl;
+	// std::cout << "Channel copy assignment operator called" << std::endl;
 	return *this;
 }
 
-std::string Channel::getName() {
-	return this->name;
-}
+// std::string& Channel::getName() {
+// 	return this->name;
+// }
 
 std::vector <Client> Channel::getMembers() {
 	return this->members;
@@ -93,80 +106,24 @@ void Channel::sendToAll(std::string msg) {
 }
 
 
-// void Channel::sendToAllExcept(std::string msg, int fd) {
-// 	for (size_t i = 0; i < this->members.size(); i++) {
-// 		if (this->members[i].getFd() != fd) {
-// 			this->members[i].sendMsgClient(msg);
-// 		}
-// 	}
-// 	for (size_t i = 0; i < this->operators.size(); i++) {
-// 		if (this->operators[i].getFd() != fd) {
-// 			this->operators[i].sendMsgClient(msg);
-// 		}
-// 	}
-// }
-
-// void Channel::sendToAllExcept(std::string msg, Client* client) {
-// 	for (size_t i = 0; i < this->members.size(); i++) {
-// 		if (this->members[i].getFd() != client->getFd()) {
-// 			this->members[i].sendMsgClient(msg);
-// 		}
-// 	}
-// 	for (size_t i = 0; i < this->operators.size(); i++) {
-// 		if (this->operators[i].getFd() != client->getFd()) {
-// 			this->operators[i].sendMsgClient(msg);
-// 		}
-// 	}
-// }
-
-
-// void Channel::sendToAllExcept(std::string msg, std::vector<Client*> clients) {
-// 	for (size_t i = 0; i < this->members.size(); i++) {
-// 		if (std::find(clients.begin(), clients.end(), this->members[i]) == clients.end()) {
-// 			this->members[i].sendMsgClient(msg);
-// 		}
-// 	}
-// 	for (size_t i = 0; i < this->operators.size(); i++) {
-// 		if (std::find(clients.begin(), clients.end(), this->operators[i]) == clients.end()) {
-// 			this->operators[i].sendMsgClient(msg);
-// 		}
-// 	}
-// }
-
-// void Channel::sendToAllExcept(std::string msg, std::vector<int> fds) {
-// 	for (size_t i = 0; i < this->members.size(); i++) {
-// 		if (std::find(fds.begin(), fds.end(), this->members[i].getFd()) == fds.end()) {
-// 			this->members[i]->sendMsgClient(msg);
-// 		}
-// 	}
-// 	for (size_t i = 0; i < this->operators.size(); i++) {
-// 		if (std::find(fds.begin(), fds.end(), this->operators[i]->getFd()) == fds.end()) {
-// 			this->operators[i]->sendMsgClient(msg);
-// 		}
-// 	}
-// }
-
-
-void Channel::setIsInviteOnly(bool _is_invite_only) {
-	this->is_invite_only = _is_invite_only;
+void Channel::setIsInviteOnly(bool is_invite_only) {
+	this->is_invite_only = is_invite_only;
 }
 
 bool Channel::getIsInviteOnly() {
 	return this->is_invite_only;
 }
 
-
-
-void Channel::setPassword(std::string _password) {
-	this->password = _password;
+void Channel::setPassword(std::string password) {
+	this->password = password;
 }
 
 std::string Channel::getPassword() {
 	return this->password;
 }
 
-void Channel::setTopic(std::string _topic) {
-	this->topic = _topic;
+void Channel::setTopic(std::string topic) {
+	this->topic = topic;
 }
 
 
@@ -175,9 +132,8 @@ std::string Channel::getTopic() {
 }
 
 
-
-void Channel::setCreatedAt(std::string _created_at) {
-	this->created_at = _created_at;
+void Channel::setCreatedAt(std::string created_at) {
+	this->created_at = created_at;
 }
 
 
@@ -185,9 +141,9 @@ std::string Channel::getCreatedAt() {
 	return this->created_at;
 }
 
-void Channel::setName(std::string _name) {
-	this->name = _name;
-}
+// void Channel::setName(std::string name) {
+// 	this->name = name;
+// }
 
 Client * Channel::getMemberByName(std::string name) {
     for (size_t i = 0; i < this->members.size(); i++) {
@@ -206,15 +162,6 @@ Client * Channel::getOperatorByName(std::string name) {
 	return NULL;
 }
 
-int Channel::getId()
-{
-	return this->id;
-}
-
-void Channel::setId(int _id)
-{
-	this->id = _id;
-}
 
 Client * Channel::getClientInChannel(std::string name)
 {

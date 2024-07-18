@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 03:38:27 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 09:30:18 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ void Server::topic(std::string &msj, int fd)
 	{
 		channel->setTopic(newtopic);
 		std::string rps = ":" + this->clients[fd].getNickname() + " TOPIC " + channel->getName() + " :" + newtopic + "\n";
-		sendMsg(channel->getId(), rps);
+		// sendMsg(channel->getId(), rps);
 	}
 }

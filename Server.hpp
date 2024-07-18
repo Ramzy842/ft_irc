@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 04:13:44 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/18 11:11:47 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "./irc_serv.hpp"
 #include "./Client.hpp"
-
+#include "./Channel.hpp"
 
 #define RED "\033[0;31m"
 #define GREEN "\033[0;32m"
@@ -31,7 +31,7 @@ class Server {
 		std::string password;
 		int fd;
 		std::vector<Client> clients;
-		std::vector<Channel> channels;
+		std::vector<Channel > channels;
 		std::vector<struct pollfd> fds;
 	public:
 		Server();
@@ -57,6 +57,8 @@ class Server {
 		void cmd_parser(std::string &msg, int fd);
 		Channel* getChannelByName(std::string name);
 		Client* getClientByName(std::string nick);
+		int getClientsNumberInChannel(std::string channelName);
+		bool clientAlreadyInChannel(int fd);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);

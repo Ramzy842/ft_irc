@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/17 22:03:54 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/18 10:06:02 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ class Client;
 
 class Channel {
 	private:
+		std::string name;
 		bool is_invite_only;
 		int limit;
 		int id;
-		std::string name;
 		std::string password;
 		std::string topic;
 		std::string init_time;
@@ -34,7 +34,7 @@ class Channel {
 		
 	public:
 		Channel();
-		Channel(std::string& name);
+		Channel(std::string name);
 		~Channel();
 		Channel(const Channel& original);
 		Channel& operator=(const Channel& original);
@@ -42,20 +42,22 @@ class Channel {
 		//******GETTERS AND SETTERS ******//
 		void setId(int _id);
 		int getId();
-		std::string getName();
-		void setName(std::string _name);
+		// std::string& getName();
+		// void setName(std::string name);
+		void setName(const std::string& newName) { this->name = newName; }
+    std::string getName() const { return name; }
 		std::string getPassword();
-		void setPassword(std::string _password);
+		void setPassword(std::string password);
 		std::string getTopic();
 		void setTopic(std::string _topic);
 		std::vector<Client> getOperators();
-		void setOperators(std::vector<Client> _operators);
+		void setOperators(std::vector<Client> operators);
 		std::vector<Client> getMembers();
-		void setMembers(std::vector<Client> _members);
+		void setMembers(std::vector<Client> members);
 		std::string getCreatedAt();
-		void setCreatedAt(std::string _created_at);
+		void setCreatedAt(std::string created_at);
 		bool getIsInviteOnly();
-		void setIsInviteOnly(bool _is_invite_only);
+		void setIsInviteOnly(bool is_invite_only);
 		//***** METHODS *****//
 		void addOperator(Client& client);
 		void removeOperator(Client& client);
