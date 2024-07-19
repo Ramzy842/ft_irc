@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 03:43:24 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:33:24 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,17 @@
 
 Channel *Server::handlermodecommand(std::vector<std::string> cmd, int fd)
 {
-	if (cmd.size() < 2 || !isEmpyCmd(cmd))
+	if (cmd.size() < 2 )//|| !isEmpyCmd(cmd))
 	{
 		senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
 		return NULL;
 	}
+	if(cmd[1][0] != '#')
+	{
+		senderreur(fd, ERR_NOSUCHCHANNEL(cmd[1]));
+		return NULL;
+	}
+	cmd[1] = cmd[1].substr(1);
 	Channel *channel = this->getChannelByName(cmd[1]);
 	if(!channel)
 	{
