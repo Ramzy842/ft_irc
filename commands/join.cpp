@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 03:16:14 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 03:59:41 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,34 +26,41 @@ int Server::splitJoinArgs(std::vector<std::pair<std::string, std::string> >& tok
 {
 	std::vector<std::string> tmp;
 	std::string ChStr, PassStr, buff;
-	(void)PassStr, (void)fd;
 	std::istringstream iss(msg);
 	while(iss >> msg)
 		tmp.push_back(msg);
 	if (tmp.size() < 2) {tokens.clear(); return 0;}
 	tmp.erase(tmp.begin());
 	ChStr = tmp[0]; tmp.erase(tmp.begin());
-	// if (!tmp.empty()) {PassStr = tmp[0]; tmp.clear();}
+	if (!tmp.empty()) {PassStr = tmp[0]; tmp.clear();}
 	for (size_t i = 0; i < ChStr.size(); i++){
 		if (ChStr[i] == ',')
 				{tokens.push_back(std::make_pair(buff, "")); buff.clear();}
 		else buff += ChStr[i];
 	}
 	tokens.push_back(std::make_pair(buff, ""));
-	// if (!PassStr.empty()){
-	// 	size_t j = 0; buff.clear();
-	// 	for (size_t i = 0; i < PassStr.size(); i++){
-	// 		if (PassStr[i] == ',')
-	// 			{tokens[j].second = buff; j++; buff.clear();}
-	// 		else buff += PassStr[i];
-	// 	}
-	// 	tokens[j].second = buff;
-	// }
-	for (size_t i = 0; i < tokens.size(); i++) //erase the empty channel names
-		{if (tokens[i].first.empty())tokens.erase(tokens.begin() + i--);}
-	for (size_t i = 0; i < tokens.size(); i++){ //ERR_NOSUCHCHANNEL (403) // if the channel doesn't exist
+	if (!PassStr.empty()){
+		size_t j = 0; buff.clear();
+		for (size_t i = 0; i < PassStr.size(); i++){
+			if (PassStr[i] == ',')
+				{tokens[j].second = buff; j++; buff.clear();}
+			else buff += PassStr[i];
+		}
+		tokens[j].second = buff;
+	}
+	for (size_t x = 0; x < tokens.size(); x++)
+	{
+		if (tokens[x].first.empty())
+			tokens.erase(tokens.begin() + x--);		
+	}
+	for (size_t i = 0; i < tokens.size(); i++)
+	{
 		if (*(tokens[i].first.begin()) != '#')
-			{sendError(403, this->getClient(fd)->getNickname(), tokens[i].first, this->getClient(fd)->getFd(), " :No such channel\r\n"); tokens.erase(tokens.begin() + i--);}
+		{
+			sendError(403, this->getClient(fd)->getNickname(),
+				tokens[i].first, this->getClient(fd)->getFd(), " :No such channel\r\n");
+			tokens.erase(tokens.begin() + i--);
+		}
 		else
 			tokens[i].first.erase(tokens[i].first.begin());
 	}
@@ -111,14 +118,6 @@ void Server::sendError(int code, std::string clientname, int fd, std::string msg
 //     channels[j].sendTo_all(RPL_JOINMSG(GetClient(fd)->getHostname(),GetClient(fd)->getIpAdd(),token[i].first), fd);
 // }
 
-// void Server::createChannel(int fd, std::vector<std::pair<std::string, std::string> >&tokens,int x)
-// {
-// 	Channel newChannel;
-// 	newChannel.setName(tokens[x].first);
-// 	newChannel.addOperator(*this->getClient(fd));
-// 	// newChannel.set_createiontime();
-// 	this->channels.push_back(newChannel);
-// }
 
 int Server::getClientsNumberInChannel(std::string channelName)
 {
@@ -195,6 +194,20 @@ std::string getServerResponse(const std::string& nickname,
   return response;
 }
 
+bool Server::clientAlreadyInChannel(int fd)
+{
+	for(size_t x = 0; x < this->channels.size(); x++)
+	{
+		std::vector<Client *> members_ = this->channels[x]->getMembers();
+		for (size_t y = 0; y < members_.size(); y++)
+		{
+			if (members_[y]->getFd() == fd)
+				return true;
+		}
+	}
+	return false;
+}
+
 
 void Server::join(std::string &msg, int fd)
 {
@@ -211,18 +224,19 @@ void Server::join(std::string &msg, int fd)
 	{
 		bool foundChannel = false;
 		for (size_t x = 0; x < channels.size(); x++)
-		{	
-			
+		{
 			if (channels[x]->getName() == tokens[i].first)
 			{
 				// HANDLE EXISTING CHANNEL
 				std::cout << "Channel " << tokens[i].first << " already exists" << std::endl;
-				channels[x]->addMember(*client);
+				if (!clientAlreadyInChannel(fd))
+					channels[x]->addMember(*client);
+				else
+					std::cout << "Client " << getClient(fd)->getNickname() << " is already in channel " << channels[x]->getName() << std::endl;
 				foundChannel = true;
 				break ;
 			}
 		}
-		// HANDLE NON EXISTING CHANNEL
 		if (!foundChannel)
 		{
 			Channel *newChannel = new Channel;
