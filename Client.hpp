@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:28:46 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:19:26 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Client {
 		std::string realname;
 		std::string buffer;
 		std::vector<Channel *> channels;
+		std::vector<Channel *> invitedChannels;
 	public:
 		Client();
 		Client(const Client& original);
@@ -70,6 +71,7 @@ class Client {
 		std::string getHostname();
 		bool getIsNickSet();
 		void setIsNickSet(bool _isNickSet);
+		std::vector<Channel *> getInvitedChannels();
 };
 
 #endif

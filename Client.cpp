@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:31:57 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:20:59 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,4 +147,8 @@ bool Client::getIsNickSet() {
 
 void Client::setIsNickSet(bool _isNickSet) {
 	this->isNickSet = _isNickSet;
+}
+
+std::vector<Channel *> Client::getInvitedChannels() {
+	return this->invitedChannels;
 }

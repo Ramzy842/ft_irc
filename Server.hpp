@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:27:53 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:14:01 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ class Server {
 		Client* getClientByName(std::string nick);
 		int getClientsNumberInChannel(std::string channelName);
 		bool clientAlreadyInChannel(int fd);
+		bool clientIsInvited(int fd);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:23:05 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:40:25 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,8 @@ class Channel {
 		Channel& operator=(const Channel& original);
 
 		//******GETTERS AND SETTERS ******//
-		void setId(int _id);
-		int getId();
-		// std::string& getName();
-		// void setName(std::string name);
-		void setName(const std::string& newName) { this->name = newName; }
-    std::string getName() const { return name; }
+		void setName(const std::string& newName);
+		std::string getName();
 		std::string getPassword();
 		void setPassword(std::string password);
 		std::string getTopic();
@@ -74,6 +70,8 @@ class Channel {
 		Client * getClientInChannel(std::string name);
 		std::string clientChannel_list();
 		void removeChannel(Channel& channel);
+		size_t getLimit();
+		void setLimit(size_t value);
 		
 };
 

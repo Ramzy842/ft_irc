@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 03:59:41 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:35:16 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,17 @@ bool Server::clientAlreadyInChannel(int fd)
 	return false;
 }
 
+bool Server::clientIsInvited(int fd)
+{
+		std::vector<Channel *> invitations = getClient(fd)->getInvitedChannels();
+		for (size_t y = 0; y <invitations.size(); y++)
+		{
+			if (invitations[y]->getClientInChannel(getClient(fd)->getNickname()))
+				return true;
+		}
+	return false;
+}
+
 
 void Server::join(std::string &msg, int fd)
 {
@@ -230,7 +241,16 @@ void Server::join(std::string &msg, int fd)
 				// HANDLE EXISTING CHANNEL
 				std::cout << "Channel " << tokens[i].first << " already exists" << std::endl;
 				if (!clientAlreadyInChannel(fd))
-					channels[x]->addMember(*client);
+				{
+					if (!this->channels[x]->getPassword().empty() && this->channels[x]->getPassword() != tokens[i].second)
+						std::cout << "Channel " << this->channels[x]->getName() << " password incorrect"  << std::endl;
+					else if (this->channels[x]->getIsInviteOnly() && !clientIsInvited(fd))
+						std::cout << "Channel " << this->channels[x]->getName() << " is invite only and " << this->getClient(fd)->getNickname() << " is not invited."  << std::endl;
+					else if (this->channels[x]->getLimit() && this->channels[x]->getMembers().size() >= this->channels[x]->getLimit())
+						std::cout << "Channel " << this->channels[x]->getName() << " limit is surpassed. Client " << this->getClient(fd)->getNickname() << " not allowed to join"  << std::endl;
+					else
+						channels[x]->addMember(*client);
+				}
 				else
 					std::cout << "Client " << getClient(fd)->getNickname() << " is already in channel " << channels[x]->getName() << std::endl;
 				foundChannel = true;

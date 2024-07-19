@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:51 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:26:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:40:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ Channel& Channel::operator=(const Channel& original) {
 	return *this;
 }
 
-// std::string& Channel::getName() {
-// 	return this->name;
-// }
+std::string Channel::getName() {
+	return this->name;
+}
+
 
 std::vector <Client *> Channel::getMembers() {
 	return this->members;
@@ -106,6 +107,13 @@ void Channel::sendToAll(std::string msg) {
 }
 
 
+size_t Channel::getLimit() {
+	return this->limit;
+}
+void Channel::setLimit(size_t value) {
+	this->limit = value;
+}
+
 void Channel::setIsInviteOnly(bool is_invite_only) {
 	this->is_invite_only = is_invite_only;
 }
@@ -141,9 +149,9 @@ std::string Channel::getCreatedAt() {
 	return this->created_at;
 }
 
-// void Channel::setName(std::string name) {
-// 	this->name = name;
-// }
+void Channel::setName(const std::string& newName) {
+	this->name = newName;
+}
 
 Client * Channel::getMemberByName(std::string name) {
     for (size_t i = 0; i < this->members.size(); i++) {
@@ -175,6 +183,8 @@ Client * Channel::getClientInChannel(std::string name)
 	}
 	return NULL;
 }
+
+
 
 std::string Channel::clientChannel_list(){
 	std::string list;
