@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 06:58:15 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 07:02:13 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void Server::invite(std::string &msg, int fd)
     // channel->addMember(*this->getClientByName(cmd[1]));
 	std::cout << "invite command ->" << cmd[0] << std::endl;
 	//! need to check message ot send
-	std::string rps = ": 341 " + cmd[1] + " :User has been invited\n";
+	std::string rps = ": 341 " + cmd[1] + " :User has been invited";
 	sendMsg(fd, rps);
-	std::string rps2 = ": ?? " + this->getClient(fd)->getNickname() + " INVITE " + cmd[1] + " to " + cmd[2] + "\n";
+	std::string rps2 = ": ?? " + this->getClient(fd)->getNickname() + " INVITE " + cmd[1] + " to " + cmd[2];
 	sendMsg(this->getClientByName(cmd[1])->getFd(), rps2);
 	// sendMsg(channel->getId(), Channelrps);
 	// std::string channel = cmd[2].substr(1);
