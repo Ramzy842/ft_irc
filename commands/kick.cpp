@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 02:26:34 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 05:37:55 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 
 Channel *Server::handlerkickcommand(std::vector<std::string> cmd, int fd)
 {
-    if (cmd.size() < 2 || !isEmpyCmd(cmd))
-    {
-        senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
-        return NULL;
-    }
-    Channel *channel = this->getChannelByName(cmd[1]);
+    // if (cmd.size() < 2 )//|| !isEmpyCmd(cmd))
+    // {
+    //     senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
+    //     return NULL;
+    // }
+    Channel *channel = this->getChannelByName(cmd[1].substr(1));
     if(!channel)
     {
         senderreur(fd, ERR_NOSUCHCHANNEL(cmd[1]));
@@ -45,13 +45,12 @@ Channel *Server::handlerkickcommand(std::vector<std::string> cmd, int fd)
             senderreur(fd, ERR_USERNOTINCHANNEL(cmd[2], cmd[1]));
         return NULL;
     }
-    if(!channel->getOperatorByName(cmd[2]))
+    if(!channel->getOperatorByName(this->getClient(fd)->getNickname()))
     {
         senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[1]));
         return NULL;
     }
-    return channel;
-    
+    return channel;    
 }
 
 
@@ -62,10 +61,19 @@ void Server::kick(std::string &msg, int fd)
     if(!channel)
         return;
     channel->removeMember(*channel->getMemberByName(cmd[2]));
-    channel->removeOperator(*channel->getOperatorByName(cmd[2]));
-    this->getClient(fd)->removeChannel(*channel);
-    
-    std::string kickmsg = "KICK " + channel->getName() + " " + cmd[2] + " :" + cmd[3] + "\n";
+    if(channel->getOperatorByName(cmd[2]))
+        channel->removeOperator(*channel->getOperatorByName(cmd[2]));
+    this->getClientByName(cmd[2])->removeChannel(*channel);
+        std::string kickmsg = "KICK " + channel->getName() + " " + cmd[2];
+    if(cmd.size() == 3)
+        kickmsg += "\n";
+    else
+    {
+        kickmsg += " :";
+        for(size_t i = 3; i < cmd.size(); i++)
+            kickmsg += cmd[i] + " ";
+        kickmsg += "\n";
+    }
     for (size_t i = 0; i < channel->getMembers().size(); i++)
     {
         if(channel->getMembers()[i]->getFd() != fd)

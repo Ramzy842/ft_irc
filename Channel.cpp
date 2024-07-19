@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:51 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:26:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 04:29:58 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,4 +191,8 @@ std::string Channel::clientChannel_list(){
 			list += " ";
 	}
 	return list;
+}
+
+int Channel::getId() {
+	return this->id;
 }

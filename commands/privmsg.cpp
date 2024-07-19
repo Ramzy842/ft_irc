@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:26:45 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 03:29:03 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void Server::privmsg(std::string &msg, int fd) {
 		senderreur(fd, " 411 PRIVMSG :No recipient given");
 		return;
 	}
-	if (cmd[1][0] != '#' && cmd[1][0] != '&') {
+	if (cmd[1][0] != '#') {
 		Client *client = getClientByName(cmd[1]);
 		if (!client)
 		{
@@ -41,7 +41,7 @@ void Server::privmsg(std::string &msg, int fd) {
 		sendMsg(client->getFd(), "PRIVMSG " + client->getNickname() + " :" + message);
 	}
 	else {
-		Channel *channel = getChannelByName(cmd[1]);
+		Channel *channel = getChannelByName(cmd[1].substr(1));
 		if (!channel)
 		{
 			senderreur(fd, ERR_CANNOTSENDTOCHAN(cmd[1]));
