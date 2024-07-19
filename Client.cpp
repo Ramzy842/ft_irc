@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 03:26:32 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:31:57 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,24 +100,24 @@ void Client::sendMsgClient(std::string msg) {
 }
 
 //! comment because Channel is not used yet 
-std::vector<Channel>& Client::getChannels() {
-	return this->channels;
-}
+// std::vector<Channel *>& Client::getChannels() {
+// 	return this->channels;
+// }
 
 
-void Client::setChannels(std::vector<Channel>& _channels) {
-	this->channels = _channels;
-}
+// void Client::setChannels(std::vector<Channel *>& _channels) {
+// 	this->channels = _channels;
+// }
 
 
-void Client::addChannel(Channel& channel) {
-	this->channels.push_back(channel);
-}
+// void Client::addChannel(Channel& channel) {
+// 	this->channels.push_back(channel);
+// }
 
 void Client::removeChannel(Channel& channel) {
-	for (std::vector<Channel>::iterator it = this->channels.begin(); it != this->channels.end(); ++it)
+	for (std::vector<Channel *>::iterator it = this->channels.begin(); it != this->channels.end(); ++it)
 	{
-		if (it->getName() == channel.getName())
+		if ((*it)->getName() == channel.getName())
 		{
 			this->channels.erase(it);
 			break;

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 09:30:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:33:11 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ void Server::topic(std::string &msj, int fd)
 			rps = ": 331 " + channel->getName() + " :No topic is set\n";
 		else
 		rps = ": 332 " + channel->getName() + " " + topic + "\n";
-		rps +=": 333 " + channel->getName() + " " + this->clients[fd].getNickname() + " " + std::to_string(time(0)) + "\n"; 
+		rps +=": 333 " + channel->getName() + " " + this->clients[fd]->getNickname() + " " + std::to_string(time(0)) + "\n"; 
 		sendMsg(fd, rps);
 	}
 	else
 	{
 		channel->setTopic(newtopic);
-		std::string rps = ":" + this->clients[fd].getNickname() + " TOPIC " + channel->getName() + " :" + newtopic + "\n";
+		std::string rps = ":" + this->clients[fd]->getNickname() + " TOPIC " + channel->getName() + " :" + newtopic + "\n";
 		// sendMsg(channel->getId(), rps);
 	}
 }

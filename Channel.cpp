@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:51 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 10:00:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:26:18 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Channel::Channel()
 	topic = "";
 	init_time = "";
 	created_at = "";
-	// std::cout << "Channel constructor called" << std::endl;
+	std::cout << "Channel constructor called" << std::endl;
 }
 
 Channel::Channel(std::string name)
@@ -36,16 +36,16 @@ Channel::Channel(std::string name)
 }
 Channel::~Channel()
 {
-	// std::cout << "Channel destructor called" << std::endl;
+	std::cout << "Channel destructor called" << std::endl;
 }
 Channel::Channel(const Channel& original) {
 	(void) original;
-	// std::cout << "Channel copy constructor called" << std::endl;
+	std::cout << "Channel copy constructor called" << std::endl;
 }
 
 Channel& Channel::operator=(const Channel& original) {
 	(void) original;
-	// std::cout << "Channel copy assignment operator called" << std::endl;
+	std::cout << "Channel copy assignment operator called" << std::endl;
 	return *this;
 }
 
@@ -53,25 +53,25 @@ Channel& Channel::operator=(const Channel& original) {
 // 	return this->name;
 // }
 
-std::vector <Client> Channel::getMembers() {
+std::vector <Client *> Channel::getMembers() {
 	return this->members;
 }
 
-std::vector <Client> Channel::getOperators() {
+std::vector <Client *> Channel::getOperators() {
 	return this->operators;
 }
 
 void Channel::addMember(Client& client) {
-	this->members.push_back(client);
+	this->members.push_back(&client);
 }
 
 void Channel::addOperator(Client& client) {
-	this->operators.push_back(client);
+	this->operators.push_back(&client);
 }
 
 void Channel::removeMember(Client& client) {
 	for (size_t i = 0; i < this->members.size(); i++) {
-		if (this->members[i].getFd() == client.getFd()) {
+		if (this->members[i]->getFd() == client.getFd()) {
 			this->members.erase(this->members.begin() + i);
 			return;
 		}
@@ -80,7 +80,7 @@ void Channel::removeMember(Client& client) {
 
 void Channel::removeOperator(Client& client) {
 	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (this->operators[i].getFd() == client.getFd()) {
+		if (this->operators[i]->getFd() == client.getFd()) {
 			this->operators.erase(this->operators.begin() + i);
 			return;
 		}
@@ -90,13 +90,13 @@ void Channel::removeOperator(Client& client) {
 
 void Channel::sendToMembers(std::string msg) {
 	for (size_t i = 0; i < this->members.size(); i++) {
-		this->members[i].sendMsgClient(msg);
+		this->members[i]->sendMsgClient(msg);
 	}
 }
 
 void Channel::sendToOperators(std::string msg) {
 	for (size_t i = 0; i < this->operators.size(); i++) {
-		this->operators[i].sendMsgClient(msg);
+		this->operators[i]->sendMsgClient(msg);
 	}
 }
 
@@ -147,16 +147,16 @@ std::string Channel::getCreatedAt() {
 
 Client * Channel::getMemberByName(std::string name) {
     for (size_t i = 0; i < this->members.size(); i++) {
-        if (this->members[i].getNickname() == name) {
-            return &this->members[i];
+        if (this->members[i]->getNickname() == name) {
+            return this->members[i];
         }
     }
 	return (NULL);
 }
 Client * Channel::getOperatorByName(std::string name) {
 	for (size_t i = 0; i < this->operators.size(); i++) {
-		if (this->operators[i].getNickname() == name) {
-			return &this->operators[i];
+		if (this->operators[i]->getNickname() == name) {
+			return this->operators[i];
 		}
 	}
 	return NULL;
@@ -165,13 +165,13 @@ Client * Channel::getOperatorByName(std::string name) {
 
 Client * Channel::getClientInChannel(std::string name)
 {
-	for (std::vector<Client>::iterator it = this-> members.begin(); it != this->members.end(); ++it){
-		if (it->getNickname() == name)
-			return &(*it);
+	for (std::vector<Client *>::iterator it = this->members.begin(); it != this->members.end(); ++it){
+		if ((*it)->getNickname() == name)
+			return (*it);
 	}
-	for (std::vector<Client>::iterator it = operators.begin(); it != operators.end(); ++it){
-		if (it->getNickname() == name)
-			return &(*it);
+	for (std::vector<Client *>::iterator it = operators.begin(); it != operators.end(); ++it){
+		if ((*it)->getNickname() == name)
+			return (*it);
 	}
 	return NULL;
 }
@@ -179,14 +179,14 @@ Client * Channel::getClientInChannel(std::string name)
 std::string Channel::clientChannel_list(){
 	std::string list;
 	for(size_t i = 0; i < operators.size(); i++){
-		list += "@" + operators[i].getNickname();
+		list += "@" + operators[i]->getNickname();
 		if((i + 1) < operators.size())
 			list += " ";
 	}
 	if(this->members.size())
 		list += " ";
 	for(size_t i = 0; i < this->members.size(); i++){
-		list += this->members[i].getNickname();
+		list += this->members[i]->getNickname();
 		if((i + 1) < this->members.size())
 			list += " ";
 	}

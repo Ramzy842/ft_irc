@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 04:13:58 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:18:04 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		this->mode(msg, fd);
 		// std::cout << "MODE :" << msg << std::endl;
 	else if (!msg.compare(0, 4, "QUIT") || !msg.compare(0, 4, "quit"))
-		this->quit(msg, fd);
-		// std::cout << "QUIT :" << msg << std::endl;
+		// this->quit(msg, fd);
+		std::cout << "QUIT :" << msg << std::endl;
 	else if (!msg.compare(0, 6, "INVITE") || !msg.compare(0, 6, "invite"))
 		this->invite(msg, fd);
 		// std::cout << "INVITE :" << msg << std::endl;

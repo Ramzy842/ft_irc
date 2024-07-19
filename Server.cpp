@@ -6,14 +6,14 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 10:30:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:41:51 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./Server.hpp"
 // #include <sys/types.h>
 
-Server::Server() : port(3000), password("1234"), fd(-1), clients(std::vector<Client>())
+Server::Server() : port(3000), password("1234"), fd(-1), clients(std::vector<Client *>())
 {
 }
 
@@ -21,7 +21,7 @@ Server::Server(int port, std::string& password)
 {
 	this->port = port;
 	this->password = password;
-	this->clients = std::vector<Client>();
+	// this->clients = std::vector<Client>();
 	this->fd = -1;
 }
 Server::Server(const Server& original) : port(original.port), password(original.password), fd(-1), clients(original.clients)
@@ -47,7 +47,7 @@ Server::~Server()
 void Server::init() {
 	std::cout << CYAN << "Initializing server..." << std::endl;
 	std::cout << GREEN <<"Server initialized" << RESET << std::endl;
-	Client client;
+	
 	int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (serverSocket == -1) {
 		std::cout << RED << "Error: Couldn't create unbound socket!" << std::endl;
@@ -111,9 +111,10 @@ void Server::init() {
 						client_fd.fd = clientSocket;
 						client_fd.events = POLLIN;
 						client_fd.revents = 0;
-						client.setFd(clientSocket);
-						client.setIpAddress(inet_ntoa(client_addr.sin_addr));
-						AddToClients(client);
+						Client *client = new Client();
+						client->setFd(clientSocket);
+						client->setIpAddress(inet_ntoa(client_addr.sin_addr));
+						AddToClients(*client);
 						this->fds.push_back(client_fd);
 						std::cout << YELLOW <<"New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << std::endl;
 					}
@@ -137,6 +138,15 @@ void Server::init() {
 							std::string buff_str(buff);
 							// std::cout << buff_str << std::endl;
 							cmd_parser(buff_str, fds[x].fd);
+							// Display channels and subscribed users in each channel
+							for (size_t x = 0; x < this->channels.size(); x++)
+							{
+								for (size_t y = 0; y < this->channels[x]->getMembers().size(); y++)
+								{
+									std::vector<Client *> members_ = this->channels[x]->getMembers();
+									std::cout << "Channel: " << this->channels[x]->getName() << " has user (" << members_[y]->getFd() << ")" << std::endl;
+								}
+							}
 						}
 					}
 				}
@@ -161,18 +171,18 @@ std::string Server::getPassword() {
 void Server::setPassword(std::string _password) {
 	this->password = _password;
 }
-std::vector<Client> Server::getClients() {
-	return this->clients;
-}
-void Server::setClients(std::vector<Client> _clients) {
-	this->clients = _clients;
-}
+// std::vector<Client *> Server::getClients() {
+// 	return this->clients;
+// }
+// void Server::setClients(std::vector<Client> _clients) {
+// 	this->clients = _clients;
+// }
 
 Client* Server::getClient(int _fd) {
-	for (std::vector<Client>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
+	for (std::vector<Client *>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
 	{
-		if (it->getFd() == _fd)
-			return &(*it);
+		if ((*it)->getFd() == _fd)
+			return (*it);
 	}
 	return NULL;
 }
@@ -185,31 +195,31 @@ void Server::setFd(int _fd) {
 }
 
 void Server::AddToClients(Client& client) {
-	this->clients.push_back(client);
+	this->clients.push_back(&client);
 }
 
 Channel* Server::getChannelByName(std::string name) {
-	for (std::vector<Channel>::iterator it = this->channels.begin(); it != this->channels.end(); ++it)
+	for (std::vector<Channel *>::iterator it = this->channels.begin(); it != this->channels.end(); ++it)
 	{
-		if (it->getName() == name)
-			return &(*it);
+		if ((*it)->getName() == name)
+			return *it;
 	}
 	return NULL;
 }
 
 Client* Server::getClientByName(std::string name) {
-	for (std::vector<Client>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
+	for (std::vector<Client *>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
 	{
-		if (it->getNickname() == name)
-			return &(*it);
+		if ((*it)->getNickname() == name)
+			return (*it);
 	}
 	return NULL;
 }
 
 void Server::removeClient(int _fd) {
-	for (std::vector<Client>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
+	for (std::vector<Client *>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
 	{
-		if (it->getFd() == _fd)
+		if ((*it)->getFd() == _fd)
 		{
 			this->clients.erase(it);
 			break;

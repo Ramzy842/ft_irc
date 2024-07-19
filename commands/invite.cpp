@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 09:30:01 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:33:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ Channel* Server::inviteErreurHandler(std::vector<std::string> cmd, int fd)
 	if(cmd.size() != 3)
 		return (senderreur(fd, ERR_NOTPARAMS));
 
-	if(this->clients[fd].getIsLoggedIn() == false)
+	if(this->clients[fd]->getIsLoggedIn() == false)
 		// failedsend = send(fd, "530 Please login with USER and PASS.\n", 37, 0);
 		return (senderreur(fd, ERR_LOGIN));
 	Channel *channel = this->getChannelByName(cmd[2]);
@@ -53,7 +53,7 @@ void Server::invite(std::string &msg, int fd)
     channel->addMember(*this->getClientByName(cmd[1]));
 	//! need to check message ot send
 	std::string Clientrps = ": 341 " + this->getClient(fd)->getNickname() + " " + this->getClient(fd)->getNickname()+ " " + cmd[2] + "\r\n";
-	std::string Channelrps = ":" + this->clients[fd].getNickname() + " INVITE " +  + " " + cmd[2] + "\n";
+	std::string Channelrps = ":" + this->clients[fd]->getNickname() + " INVITE " +  + " " + cmd[2] + "\n";
 	sendMsg(fd, Clientrps);
 	// sendMsg(channel->getId(), Channelrps);
 	// std::string channel = cmd[2].substr(1);

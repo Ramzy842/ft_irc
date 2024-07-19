@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 03:39:39 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:26:34 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void Server::kick(std::string &msg, int fd)
     std::string kickmsg = "KICK " + channel->getName() + " " + cmd[2] + " :" + cmd[3] + "\n";
     for (size_t i = 0; i < channel->getMembers().size(); i++)
     {
-        if(channel->getMembers()[i].getFd() != fd)
-            sendMsg(channel->getMembers()[i].getFd(), kickmsg);
+        if(channel->getMembers()[i]->getFd() != fd)
+            sendMsg(channel->getMembers()[i]->getFd(), kickmsg);
     }
     
 }

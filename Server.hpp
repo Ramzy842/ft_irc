@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 11:11:47 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:27:53 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ class Server {
 		int port;
 		std::string password;
 		int fd;
-		std::vector<Client> clients;
-		std::vector<Channel > channels;
+		std::vector<Client *> clients;
+		std::vector<Channel *> channels;
 		std::vector<struct pollfd> fds;
 	public:
 		Server();

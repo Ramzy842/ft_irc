@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 11:24:56 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 03:16:14 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ void Server::sendError(int code, std::string clientname, int fd, std::string msg
 int Server::getClientsNumberInChannel(std::string channelName)
 {
 	for (size_t x = 0; x < this->channels.size(); x++){
-		if (this->channels[x].getName() == channelName)
-			return this->channels[x].getMembers().size();
+		if (this->channels[x]->getName() == channelName)
+			return this->channels[x]->getMembers().size();
 	}
 	return 0;
 }
@@ -196,56 +196,6 @@ std::string getServerResponse(const std::string& nickname,
 }
 
 
-
-// void Server::handleNonExistingChannel(std::vector<std::pair<std::string, std::string> >&tokens, int i, int fd)
-// {
-// 	(void) fd;
-// 	// std::cout << "test test "<< std::endl;
-// 	// if (SearchForClients(this->getClient(fd)->getNickname()) >= 10)//ERR_TOOMANYCHANNELS (405) // if the client is already in 10 channels
-// 	// {
-// 	// 	sendError(405, this->getClient(fd)->getNickname(), this->getClient(fd)->getFd(), " :You have joined too many channels\r\n");
-// 	// 	return;
-// 	// }
-// 	std::cout << "test test 2"<< std::endl;
-// 	std::cout << "hello World :" << tokens[i].first << std::endl;
-// 	Channel newChannel;
-// 	newChannel.setName(tokens[i].first);
-// 	// std::cout << tokens[i].first << std::endl;
-// 	// newChannel.setName(tokens[i].first); 
-// 	std::cout << "test:" << newChannel.getName() << "and i :"<< i << std::endl;
-// 	// std::cout << "Channel name:" << newChannel.getName() << std::endl;
-// 	// newChannel.addOperator(*this->getClient(fd));
-// 	// newChannel.set_createiontime();
-// 	this->channels.push_back(newChannel);
-// 	// this->channels[i].setName(tokens[i].first);
-// 	if (channels.size() > 0)
-// 	{
-// 		std::cout << "Channels size: " << channels[i].getName() << std::endl;
-// 		std::cout << "Channel test:" << channels[i].getName().empty() << std::endl;	
-// 	}
-
-// 	// for (size_t x = 0; x < channels.size(); x++)
-// 	// {
-// 	// 	std::cout << "Channel name: " <<  this->channels[x].getName() << std::endl;
-// 	// }
-// 	// notifiy that the client joined the channel
-// 	// sendResponse(getServerResponse(getClient(fd)->getNickname(), getClient(fd)->getHostname(), getClient(fd)->getIpAddress(),
-// 	// 	newChannel.getName(),"", newChannel.clientChannel_list(), "", "", "", ""), fd);
-	
-// }
-
-// void Server::handleExistingChannel(std::vector<std::pair<std::string, std::string> >&tokens, int i, int fd)
-// {
-	
-// }
-
-// bool Server::clientAlreadyInChannel(std::string channelName, int fd) {
-// 	for (size_t x = 0; x < this->channels.size(); x++){
-// 		if (this->channels[x].getM == channelName)
-// 			return this->channels[x].getMembers().size();
-// 	}
-// }
-
 void Server::join(std::string &msg, int fd)
 {
 	std::vector<std::pair<std::string, std::string> > tokens;
@@ -256,36 +206,18 @@ void Server::join(std::string &msg, int fd)
 		sendError(407, this->getClient(fd)->getNickname(), this->getClient(fd)->getFd(), " :Too many channels\r\n");
 		return;
 	}
-	// TESTING
-	Channel newChannel1;
-	channels.push_back(newChannel1);
-	channels[channels.size() - 1].setName("Test1");
-	channels[channels.size() - 1].addOperator(*this->getClient(fd));
-	Client c1;
-	c1.setFd(2000);
-	Client c2;
-	c1.setFd(2001);
-	Client c3;
-	c1.setFd(2002);
-	Client c4;
-	c1.setFd(2003);
-	Client c5;
-	c1.setFd(2004);
-	this->channels[channels.size() - 1].addMember(c1);
-	this->channels[channels.size() - 1].addMember(c2);
-	this->channels[channels.size() - 1].addMember(c3);
-	this->channels[channels.size() - 1].addMember(c4);
-	this->channels[channels.size() - 1].addMember(c5);
-	std::cout << "Number of users in Test1: " << getClientsNumberInChannel("Test1") << std::endl;
-	// TESTING
+	Client *client = this->getClient(fd);
 	for (size_t i = 0; i < tokens.size(); i++)
 	{
 		bool foundChannel = false;
 		for (size_t x = 0; x < channels.size(); x++)
-		{
-			if (channels[x].getName() == tokens[i].first)
+		{	
+			
+			if (channels[x]->getName() == tokens[i].first)
 			{
+				// HANDLE EXISTING CHANNEL
 				std::cout << "Channel " << tokens[i].first << " already exists" << std::endl;
+				channels[x]->addMember(*client);
 				foundChannel = true;
 				break ;
 			}
@@ -293,11 +225,11 @@ void Server::join(std::string &msg, int fd)
 		// HANDLE NON EXISTING CHANNEL
 		if (!foundChannel)
 		{
-			Channel newChannel;
+			Channel *newChannel = new Channel;
+			newChannel->setName(tokens[i].first);
+			newChannel->addOperator(*this->getClient(fd));
 			channels.push_back(newChannel);
-			channels[channels.size() - 1].setName(tokens[i].first);
-			channels[channels.size() - 1].addOperator(*this->getClient(fd));
-			std::cout << "sizeof operators: " << channels[channels.size() - 1].getOperators().size() << std::endl;
+			channels[channels.size() - 1]->addMember(*client);
 		}
 	}
 	

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 10:06:02 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:23:05 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ class Channel {
 		std::string password;
 		std::string topic;
 		std::string init_time;
-		std::vector<Client> operators;
-		std::vector<Client> members;
+		std::vector<Client *> operators;
+		std::vector<Client *> members;
 		std::string created_at;
-		
 	public:
 		Channel();
 		Channel(std::string name);
@@ -50,9 +49,9 @@ class Channel {
 		void setPassword(std::string password);
 		std::string getTopic();
 		void setTopic(std::string _topic);
-		std::vector<Client> getOperators();
+		std::vector<Client *> getOperators();
 		void setOperators(std::vector<Client> operators);
-		std::vector<Client> getMembers();
+		std::vector<Client *> getMembers();
 		void setMembers(std::vector<Client> members);
 		std::string getCreatedAt();
 		void setCreatedAt(std::string created_at);

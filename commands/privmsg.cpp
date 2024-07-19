@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/18 02:40:59 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:26:45 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void Server::privmsg(std::string &msg, int fd) {
 		for (size_t i = 3; i < cmd.size(); i++)
 			message += " " + cmd[i];
 		for (size_t i = 0; i < channel->getMembers().size(); i++)
-			sendMsg(channel->getMembers()[i].getFd(), "PRIVMSG " + channel->getName() + " :" + message);
+			sendMsg(channel->getMembers()[i]->getFd(), "PRIVMSG " + channel->getName() + " :" + message);
 	}
 	
 }
