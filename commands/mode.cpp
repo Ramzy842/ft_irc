@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 07:33:24 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 21:15:08 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,12 @@
 
 Channel *Server::handlermodecommand(std::vector<std::string> cmd, int fd)
 {
-	if (cmd.size() < 2 )//|| !isEmpyCmd(cmd))
+	if (cmd.size() < 2)// || !isEmpyCmd(cmd))
 	{
 		senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
 		return NULL;
 	}
-	if(cmd[1][0] != '#')
-	{
-		senderreur(fd, ERR_NOSUCHCHANNEL(cmd[1]));
-		return NULL;
-	}
-	cmd[1] = cmd[1].substr(1);
-	Channel *channel = this->getChannelByName(cmd[1]);
+	Channel *channel = this->getChannelByName(cmd[1].substr(1));
 	if(!channel)
 	{
 		senderreur(fd, ERR_NOSUCHCHANNEL(cmd[1]));
@@ -53,46 +47,88 @@ Channel *Server::handlermodecommand(std::vector<std::string> cmd, int fd)
 	return channel;
 }
 
+bool IsPlus(std::string mode)
+{
+	if (mode[0] == '+')
+		return true;
+	return false;
+}
+
 void Server::mode(std::string &msg, int fd)
 {
 	std::vector<std::string> cmd = split_command(msg);
 	Channel *channel = handlermodecommand(cmd, fd);
 	if(!channel)
 		return;
-	if (cmd[2][0] == '+')
+	bool isPlus = IsPlus(cmd[2]);
+	if(isPlus)
 	{
-		if (cmd.size() < 4)
+		if(cmd[2][1] == 'o')
 		{
-			senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
-			return;
-		}
-		if (cmd[3] == "o")
-		{
-			Client *client = this->getClientByName(cmd[3]);
-			if (!client)
+			if(cmd.size() < 4)
 			{
-				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+				return;
+			}
+			Client *client = this->getClientByName(cmd[3]);
+			if(!client)
+			{
+				senderreur(fd, ERR_NOSUCHNICK(cmd[3])); 
 				return;
 			}
 			channel->addOperator(*client);
+			sendMsg(fd, "MODE " + channel->getName() + " +o " + client->getNickname());
+			sendMsg(client->getFd(), "MODE " + channel->getName() + " +o " + client->getNickname());
 		}
 	}
-	else if (cmd[2][0] == '-')
+	else
 	{
-		if (cmd.size() < 4)
+		if(cmd[2][1] == 'o')
 		{
-			senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
-			return;
-		}
-		if (cmd[3] == "o")
-		{
+			if(cmd.size() < 4)
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
 			Client *client = this->getClientByName(cmd[3]);
-			if (!client)
-			{
-				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));
-				return;
-			}
+			if(!client)
+				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));	return;
 			channel->removeOperator(*client);
+			sendMsg(fd, "MODE " + channel->getName() + " -o " + client->getNickname());
+			sendMsg(client->getFd(), "MODE " + channel->getName() + " -o " + client->getNickname());
 		}
 	}
+	// if (cmd[2][0] == '+')
+	// {
+	// 	if (cmd.size() < 4)
+	// 	{
+	// 		senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
+	// 		return;
+	// 	}
+	// 	if (cmd[3] == "o")
+	// 	{
+	// 		Client *client = this->getClientByName(cmd[3]);
+	// 		if (!client)
+	// 		{
+	// 			senderreur(fd, ERR_NOSUCHNICK(cmd[3]));
+	// 			return;
+	// 		}
+	// 		channel->addOperator(*client);
+	// 	}
+	// }
+	// else if (cmd[2][0] == '-')
+	// {
+	// 	if (cmd.size() < 4)
+	// 	{
+	// 		senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
+	// 		return;
+	// 	}
+	// 	if (cmd[3] == "o")
+	// 	{
+	// 		Client *client = this->getClientByName(cmd[3]);
+	// 		if (!client)
+	// 		{
+	// 			senderreur(fd, ERR_NOSUCHNICK(cmd[3]));
+	// 			return;
+	// 		}
+	// 		channel->removeOperator(*client);
+	// 	}
+	// }
 }

@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 05:37:55 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/19 20:41:53 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,5 @@ void Server::kick(std::string &msg, int fd)
         if(channel->getMembers()[i]->getFd() != fd)
             sendMsg(channel->getMembers()[i]->getFd(), kickmsg);
     }
-    
+    sendMsg(fd, kickmsg);
 }
