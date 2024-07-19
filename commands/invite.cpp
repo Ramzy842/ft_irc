@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 02:33:28 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/19 06:58:15 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,27 @@
 
 // Error message macros
 #define ERR_NOTPARAMS "461 :Not enough parameters"
-#define ERR_NOSUCHCHANNEL(channel) "403 " + channel + " :No such channel"
+#define ERR_NOSUCHCLIENT(client) "401 " + client + " :No such nick/channel"
 #define ERR_NOTONCHANNEL(channel) "442 " + channel + " :You're not on that channel"
 #define ERR_USERALREADYINCHANNEL(channel) "443 " + channel + " :User is already on channel"
 #define ERR_CHANOPRIVSNEEDED(channel) "482 " + channel + " :You're not channel operator"
 #define ERR_LOGIN "530 Please login with USER and PASS\n"
-
+#define ERR_NOSUCHCHANNEL(channel) "403 " + channel + " :No such channel"
 //! need to add erreur of login in all others commands
 Channel* Server::inviteErreurHandler(std::vector<std::string> cmd, int fd)
 {
 	if(cmd.size() != 3)
 		return (senderreur(fd, ERR_NOTPARAMS));
-
-	if(this->clients[fd]->getIsLoggedIn() == false)
-		// failedsend = send(fd, "530 Please login with USER and PASS.\n", 37, 0);
-		return (senderreur(fd, ERR_LOGIN));
-	Channel *channel = this->getChannelByName(cmd[2]);
+	Channel *channel = this->getChannelByName(cmd[2].substr(1));
 	if(cmd[2][0] != '#' || !channel)
 		// failedsend = send(fd, "403 No such channel.\n", 21, 0);
-		return senderreur(fd, ERR_NOSUCHCHANNEL(cmd[2]));
-	if(this->getClientByName(cmd[1]))
-		return senderreur(fd, ERR_NOSUCHCHANNEL(cmd[2]));
+		return senderreur(fd, ERR_NOSUCHCHANNEL(cmd[2].substr(1)));
+	if(!this->getClientByName(cmd[1]))
+		return senderreur(fd, ERR_NOSUCHCLIENT(cmd[1]));
 	if(channel->getMemberByName(cmd[1]))
 		return senderreur(fd, ERR_USERALREADYINCHANNEL(cmd[2]));
-	if(channel->getIsInviteOnly() == true || !channel->getOperatorByName(cmd[1]))
-		return senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[2]));
+	if(channel->getIsInviteOnly() == true)// || !channel->getOperatorByName(cmd[1]))
+		return senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[1]));
 	return (channel);
 }
 
@@ -50,11 +46,13 @@ void Server::invite(std::string &msg, int fd)
 	Channel* channel = inviteErreurHandler(cmd, fd);
 	if(!channel)
 		return;
-    channel->addMember(*this->getClientByName(cmd[1]));
+    // channel->addMember(*this->getClientByName(cmd[1]));
+	std::cout << "invite command ->" << cmd[0] << std::endl;
 	//! need to check message ot send
-	std::string Clientrps = ": 341 " + this->getClient(fd)->getNickname() + " " + this->getClient(fd)->getNickname()+ " " + cmd[2] + "\r\n";
-	std::string Channelrps = ":" + this->clients[fd]->getNickname() + " INVITE " +  + " " + cmd[2] + "\n";
-	sendMsg(fd, Clientrps);
+	std::string rps = ": 341 " + cmd[1] + " :User has been invited\n";
+	sendMsg(fd, rps);
+	std::string rps2 = ": ?? " + this->getClient(fd)->getNickname() + " INVITE " + cmd[1] + " to " + cmd[2] + "\n";
+	sendMsg(this->getClientByName(cmd[1])->getFd(), rps2);
 	// sendMsg(channel->getId(), Channelrps);
 	// std::string channel = cmd[2].substr(1);
 	// if (channel.empty() || !channel.compare(0, 1, "#") == 0 || this->channels.find(channel) == this->channels.end())
