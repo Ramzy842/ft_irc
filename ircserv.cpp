@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ircserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 18:52:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 20:53:17 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 23:55:59 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	main (int argc, char **argv)
 	password = argv[2];
 	Server ser(port, password);
 	try {
-		// signal(SIGINT, Server::handleSignal);
-		// signal(SIGQUIT, Server::handleSignal);
+		signal(SIGINT, Server::handleSignal);
+		signal(SIGQUIT, Server::handleSignal);
 		ser.init();
 	}
 	catch (const std::exception& e) {

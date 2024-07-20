@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 23:12:51 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 23:58:40 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ class Server {
 		int getClientsNumberInChannel(std::string channelName);
 		bool clientAlreadyInChannel(int fd, std::string channelName);
 		bool clientIsInvited(int fd, Channel *channel);
+		static void handleSignal(int signum);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);
@@ -88,7 +89,7 @@ class Server {
 		void sendResponse(std::string response, int fd);
 		int SearchForClients(std::string nickName);
 		void quit(std::string &msg, int fd);
-		void handleSignal(int signum);
+		// void handleSignal(int signum);
 		void sendMsg(int fd, std::string msg);
 		void handler_cmd_parser(std::string &msg, int fd);
 	    Channel	*senderreur(int fd, std::string msg);
