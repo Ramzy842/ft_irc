@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 02:18:04 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 06:02:38 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,101 @@
 
 void Server::cmd_parser(std::string &msg, int fd)
 {
-	
 	std::cout << "Client " << fd << " sent: " << msg << std::endl;
-	if (!msg.compare(0, 4, "PASS") || !msg.compare(0, 4, "pass"))
-		this->pass(msg, fd);
-	else if(!this->getClient(fd)->getIsLoggedIn())
-		senderreur(fd, "451 :You have not logged in");
-	else if (!msg.compare(0, 4, "NICK") || !msg.compare(0, 4, "nick"))
-		this->nick(msg, fd);
-	else if(!this->getClient(fd)->getIsNickSet())
-		senderreur(fd, "451 :You have not set your nickname");
-	else if (!msg.compare(0, 4, "USER") || !msg.compare(0, 4, "user"))
-		this->user(msg, fd);
-	else if(!this->getClient(fd)->getIsRegistered())
-		senderreur(fd, "451 :You have not registered");
-	else if (!msg.compare(0, 4, "BONG") || !msg.compare(0, 4, "bong"))
-		return;
-	else if (!msg.compare(0, 4, "PING") || !msg.compare(0, 4, "ping"))
-		std::cout << "PING :" << msg << std::endl;
-	else if (!msg.compare(0, 4, "JOIN") || !msg.compare(0, 4, "join"))
-		this->join(msg, fd);
-		// std::cout << "JOIN :" << msg << std::endl;
-	else if (!msg.compare(0, 4, "PART") || !msg.compare(0, 4, "part"))
-		// this->part(msg, fd);
-		std::cout << "PART :" << msg << std::endl;
-	else if (!msg.compare(0, 4, "KICK") || !msg.compare(0, 4, "kick"))
-		this->kick(msg, fd);
-		// std::cout << "KICK :" << msg << std::endl;
-	else if (!msg.compare(0, 7, "PRIVMSG") || !msg.compare(0, 7, "privmsg"))
-		this->privmsg(msg, fd);
-		// std::cout << "PRIVMSG :" << msg << std::endl;
-	else if (!msg.compare(0, 5, "TOPIC") || !msg.compare(0, 5, "topic"))
-		this->topic(msg, fd);
-		// std::cout << "TOPIC :" << msg << std::endl;
-	else if (!msg.compare(0, 4, "MODE") || !msg.compare(0, 4, "mode"))
-		this->mode(msg, fd);
-		// std::cout << "MODE :" << msg << std::endl;
-	else if (!msg.compare(0, 4, "QUIT") || !msg.compare(0, 4, "quit"))
-		// this->quit(msg, fd);
-		std::cout << "QUIT :" << msg << std::endl;
-	else if (!msg.compare(0, 6, "INVITE") || !msg.compare(0, 6, "invite"))
-		this->invite(msg, fd);
-		// std::cout << "INVITE :" << msg << std::endl;
+	std::vector<std::string> cmd = split_command(msg);
+	if(getClient(fd)->getIsHexChat() || cmd[0] == "CAP")
+	{
+		if (cmd[0] == "CAP")
+			getClient(fd)->setIsHexChat(true);
+		else if (cmd[0] == "PASS")
+		{
+			std::string msg = cmd[0] + " " + cmd[1];
+			this->pass(msg, fd);
+			std::cout << "PASS :" << msg << std::endl;
+			msg = cmd[2] + " " + cmd[3];
+			std::cout << "NICK :" << msg << std::endl;
+			this->nick(msg, fd);
+			std::cout << "nick :" << msg << std::endl;
+			msg = cmd[4] + " " + cmd[5] + " " + cmd[5] + " " + cmd[5] + " " + cmd[8].substr(1);
+			std::cout << "USER :" << msg << std::endl;
+			this->user(msg, fd);
+			
+		}
+		else if (!msg.compare(0, 4, "BONG") || !msg.compare(0, 4, "bong"))
+			return;
+		else if (!msg.compare(0, 4, "PING") || !msg.compare(0, 4, "ping"))
+			std::cout << "PING :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "JOIN") || !msg.compare(0, 4, "join"))
+			this->join(msg, fd);
+			// std::cout << "JOIN :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "PART") || !msg.compare(0, 4, "part"))
+			// this->part(msg, fd);
+			std::cout << "PART :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "KICK") || !msg.compare(0, 4, "kick"))
+			this->kick(msg, fd);
+			// std::cout << "KICK :" << msg << std::endl;
+		else if (!msg.compare(0, 7, "PRIVMSG") || !msg.compare(0, 7, "privmsg"))
+			this->privmsg(msg, fd);
+			// std::cout << "PRIVMSG :" << msg << std::endl;
+		else if (!msg.compare(0, 5, "TOPIC") || !msg.compare(0, 5, "topic"))
+			this->topic(msg, fd);
+			// std::cout << "TOPIC :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "MODE") || !msg.compare(0, 4, "mode"))
+			this->mode(msg, fd);
+			// std::cout << "MODE :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "QUIT") || !msg.compare(0, 4, "quit"))
+			// this->quit(msg, fd);
+			std::cout << "QUIT :" << msg << std::endl;
+		else if (!msg.compare(0, 6, "INVITE") || !msg.compare(0, 6, "invite"))
+			this->invite(msg, fd);
+			// std::cout << "INVITE :" << msg << std::endl;
+		else
+			senderreur(fd, "421 :Unknown command");
+		
+	}
 	else
-		senderreur(fd, "421 :Unknown command");
+	{
+		if (!msg.compare(0, 4, "PASS") || !msg.compare(0, 4, "pass"))
+			this->pass(msg, fd);
+		else if(!this->getClient(fd)->getIsLoggedIn())
+			senderreur(fd, "451 :You have not logged in");
+		else if (!msg.compare(0, 4, "NICK") || !msg.compare(0, 4, "nick"))
+			this->nick(msg, fd);
+		else if(!this->getClient(fd)->getIsNickSet())
+			senderreur(fd, "451 :You have not set your nickname");
+		else if (!msg.compare(0, 4, "USER") || !msg.compare(0, 4, "user"))
+			this->user(msg, fd);
+		else if(!this->getClient(fd)->getIsRegistered())
+			senderreur(fd, "451 :You have not registered");		
+		else if (!msg.compare(0, 4, "BONG") || !msg.compare(0, 4, "bong"))
+			return;
+		else if (!msg.compare(0, 4, "PING") || !msg.compare(0, 4, "ping"))
+			std::cout << "PING :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "JOIN") || !msg.compare(0, 4, "join"))
+			this->join(msg, fd);
+			// std::cout << "JOIN :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "PART") || !msg.compare(0, 4, "part"))
+			// this->part(msg, fd);
+			std::cout << "PART :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "KICK") || !msg.compare(0, 4, "kick"))
+			this->kick(msg, fd);
+			// std::cout << "KICK :" << msg << std::endl;
+		else if (!msg.compare(0, 7, "PRIVMSG") || !msg.compare(0, 7, "privmsg"))
+			this->privmsg(msg, fd);
+			// std::cout << "PRIVMSG :" << msg << std::endl;
+		else if (!msg.compare(0, 5, "TOPIC") || !msg.compare(0, 5, "topic"))
+			this->topic(msg, fd);
+			// std::cout << "TOPIC :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "MODE") || !msg.compare(0, 4, "mode"))
+			this->mode(msg, fd);
+			// std::cout << "MODE :" << msg << std::endl;
+		else if (!msg.compare(0, 4, "QUIT") || !msg.compare(0, 4, "quit"))
+			// this->quit(msg, fd);
+			std::cout << "QUIT :" << msg << std::endl;
+		else if (!msg.compare(0, 6, "INVITE") || !msg.compare(0, 6, "invite"))
+			this->invite(msg, fd);
+			// std::cout << "INVITE :" << msg << std::endl;
+		else
+			senderreur(fd, "421 :Unknown command");
+	}
 }

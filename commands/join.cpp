@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 04:08:23 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 06:38:14 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ void Server::join(std::string &msg, int fd)
 						channels[x]->addMember(*client);
 				}
 				else
-					sendMsg(fd, "Client " + this->getClient(fd)->getNickname() + " is already in channel " + this->channels[x]->getName());
+					this->sendMsg(fd, "Client " + this->getClient(fd)->getNickname() + " is already in channel " + this->channels[x]->getName());
 				foundChannel = true;
 				break ;
 			}

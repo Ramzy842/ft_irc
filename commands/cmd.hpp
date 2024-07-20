@@ -6,7 +6,7 @@
 
 std::vector<std::string> split_command(std::string &msg);
 Channel *senderreur(int fd, std::string msg);
-void sendMsg(int fd, std::string msg);
+// void sendMsg(int fd, std::string msg);
 bool isEmpyCmd(std::vector<std::string> cmd);
 
 // class cmd

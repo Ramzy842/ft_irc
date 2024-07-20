@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 05:43:13 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 07:22:48 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void Server::privmsg(std::string &msg, int fd) {
 		std::string message = cmd[2];
 		for (size_t i = 3; i < cmd.size(); i++)
 			message += " " + cmd[i];
-		sendMsg(client->getFd(), "PRIVMSG " + client->getNickname() + " :" + message);
+		std::string resp = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getNickname() + "@localhost PRIVMSG #" + cmd[0] + " :" + message + "\r\n";
+		// sendMsg(client->getFd(), "PRIVMSG " + client->getNickname() + " :" + message);
 	}
 	else {
 		Channel *channel = getChannelByName(cmd[1].substr(1));

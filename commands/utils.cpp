@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 04:45:58 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 06:40:43 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,18 @@ Channel *senderreur(int fd, std::string msg, bool hexChat)
 	return (NULL);
 }
 
-void sendMsg(int fd, std::string msg)
+void Server::sendMsg(int fd, std::string msg)
 {
-	msg = GREEN + msg + RESET + "\n";
+	if (!this->getClient(fd)->getIsHexChat())
+		msg = GREEN + msg + RESET + "\n";
 	int failedsend = send(fd, msg.c_str(), msg.size(), 0);
 	if (failedsend == -1)
-		std::cerr << RED << "Failed to send message" << RESET << std::endl;
+	{
+		if(!this->getClient(fd)->getIsHexChat())
+			std::cerr << RED << "Failed to send message" << RESET << std::endl;
+		else
+			std::cerr << "Failed to send message" << std::endl;
+	}
 }
 
 
