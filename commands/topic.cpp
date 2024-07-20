@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 05:08:40 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 02:01:01 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,16 @@ Channel *Server::topicErreurHandler(std::vector<std::string> cmd, int fd)
 	if (!channel)
 	{
 		senderreur(fd, ERR_NOSUCHCHANNEL(cmd[1]));
+		return NULL;
+	}
+	if (!channel->getMemberByName(this->getClient(fd)->getNickname()))
+	{
+		senderreur(fd, ERR_NOTONCHANNEL(cmd[1]));
+		return NULL;
+	}
+	if (channel->getIsTopic() && !channel->getOperatorByName(this->getClient(fd)->getNickname()))
+	{
+		senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[1]));
 		return NULL;
 	}
 	return channel;
