@@ -6,14 +6,13 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 04:57:06 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 07:56:20 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./Server.hpp"
-// #include <sys/types.h>
 
-Server::Server() : port(3000), password("1234"), fd(-1), clients(std::vector<Client *>())
+Server::Server() : port(3000), password("1234"), fd(-1)
 {
 }
 
@@ -21,11 +20,11 @@ Server::Server(int port, std::string& password)
 {
 	this->port = port;
 	this->password = password;
-	// this->clients = std::vector<Client>();
 	this->fd = -1;
 }
 Server::Server(const Server& original) : port(original.port), password(original.password), fd(-1), clients(original.clients)
 {
+	signal = original.signal;
 }
 Server& Server::operator=(const Server& original)
 {
@@ -35,12 +34,20 @@ Server& Server::operator=(const Server& original)
 		this->password = original.password;
 		this->fd = original.fd;
 		this->clients = original.clients;
+		this->signal = false;
 	}
 	return *this;
 }
 
 Server::~Server()
 {
+}
+bool Server::signal = false;
+void Server::handleSignal(int signum)
+{
+	(void)signum;
+	std::cout << "Signal Received!" << std::endl;
+	signal = true;
 }
 
 
@@ -87,8 +94,9 @@ void Server::init() {
 		pfd.events = POLLIN;
 		this->fds.push_back(pfd);
 		
-		while(1) {
-			if((poll(&fds[0],fds.size(),-1) == -1)) //-> wait for an event
+		while(!signal)
+		{
+			if((poll(&fds[0],fds.size(),-1) == -1))
 				throw(std::runtime_error("poll() faild"));
 			for (unsigned int x = 0; x < this->fds.size(); x++)
 			{
@@ -102,6 +110,11 @@ void Server::init() {
     					socklen_t addr_size;
 						addr_size = sizeof(client_addr);
 						int clientSocket = accept(this->fd, (sockaddr *)&client_addr, &addr_size);
+						if (clientSocket == -1)
+						{
+							std::cout << "accept() failed" << std::endl;
+							return;
+						}
 						if(fcntl(clientSocket, F_SETFL, O_NONBLOCK) == -1)
 						{
 							std::cout << RED << "Error: Couldn't set socket file descriptor mode to non-blocking!" << std::endl;
@@ -122,22 +135,16 @@ void Server::init() {
 					{
 						char buff[1024];
 						memset(buff, 0, sizeof(buff));
-					
-						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff) , 0);
-					
-						if(receivedBytes <= 0) {
-							std::cout << "Client disconnected." << std::endl;
-							// this->quit("",fd); //-> clear the client
-							// close(fd); //-> close the client socket
+						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff), 0);
+						if(receivedBytes <= 0)
+						{
+							std::cout << "*************Client quit***************" << std::endl;
+							return ;
 						}
-					
-						else {
-							// buff[receivedBytes] = '\0';
-							// std::cout << "Client <" << fds[x].fd << "> and ip address <" << client.getIpAddress() << "> Data: " << buff;
-							// Add code to process the received data: parse, check, authenticate, handle the command, etc...
+						else
+						{
 							std::string buff_str(buff);
 							std::cout << "***********///////////*******" << buff_str << std::endl;
-							// std::cout << buff_str << std::endl;
 							cmd_parser(buff_str, fds[x].fd);
 							// Display channels and subscribed users in each channel
 							std::cout << "Channels:" << std::endl;

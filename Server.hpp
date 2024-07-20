@@ -6,7 +6,11 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/07/20 06:40:03 by yaidriss         ###   ########.fr       */
+=======
+/*   Updated: 2024/07/20 07:54:18 by rchahban         ###   ########.fr       */
+>>>>>>> 9ad28f1091aa67c312ad32926860ce8ff7ad1cea
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +37,7 @@ class Server {
 		std::vector<Client *> clients;
 		std::vector<Channel *> channels;
 		std::vector<struct pollfd> fds;
+		static bool signal;
 	public:
 		Server();
 		Server(int port, std::string& password);
@@ -60,7 +65,7 @@ class Server {
 		int getClientsNumberInChannel(std::string channelName);
 		bool clientAlreadyInChannel(int fd, std::string channelName);
 		bool clientIsInvited(int fd, Channel *channel);
-
+		static void handleSignal(int signum);
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);
 		void topic(std::string &msg, int fd);
