@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 23:00:44 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 03:15:52 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ Channel* Server::inviteErreurHandler(std::vector<std::string> cmd, int fd)
 	if(!this->getClientByName(cmd[1]))
 		return senderreur(fd, ERR_NOSUCHCLIENT(cmd[1]));
 	if(channel->getMemberByName(cmd[1]))
-		return senderreur(fd, ERR_USERALREADYINCHANNEL(cmd[2]));
-	if(channel->getIsInviteOnly() == true)// || !channel->getOperatorByName(cmd[1]))
-		return senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[1]));
+		return senderreur(fd, ERR_USERALREADYINCHANNEL(cmd[1]));
+	// if(channel->getIsInviteOnly() == true)// || !channel->getOperatorByName(cmd[1]))
+	// 	return senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[1]));
 	return (channel);
 }
 
@@ -48,6 +48,7 @@ void Server::invite(std::string &msg, int fd)
 		return;
     // channel->addMember(*this->getClientByName(cmd[1]));
 	std::cout << "invite command ->" << cmd[0] << std::endl;
+	
 	//! need to check message ot send
 	this->getClient(fd)->getInvitedChannels().push_back(channel);
 	std::string rps = ": 341 " + cmd[1] + " :User has been invited";

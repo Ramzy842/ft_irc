@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 01:59:28 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 03:08:14 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,16 @@ void Server::mode(std::string &msg, int fd)
 				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
 				return;
 			}
-			Client *client = this->getClientByName(cmd[3]);
-			if(!client)
-			{
-				senderreur(fd, ERR_NOSUCHNICK(cmd[3])); 
-				return;
-			}
+			// Client *client = this->getClientByName(cmd[2]);
+			// if(!client)
+			// {
+			// 	senderreur(fd, ERR_NOSUCHNICK(cmd[1])); 
+			// 	return;
+			// }
 			// this->getClient(fd)->getInvitedChannels().push_back(channel);
 			channel->setIsInviteOnly(true);
-			sendMsg(fd, "MODE " + channel->getName() + " +i " + client->getNickname());
-			sendMsg(client->getFd(), "MODE " + channel->getName() + " +i " + client->getNickname());
+			// for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +i");
 		}
 		else if(cmd[2][1] == 'k')
 		{
@@ -132,6 +132,7 @@ void Server::mode(std::string &msg, int fd)
 			}
 			channel->setIsTopic(true);
 			sendMsg(fd, "MODE " + channel->getName() + " +t");
+		std::cout << "Hiiiiiiiiiii" << std::endl;
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +t");
 		}
@@ -140,7 +141,6 @@ void Server::mode(std::string &msg, int fd)
 	}
 	else
 	{
-		std::cout << "Hiiiiiiiiiii" << std::endl;
 		if(cmd[2][1] == 'o')
 		{
 			if(cmd.size() < 4)
@@ -155,25 +155,33 @@ void Server::mode(std::string &msg, int fd)
 		else if(cmd[2][1] == 'i')
 		{
 			if(cmd.size() != 3)
-				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
-			Client *client = this->getClientByName(cmd[3]);
-			if(!client)
-				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));	return;
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
+				return;
+			}
+			// Client *client = this->getClientByName(cmd[3]);
+			// if(!client)
+			// 	senderreur(fd, ERR_NOSUCHNICK(cmd[3]));	return;
 			// for (std::vector<Channel *>::iterator it = getClient(fd)->getInvitedChannels().begin();it != this->getClient(fd)->getInvitedChannels().end() && (*it)->getName() == channel->getName(); ++it)
 			// 	this->getClient(fd)->getInvitedChannels().erase(it);
+			// std::cout << "im here also" << std::endl;
 			channel->setIsInviteOnly(false);
-			sendMsg(fd, "MODE " + channel->getName() + " -i " + client->getNickname());
-			sendMsg(client->getFd(), "MODE " + channel->getName() + " -i " + client->getNickname());
+			// sendMsg(fd, "MODE " + channel->getName() + " -i ");
+			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -i ");
 		}
 		else if (cmd[2][1] == 'k')
 		{
 			channel->setPassword("");
 			if(cmd.size() != 3)
-				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
-			// sendMsg(fd, "MODE " + channel->getName() + " -k ");
-			// for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -k ");
-			std::cout << "Channel passs " << channel->getPassword() << std::endl;
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+				return;
+			}
+			sendMsg(fd, "MODE " + channel->getName() + " -k ");
+			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -k ");
+			// std::cout << "Channel passs " << channel->getPassword() << std::endl;
 		}
 		else if (cmd[2][1] == 'l')
 		{
