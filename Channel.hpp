@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 07:40:25 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 01:09:02 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class Channel {
 	private:
 		std::string name;
 		bool is_invite_only;
+		bool is_topic;
 		int limit;
 		int id;
 		std::string password;
@@ -42,7 +43,7 @@ class Channel {
 		void setName(const std::string& newName);
 		std::string getName();
 		std::string getPassword();
-		void setPassword(std::string password);
+		void setPassword(std::string _password);
 		std::string getTopic();
 		void setTopic(std::string _topic);
 		std::vector<Client *> getOperators();
@@ -53,6 +54,9 @@ class Channel {
 		void setCreatedAt(std::string created_at);
 		bool getIsInviteOnly();
 		void setIsInviteOnly(bool is_invite_only);
+		bool getIsTopic();
+		void setIsTopic(bool is_topic);
+
 		//***** METHODS *****//
 		void addOperator(Client& client);
 		void removeOperator(Client& client);

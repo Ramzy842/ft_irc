@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 21:15:08 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 01:27:59 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,84 @@ void Server::mode(std::string &msg, int fd)
 			sendMsg(fd, "MODE " + channel->getName() + " +o " + client->getNickname());
 			sendMsg(client->getFd(), "MODE " + channel->getName() + " +o " + client->getNickname());
 		}
+		else if(cmd[2][1] == 'i')
+		{
+			if(cmd.size() != 3)
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+				return;
+			}
+			Client *client = this->getClientByName(cmd[3]);
+			if(!client)
+			{
+				senderreur(fd, ERR_NOSUCHNICK(cmd[3])); 
+				return;
+			}
+			// this->getClient(fd)->getInvitedChannels().push_back(channel);
+			channel->setIsInviteOnly(true);
+			sendMsg(fd, "MODE " + channel->getName() + " +i " + client->getNickname());
+			sendMsg(client->getFd(), "MODE " + channel->getName() + " +i " + client->getNickname());
+		}
+		else if(cmd[2][1] == 'k')
+		{
+			if(cmd.size() < 4)
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+				return;
+			}
+			channel->setPassword(cmd[3]);
+			std::cout << "password -> " << cmd[3] << std::endl;
+			sendMsg(fd, "MODE " + channel->getName() + " +k " + cmd[3]);
+			// for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +k " + cmd[3]);
+		}
+		else if(cmd[2][1] == 'l')
+		{
+			if(cmd.size() < 4)
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+				return;
+			}
+			channel->setLimit(std::stoi(cmd[3]));
+			sendMsg(fd, "MODE " + channel->getName() + " +l " + cmd[3]);
+			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +l " + cmd[3]);
+		}
+		else if (cmd[2][1] == 't')
+		{
+			if (cmd.size() != 3)
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
+				return;
+			}
+			channel->setIsTopic(true);
+			sendMsg(fd, "MODE " + channel->getName() + " +t");
+			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +t");
+		}
+		// else if(cmd[2][1] == 'b')
+		// {
+		// 	if(cmd.size() < 4)
+		// 	{
+		// 		senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+		// 		return;
+		// 	}
+		// 	Client *client = this->getClientByName(cmd[3]);
+		// 	if(!client)
+		// 	{
+		// 		senderreur(fd, ERR_NOSUCHNICK(cmd[3])); 
+		// 		return;
+		// 	}
+		// 	channel->addBan(*client);
+		// 	sendMsg(fd, "MODE " + channel->getName() + " +b " + client->getNickname());
+		// 	sendMsg(client->getFd(), "MODE " + channel->getName() + " +b " + client->getNickname());
+		// }
+		else
+			senderreur(fd, ERR_UNKNOWNMODE(cmd[2]));
 	}
 	else
 	{
+		std::cout << "Hiiiiiiiiiii" << std::endl;
 		if(cmd[2][1] == 'o')
 		{
 			if(cmd.size() < 4)
@@ -93,6 +168,46 @@ void Server::mode(std::string &msg, int fd)
 			channel->removeOperator(*client);
 			sendMsg(fd, "MODE " + channel->getName() + " -o " + client->getNickname());
 			sendMsg(client->getFd(), "MODE " + channel->getName() + " -o " + client->getNickname());
+		}
+		else if(cmd[2][1] == 'i')
+		{
+			if(cmd.size() != 3)
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
+			Client *client = this->getClientByName(cmd[3]);
+			if(!client)
+				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));	return;
+			// for (std::vector<Channel *>::iterator it = getClient(fd)->getInvitedChannels().begin();it != this->getClient(fd)->getInvitedChannels().end() && (*it)->getName() == channel->getName(); ++it)
+			// 	this->getClient(fd)->getInvitedChannels().erase(it);
+			channel->setIsInviteOnly(false);
+			sendMsg(fd, "MODE " + channel->getName() + " -i " + client->getNickname());
+			sendMsg(client->getFd(), "MODE " + channel->getName() + " -i " + client->getNickname());
+		}
+		else if (cmd[2][1] == 'k')
+		{
+			channel->setPassword("");
+			if(cmd.size() != 3)
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
+			// sendMsg(fd, "MODE " + channel->getName() + " -k ");
+			std::cout << "Channel passs " << channel->getPassword() << std::endl;
+			// for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -k ");
+		}
+		else if (cmd[2][1] == 'l')
+		{
+			if(cmd.size() != 3)
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
+			channel->setLimit(0);
+			sendMsg(fd, "MODE " + channel->getName() + " -l ");
+			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -l ");
+		}
+		else if (cmd[2][1] == 't')
+		{
+			channel->setIsTopic(false);
+			sendMsg(fd, "MODE " + channel->getName() + " -t");
+			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -t");
+		
 		}
 	}
 	// if (cmd[2][0] == '+')

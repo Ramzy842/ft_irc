@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/19 20:43:33 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 01:05:38 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,14 +194,15 @@ std::string getServerResponse(const std::string& nickname,
   return response;
 }
 
-bool Server::clientAlreadyInChannel(int fd)
+bool Server::clientAlreadyInChannel(int fd, std::string channelName)
 {
 	for(size_t x = 0; x < this->channels.size(); x++)
 	{
 		std::vector<Client *> members_ = this->channels[x]->getMembers();
 		for (size_t y = 0; y < members_.size(); y++)
 		{
-			if (members_[y]->getFd() == fd)
+			if (this->channels[x]->getName() == channelName
+				&& members_[y]->getFd() == fd)
 				return true;
 		}
 	}
@@ -240,7 +241,9 @@ void Server::join(std::string &msg, int fd)
 			{
 				// HANDLE EXISTING CHANNEL
 				std::cout << "Channel " << tokens[i].first << " already exists" << std::endl;
-				if (!clientAlreadyInChannel(fd))
+				std::cout << "Channel " << tokens[i].first << " password: " << this->channels[x]->getPassword() << std::endl;
+				std::cout << "tokens[i].second (password): " << tokens[i].second << std::endl;	
+				if (!clientAlreadyInChannel(fd,channels[x]->getName() ))
 				{
 					if (!this->channels[x]->getPassword().empty() && this->channels[x]->getPassword() != tokens[i].second)
 						std::cout << "Channel " << this->channels[x]->getName() << " password incorrect"  << std::endl;

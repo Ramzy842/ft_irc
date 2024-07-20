@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:51 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 07:48:34 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 01:08:50 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ bool Channel::getIsInviteOnly() {
 	return this->is_invite_only;
 }
 
-void Channel::setPassword(std::string password) {
-	this->password = password;
+void Channel::setPassword(std::string _password) {
+	this->password = _password;
 }
 
 std::string Channel::getPassword() {
@@ -201,4 +201,12 @@ std::string Channel::clientChannel_list(){
 			list += " ";
 	}
 	return list;
+}
+
+void Channel::setIsTopic(bool is_topic) {
+	this->is_topic = is_topic;
+}
+
+bool Channel::getIsTopic() {
+	return this->is_topic;
 }

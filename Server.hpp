@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 07:14:01 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 00:50:57 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class Server {
 		Channel* getChannelByName(std::string name);
 		Client* getClientByName(std::string nick);
 		int getClientsNumberInChannel(std::string channelName);
-		bool clientAlreadyInChannel(int fd);
+		bool clientAlreadyInChannel(int fd, std::string channelName);
 		bool clientIsInvited(int fd);
 
 		//****** IRC COMMANDS ******//
