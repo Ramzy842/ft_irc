@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 00:07:45 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 23:12:51 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class Server {
 		int port;
 		std::string password;
 		int fd;
+		static bool signal;
 		std::vector<Client *> clients;
 		std::vector<Channel *> channels;
 		std::vector<struct pollfd> fds;
@@ -58,8 +59,8 @@ class Server {
 		Channel* getChannelByName(std::string name);
 		Client* getClientByName(std::string nick);
 		int getClientsNumberInChannel(std::string channelName);
-		bool clientAlreadyInChannel(int fd);
-		bool clientIsInvited(int fd, std::string channelName);
+		bool clientAlreadyInChannel(int fd, std::string channelName);
+		bool clientIsInvited(int fd, Channel *channel);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);
@@ -87,6 +88,10 @@ class Server {
 		void sendResponse(std::string response, int fd);
 		int SearchForClients(std::string nickName);
 		void quit(std::string &msg, int fd);
+		void handleSignal(int signum);
+		void sendMsg(int fd, std::string msg);
+		void handler_cmd_parser(std::string &msg, int fd);
+	    Channel	*senderreur(int fd, std::string msg);
 };
 
 #endif
