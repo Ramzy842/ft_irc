@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 22:59:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 04:50:24 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class Client {
 	private:
 		std::string ip_address;
 		int fd;
+		bool isHexChat;
 		bool isOperator;
 		bool isRegistered;
 		bool isLoggedin;
@@ -72,7 +73,9 @@ class Client {
 		bool getIsNickSet();
 		void setIsNickSet(bool _isNickSet);
 		std::vector<Channel *> getInvitedChannels();
-		
+		void setInvitedChannels(std::vector<Channel *>& invChannels);
+		void setIsHexChat(bool _hex);
+		bool getIsHexChat();
 };
 
 #endif

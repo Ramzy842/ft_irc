@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/18 03:33:24 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 04:45:58 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ Channel *senderreur(int fd, std::string msg)
 	int failedsend = send(fd, msg.c_str(), msg.size(), 0);
 	if (failedsend == -1)
 		std::cerr << RED << "Failed to send message" << RESET << std::endl;
+	return (NULL);
+}
+
+Channel *senderreur(int fd, std::string msg, bool hexChat)
+{
+	(void) hexChat;
+	msg = RED + msg + RESET + "\n";
+	int failedsend = send(fd, msg.c_str(), msg.size(), 0);
+	if (failedsend == -1)
+		std::cerr  << "Failed to send message" << RESET << std::endl;
 	return (NULL);
 }
 

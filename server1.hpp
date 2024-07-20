@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 04:49:10 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 00:07:45 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ class Server {
 		void setFd(int _fd);
 		std::string getPassword();
 		void setPassword(std::string _password);
-		std::vector<Client > getClients();
+		std::vector<Client> getClients();
 		void setClients(std::vector<Client> _clients);
 		void AddToClients(Client& client);
 		void removeClient(int _fd);
@@ -58,8 +58,8 @@ class Server {
 		Channel* getChannelByName(std::string name);
 		Client* getClientByName(std::string nick);
 		int getClientsNumberInChannel(std::string channelName);
-		bool clientAlreadyInChannel(int fd, std::string channelName);
-		bool clientIsInvited(int fd, Channel *channel);
+		bool clientAlreadyInChannel(int fd);
+		bool clientIsInvited(int fd, std::string channelName);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);

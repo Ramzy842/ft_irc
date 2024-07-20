@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 01:05:38 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 04:08:23 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,12 +209,13 @@ bool Server::clientAlreadyInChannel(int fd, std::string channelName)
 	return false;
 }
 
-bool Server::clientIsInvited(int fd)
+bool Server::clientIsInvited(int fd,Channel *channel)
 {
-		std::vector<Channel *> invitations = getClient(fd)->getInvitedChannels();
-		for (size_t y = 0; y <invitations.size(); y++)
+		// std::vector<Channel *> invitations = getClient(fd)->getInvitedChannels();
+		for (size_t y = 0; y < this->getClient(fd)->getInvitedChannels().size(); y++)
 		{
-			if (invitations[y]->getClientInChannel(getClient(fd)->getNickname()))
+			std::cout << RED << "channel ivited : " << getClient(fd)->getInvitedChannels()[y]->getName() << RESET << std::endl;
+			if (this->getClient(fd)->getInvitedChannels()[y]->getName() == channel->getName())
 				return true;
 		}
 	return false;
@@ -247,7 +248,7 @@ void Server::join(std::string &msg, int fd)
 				{
 					if (!this->channels[x]->getPassword().empty() && this->channels[x]->getPassword() != tokens[i].second)
 						std::cout << "Channel " << this->channels[x]->getName() << " password incorrect"  << std::endl;
-					else if (this->channels[x]->getIsInviteOnly() && !clientIsInvited(fd))
+					else if (this->channels[x]->getIsInviteOnly() && !clientIsInvited(fd, channels[x]))
 						std::cout << "Channel " << this->channels[x]->getName() << " is invite only and " << this->getClient(fd)->getNickname() << " is not invited."  << std::endl;
 					else if (this->channels[x]->getLimit() && this->channels[x]->getMembers().size() >= this->channels[x]->getLimit())
 						std::cout << "Channel " << this->channels[x]->getName() << " limit is surpassed. Client " << this->getClient(fd)->getNickname() << " not allowed to join"  << std::endl;

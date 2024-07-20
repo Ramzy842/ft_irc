@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/19 02:41:51 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/20 04:57:06 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,11 @@ void Server::init() {
 							// std::cout << "Client <" << fds[x].fd << "> and ip address <" << client.getIpAddress() << "> Data: " << buff;
 							// Add code to process the received data: parse, check, authenticate, handle the command, etc...
 							std::string buff_str(buff);
+							std::cout << "***********///////////*******" << buff_str << std::endl;
 							// std::cout << buff_str << std::endl;
 							cmd_parser(buff_str, fds[x].fd);
 							// Display channels and subscribed users in each channel
+							std::cout << "Channels:" << std::endl;
 							for (size_t x = 0; x < this->channels.size(); x++)
 							{
 								for (size_t y = 0; y < this->channels[x]->getMembers().size(); y++)
@@ -147,6 +149,17 @@ void Server::init() {
 									std::cout << "Channel: " << this->channels[x]->getName() << " has user (" << members_[y]->getFd() << ")" << std::endl;
 								}
 							}
+							std::cout << "------------------------------------------------" <<std::endl;
+							std::cout << "Invited Channels:" << std::endl;
+							for (size_t x = 0; x < this->clients.size(); x++)
+							{
+								for (size_t y = 0; y < this->clients[x]->getInvitedChannels().size(); y++)
+								{
+									std::vector<Channel *> invitedChannels = this->clients[x]->getInvitedChannels();
+									std::cout << "Client <" << this->clients[x]->getNickname() << "> is invited to Channel <" << invitedChannels[y]->getName() << ">" << std::endl;
+								}
+							}
+							std::cout << "------------------------------------------------" <<std::endl;
 						}
 					}
 				}

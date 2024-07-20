@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 03:08:14 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/20 03:43:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,8 @@ void Server::mode(std::string &msg, int fd)
 			// std::cout << "im here also" << std::endl;
 			channel->setIsInviteOnly(false);
 			// sendMsg(fd, "MODE " + channel->getName() + " -i ");
-			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -i ");
+			// for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -i ");
 		}
 		else if (cmd[2][1] == 'k')
 		{
