@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/07/20 06:40:03 by yaidriss         ###   ########.fr       */
-=======
-/*   Updated: 2024/07/20 07:54:18 by rchahban         ###   ########.fr       */
->>>>>>> 9ad28f1091aa67c312ad32926860ce8ff7ad1cea
+/*   Updated: 2024/07/20 00:07:45 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +33,6 @@ class Server {
 		std::vector<Client *> clients;
 		std::vector<Channel *> channels;
 		std::vector<struct pollfd> fds;
-		static bool signal;
 	public:
 		Server();
 		Server(int port, std::string& password);
@@ -52,7 +47,7 @@ class Server {
 		void setFd(int _fd);
 		std::string getPassword();
 		void setPassword(std::string _password);
-		std::vector<Client > getClients();
+		std::vector<Client> getClients();
 		void setClients(std::vector<Client> _clients);
 		void AddToClients(Client& client);
 		void removeClient(int _fd);
@@ -63,9 +58,9 @@ class Server {
 		Channel* getChannelByName(std::string name);
 		Client* getClientByName(std::string nick);
 		int getClientsNumberInChannel(std::string channelName);
-		bool clientAlreadyInChannel(int fd, std::string channelName);
-		bool clientIsInvited(int fd, Channel *channel);
-		static void handleSignal(int signum);
+		bool clientAlreadyInChannel(int fd);
+		bool clientIsInvited(int fd, std::string channelName);
+
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);
 		void topic(std::string &msg, int fd);
@@ -92,7 +87,6 @@ class Server {
 		void sendResponse(std::string response, int fd);
 		int SearchForClients(std::string nickName);
 		void quit(std::string &msg, int fd);
-		void sendMsg(int fd, std::string msg);
 };
 
 #endif
