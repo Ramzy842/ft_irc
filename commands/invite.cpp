@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 22:42:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:10:09 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ void Server::invite(std::string &msg, int fd)
 	std::vector<Channel *>invChannels = client->getInvitedChannels();
 	invChannels.push_back(channel);
 	client->setInvitedChannels(invChannels);
-	std::string rps = ": 341 " + cmd[1] + " :User has been invited" /* + this->getClientByName(cmd[1])->getInvitedChannels()[0]->getName() */;
+	std::string rps = ": 341 " + cmd[1] + " :User has been invited"; /* + this->getClientByName(cmd[1])->getInvitedChannels()[0]->getName() */;
 	sendMsg(fd, rps);
-	std::string rps2 = ": ?? " + this->getClient(fd)->getNickname() + " INVITE " + cmd[1] + " to " + cmd[2];
+	std::string rps2 = ":" + this->getClient(fd)->getNickname() + " INVITE " + cmd[1] + " to " + cmd[2];
 	sendMsg(this->getClientByName(cmd[1])->getFd(), rps2);
 	// sendMsg(channel->getId(), Channelrps);
 	// std::string channel = cmd[2].substr(1);
