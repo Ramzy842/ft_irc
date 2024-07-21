@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 22:44:14 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 02:51:28 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,12 +146,12 @@ void Server::cmd_parser(std::string &msg, int fd)
 			continue;
 		else if(cmd[0] != "CAP")
 		{
-			std::cout << "im in top of handler_cmd_parser " << lines[i] << std::endl;
+			// std::cout << "im in top of handler_cmd_parser " << lines[i] << std::endl;
 			handler_cmd_parser(lines[i], fd);
 		}
 		else 
 		{
-			std::cout << "im here : and command is "<< cmd[0] << std::endl;
+			// std::cout << "im here : and command is "<< cmd[0] << std::endl;
 			getClient(fd)->setIsHexChat(true);
 		}
 	}
