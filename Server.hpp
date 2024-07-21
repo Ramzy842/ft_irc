@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/21 02:40:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:58:16 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ class Server {
 		void sendMsg(int fd, std::string msg);
 		void handler_cmd_parser(std::string &msg, int fd);
 	    Channel	*senderreur(int fd, std::string msg);
+		void sendWelcome(int fd);
 };
 
 #endif

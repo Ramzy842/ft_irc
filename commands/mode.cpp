@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 22:42:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:37:52 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ Channel *Server::handlermodecommand(std::vector<std::string> cmd, int fd)
 	}
 	if(!channel->getOperatorByName(isClient->getNickname()))
 	{
-		senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[1]));
+		senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[3]));
 		return NULL;
 	}
 	return channel;
@@ -77,8 +77,9 @@ void Server::mode(std::string &msg, int fd)
 				return;
 			}
 			channel->addOperator(*client);
-			sendMsg(fd, "MODE " + channel->getName() + " +o " + client->getNickname());
-			sendMsg(client->getFd(), "MODE " + channel->getName() + " +o " + client->getNickname());
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +o " + client->getNickname();
+			sendMsg(fd, msg);
+			sendMsg(client->getFd(), msg);
 		}
 		else if(cmd[2][1] == 'i')
 		{
@@ -106,8 +107,9 @@ void Server::mode(std::string &msg, int fd)
 				return;
 			}
 			channel->setPassword(cmd[3]);
-			std::cout << "password -> " << cmd[3] << std::endl;
-			sendMsg(fd, "MODE " + channel->getName() + " +k " + cmd[3]);
+			std::string msg = ":" + getClient(fd)->getNickname() + "!"  + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +k " + cmd[3];
+			// std::cout << "password -> " << cmd[3] << std::endl;
+			sendMsg(fd, msg);
 			// for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +k " + cmd[3]);
 		}
@@ -119,9 +121,10 @@ void Server::mode(std::string &msg, int fd)
 				return;
 			}
 			channel->setLimit(std::stoi(cmd[3]));
-			sendMsg(fd, "MODE " + channel->getName() + " +l " + cmd[3]);
+			std::string msg = ":" + getClient(fd)->getNickname() + "!"+ getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +l " + cmd[3];
+			sendMsg(fd,msg);
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +l " + cmd[3]);
+				sendMsg((*it)->getFd(),msg);
 		}
 		else if (cmd[2][1] == 't')
 		{
@@ -131,10 +134,11 @@ void Server::mode(std::string &msg, int fd)
 				return;
 			}
 			channel->setIsTopic(true);
-			sendMsg(fd, "MODE " + channel->getName() + " +t");
-		std::cout << "Hiiiiiiiiiii" << std::endl;
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +t";
+			sendMsg(fd, msg);
+		// std::cout << "Hiiiiiiiiiii" << std::endl;
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +t");
+				sendMsg((*it)->getFd(), msg);
 		}
 		else
 			senderreur(fd, ERR_UNKNOWNMODE(cmd[2]));
@@ -144,13 +148,20 @@ void Server::mode(std::string &msg, int fd)
 		if(cmd[2][1] == 'o')
 		{
 			if(cmd.size() < 4)
-				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+				return;
+			}
 			Client *client = this->getClientByName(cmd[3]);
 			if(!client)
-				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));	return;
+			{
+				senderreur(fd, ERR_NOSUCHNICK(cmd[3]));	
+				return;
+			}
 			channel->removeOperator(*client);
-			sendMsg(fd, "MODE " + channel->getName() + " -o " + client->getNickname());
-			sendMsg(client->getFd(), "MODE " + channel->getName() + " -o " + client->getNickname());
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -o " + client->getNickname();
+			sendMsg(fd, msg);
+			sendMsg(client->getFd(), msg);
 		}
 		else if(cmd[2][1] == 'i')
 		{
@@ -166,6 +177,10 @@ void Server::mode(std::string &msg, int fd)
 			// 	this->getClient(fd)->getInvitedChannels().erase(it);
 			// std::cout << "im here also" << std::endl;
 			channel->setIsInviteOnly(false);
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -i";
+			sendMsg(fd, msg);
+			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), msg);
 			// sendMsg(fd, "MODE " + channel->getName() + " -i ");
 			// for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -i ");
@@ -178,26 +193,32 @@ void Server::mode(std::string &msg, int fd)
 				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
 				return;
 			}
-			sendMsg(fd, "MODE " + channel->getName() + " -k ");
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -k";
+			sendMsg(fd, msg);
 			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -k ");
+				sendMsg((*it)->getFd(), msg);
 			// std::cout << "Channel passs " << channel->getPassword() << std::endl;
 		}
 		else if (cmd[2][1] == 'l')
 		{
 			if(cmd.size() != 3)
-				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); return;
+			{
+				senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0])); 
+				return;
+			}
 			channel->setLimit(0);
-			sendMsg(fd, "MODE " + channel->getName() + " -l ");
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -l";
+			sendMsg(fd, msg);
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -l ");
+				sendMsg((*it)->getFd(), msg);
 		}
 		else if (cmd[2][1] == 't')
 		{
 			channel->setIsTopic(false);
-			sendMsg(fd, "MODE " + channel->getName() + " -t");
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -t";
+			sendMsg(fd, msg);
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -t");
+				sendMsg((*it)->getFd(), msg);
 		
 		}
 		else

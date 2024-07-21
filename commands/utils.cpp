@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 15:17:26 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:09:32 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,12 @@ bool isEmpyCmd(std::vector<std::string> cmd)
 			return false;
 	}
 	return true;
+}
+
+void Server::sendWelcome(int fd)
+{
+	if(!getClient(fd)->getIsRegistered() || !getClient(fd)->getIsLoggedIn() || !getClient(fd)->getIsNickSet())
+		return;
+	std::string msg = "001 :Welcome to the Internet Relay Network " + this->getClient(fd)->getNickname();
+	sendMsg(fd, msg);
 }

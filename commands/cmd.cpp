@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 02:51:28 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:59:14 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,16 @@ void Server::handler_cmd_parser(std::string &msg, int fd)
 	// {
 		if (!msg.compare(0, 4, "PASS") || !msg.compare(0, 4, "pass"))
 			this->pass(msg, fd);
-		else if(!this->getClient(fd)->getIsLoggedIn())
-			senderreur(fd, "451 :You have not logged in");
+		// else if(!this->getClient(fd)->getIsLoggedIn())
+		// 	senderreur(fd, "451 :You have not logged in");
 		else if (!msg.compare(0, 4, "NICK") || !msg.compare(0, 4, "nick"))
 			this->nick(msg, fd);
-		else if(!this->getClient(fd)->getIsNickSet())
-			senderreur(fd, "451 :You have not set your nickname");
+		// else if(!this->getClient(fd)->getIsNickSet())
+		// 	senderreur(fd, "451 :You have not set your nickname");
 		else if (!msg.compare(0, 4, "USER") || !msg.compare(0, 4, "user"))
 			this->user(msg, fd);
-		else if(!this->getClient(fd)->getIsRegistered())
-			senderreur(fd, "451 :You have not registered");		
+		// else if(!this->getClient(fd)->getIsRegistered())
+		// 	senderreur(fd, "451 :You have not registered");		
 		else if (!msg.compare(0, 4, "BONG") || !msg.compare(0, 4, "bong"))
 			return;
 		else if (!msg.compare(0, 4, "PING") || !msg.compare(0, 4, "ping"))
