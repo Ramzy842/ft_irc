@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 06:38:14 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 02:50:35 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,17 @@ int Server::getClientsNumberInChannel(std::string channelName)
 	return 0;
 }
 
+std::string Server::getClientList(Channel *channel)
+{
+	std::string clientList;
+	for (size_t x = 0; x < channel->getMembers().size(); x++)
+	{
+		clientList += channel->getMembers()[x]->getNickname();
+		clientList += " ";
+	}
+	return clientList;
+}
+
 
 std::string getServerResponse(const std::string& nickname, 
                               const std::string& hostname, 
@@ -172,13 +183,13 @@ std::string getServerResponse(const std::string& nickname,
   }
 
   // Join message
-  if (!hostname.empty() && !ipaddress.empty() && !channelname.empty()) {
-    response += ":" + hostname + "@" + ipaddress + " JOIN #" + channelname + "\n";
+  if (!nickname.empty() && !hostname.empty() && !ipaddress.empty() && !channelname.empty()) {
+    response += ":" + nickname + "!" + hostname + "@" + ipaddress + " JOIN #" + channelname + "\n";
   }
 
   // User list in channel reply
   if (!nickname.empty() && !channelname.empty() && !clientList.empty()) {
-    response += ": 353 " + nickname + " @ #" + channelname + " :" + clientList + "\n";
+    response += ": 353 " + nickname + " @ #" + channelname + " :@" + clientList + "\n";
   }
 
   // End of names list
@@ -253,7 +264,13 @@ void Server::join(std::string &msg, int fd)
 					else if (this->channels[x]->getLimit() && this->channels[x]->getMembers().size() >= this->channels[x]->getLimit())
 						std::cout << "Channel " << this->channels[x]->getName() << " limit is surpassed. Client " << this->getClient(fd)->getNickname() << " not allowed to join"  << std::endl;
 					else
+					{
 						channels[x]->addMember(*client);
+						this->sendMsg(fd,
+							getServerResponse(client->getNickname(),
+								client->getHostname(), client->getIpAddress(),
+								channels[x]->getName(), "", this->getClientList(channels[x]), "", "", "", ""));
+					}
 				}
 				else
 					this->sendMsg(fd, "Client " + this->getClient(fd)->getNickname() + " is already in channel " + this->channels[x]->getName());
@@ -268,6 +285,10 @@ void Server::join(std::string &msg, int fd)
 			newChannel->addOperator(*this->getClient(fd));
 			channels.push_back(newChannel);
 			channels[channels.size() - 1]->addMember(*client);
+			this->sendMsg(fd,
+				getServerResponse(client->getNickname(),
+					client->getHostname(), client->getIpAddress(),
+						newChannel->getName(), "", this->getClientList(newChannel), "", "", "", ""));
 		}
 	}
 	

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 23:12:11 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 00:40:16 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void Server::sendMsg(int fd, std::string msg)
 			std::cerr << "Failed to send message" << std::endl;
 	}
 }
-
 
 bool isEmpyCmd(std::vector<std::string> cmd)
 {

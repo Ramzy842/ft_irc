@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 23:58:40 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/21 02:40:18 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class Server {
 		bool clientAlreadyInChannel(int fd, std::string channelName);
 		bool clientIsInvited(int fd, Channel *channel);
 		static void handleSignal(int signum);
+		std::string getClientList(Channel *channel);
 
 		//****** IRC COMMANDS ******//
 		void invite(std::string &msg, int fd);

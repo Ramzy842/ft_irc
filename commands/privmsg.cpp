@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 22:42:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 00:10:28 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void Server::privmsg(std::string &msg, int fd) {
 		for (size_t i = 3; i < cmd.size(); i++)
 			message += " " + cmd[i];
 		std::string resp = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getNickname() + "@localhost PRIVMSG #" + cmd[0] + " :" + message + "\r\n";
-		// sendMsg(client->getFd(), "PRIVMSG " + client->getNickname() + " :" + message);
+		sendMsg(client->getFd(), "PRIVMSG " + getClient(fd)->getNickname() + " :" + message);
 	}
 	else {
 		Channel *channel = getChannelByName(cmd[1].substr(1));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 20:54:53 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 02:22:56 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ std::string Server::getPassword() {
 void Server::setPassword(std::string _password) {
 	this->password = _password;
 }
+
 // std::vector<Client *> Server::getClients() {
 // 	return this->clients;
 // }
