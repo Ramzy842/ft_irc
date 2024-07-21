@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 22:44:33 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:50:10 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,24 @@ void Server::topic(std::string &msj, int fd)
 	if (cmd.size() == 2)
 	{
 		std::string topic = channel->getTopic();
-		if(!topic.empty())
+		if(topic == "")
+		{
 			rps = ": 331 " + channel->getName() + " :No topic is set\n";
+			
+		}
 		else
 		{
-			rps = ": 332 " + channel->getName() + " " + topic + "\n";
-			rps +=": 333 " + channel->getName() + " " + this->getClient(fd)->getNickname() + " " + std::to_string(time(0)) + "\n"; 
+			rps = ": 332 " + this->getClient(fd)->getNickname() + " #" + channel->getName() + " " + topic + "\n";
+			rps +=": 333 " + this->getClient(fd)->getNickname() + " #" + channel->getName() + " " + this->getClient(fd)->getNickname()+ " " + std::to_string(time(0)); 
 			std::cout << "rps: " << rps << std::endl;
 		}
-		sendMsg(fd, rps);			
+		for(size_t i = 0; i < channel->getMembers().size(); i++)
+			sendMsg(channel->getMembers()[i]->getFd(), rps);
 	}
 	else
 	{
 		channel->setTopic(newtopic);
-		std::string rps = ":" + this->getClient(fd)->getNickname() + " TOPIC " + channel->getName() + " :" + newtopic + "\n";
+		std::string rps = ":" + this->getClient(fd)->getNickname() + "!" + this->getClient(fd)->getUsername() + "@localhost TOPIC #" + channel->getName() + " " + newtopic;
 		for(size_t i = 0; i < channel->getMembers().size(); i++)
 			sendMsg(channel->getMembers()[i]->getFd(), rps);
 	}
