@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 18:44:12 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 20:23:34 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ void Server::kick(std::string &msg, int fd)
     // {
     //     if(channel->getMembers()[i]->getFd() != fd)
     //         sendMsg(channel->getMembers()[i]->getFd(), msg);
+    // }
+    // for(size_t i = 0; i < channel->getMembers().size(); i++)
+    // {
+    //     if(channel->getMembers()[i]->getFd() != fd)
+    //         sendMsg(channel->getMembers()[i]->getFd(), msj);
     // }
     sendMsg(fd, msj);
 }
