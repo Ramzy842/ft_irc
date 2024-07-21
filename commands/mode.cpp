@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 17:37:52 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:21:06 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void Server::mode(std::string &msg, int fd)
 			// }
 			// this->getClient(fd)->getInvitedChannels().push_back(channel);
 			channel->setIsInviteOnly(true);
+			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +i";
+			sendMsg(fd, msg);
 			// for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +i");
 		}
@@ -109,9 +111,9 @@ void Server::mode(std::string &msg, int fd)
 			channel->setPassword(cmd[3]);
 			std::string msg = ":" + getClient(fd)->getNickname() + "!"  + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +k " + cmd[3];
 			// std::cout << "password -> " << cmd[3] << std::endl;
-			sendMsg(fd, msg);
-			// for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +k " + cmd[3]);
+			// sendMsg(fd, msg);
+			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), "MODE " + channel->getName() + " +k " + cmd[3]);
 		}
 		else if(cmd[2][1] == 'l')
 		{
@@ -122,7 +124,7 @@ void Server::mode(std::string &msg, int fd)
 			}
 			channel->setLimit(std::stoi(cmd[3]));
 			std::string msg = ":" + getClient(fd)->getNickname() + "!"+ getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +l " + cmd[3];
-			sendMsg(fd,msg);
+			// sendMsg(fd,msg);
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 				sendMsg((*it)->getFd(),msg);
 		}
@@ -178,9 +180,11 @@ void Server::mode(std::string &msg, int fd)
 			// std::cout << "im here also" << std::endl;
 			channel->setIsInviteOnly(false);
 			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -i";
+			// sendMsg(fd, msg);
 			sendMsg(fd, msg);
-			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
-				sendMsg((*it)->getFd(), msg);
+			// sendMsg(->getFd(), msg);
+			// for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+			// 	sendMsg((*it)->getFd(), msg);
 			// sendMsg(fd, "MODE " + channel->getName() + " -i ");
 			// for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 			// 	sendMsg((*it)->getFd(), "MODE " + channel->getName() + " -i ");
@@ -194,7 +198,7 @@ void Server::mode(std::string &msg, int fd)
 				return;
 			}
 			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -k";
-			sendMsg(fd, msg);
+			// sendMsg(fd, msg);
 			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 				sendMsg((*it)->getFd(), msg);
 			// std::cout << "Channel passs " << channel->getPassword() << std::endl;
@@ -208,7 +212,7 @@ void Server::mode(std::string &msg, int fd)
 			}
 			channel->setLimit(0);
 			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -l";
-			sendMsg(fd, msg);
+			// sendMsg(fd, msg);
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 				sendMsg((*it)->getFd(), msg);
 		}
@@ -216,7 +220,7 @@ void Server::mode(std::string &msg, int fd)
 		{
 			channel->setIsTopic(false);
 			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " -t";
-			sendMsg(fd, msg);
+			// sendMsg(fd, msg);
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 				sendMsg((*it)->getFd(), msg);
 		
