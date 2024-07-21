@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/20 22:42:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:44:12 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,20 @@ void Server::kick(std::string &msg, int fd)
     if(channel->getOperatorByName(cmd[2]))
         channel->removeOperator(*channel->getOperatorByName(cmd[2]));
     this->getClientByName(cmd[2])->removeChannel(*channel);
-        std::string kickmsg = "KICK " + channel->getName() + " " + cmd[2];
-    if(cmd.size() == 3)
-        kickmsg += "\n";
-    else
-    {
-        kickmsg += " :";
-        for(size_t i = 3; i < cmd.size(); i++)
-            kickmsg += cmd[i] + " ";
-        kickmsg += "\n";
-    }
-    for (size_t i = 0; i < channel->getMembers().size(); i++)
-    {
-        if(channel->getMembers()[i]->getFd() != fd)
-            sendMsg(channel->getMembers()[i]->getFd(), kickmsg);
-    }
-    sendMsg(fd, kickmsg);
+    std::string msj = ":" + this->getClient(fd)->getNickname() + "!~" + this->getClient(fd)->getHostname() + "@localhost KICK " + cmd[1] + " " + cmd[2];
+    // if(cmd.size() == 3)
+    //     kickmsg += "\n";
+    // else
+    // {
+    //     kickmsg += " :";
+    //     for(size_t i = 3; i < cmd.size(); i++)
+    //         kickmsg += cmd[i] + " ";
+    //     kickmsg += "\n";
+    // }
+    // for (size_t i = 0; i < channel->getMembers().size(); i++)
+    // {
+    //     if(channel->getMembers()[i]->getFd() != fd)
+    //         sendMsg(channel->getMembers()[i]->getFd(), msg);
+    // }
+    sendMsg(fd, msj);
 }
