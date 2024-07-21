@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 02:56:16 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:17:26 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ Channel *Server::senderreur(int fd, std::string msg)
 	// std::cout << RED << "im here in sendERRUER and getIshexChat is " << this->getClient(fd)->getIsHexChat() << " and message is :" << msg << RESET << std::endl;
 	if (!this->getClient(fd)->getIsHexChat())
 		msg = GREEN + msg + RESET + "\n";
+	else
+		msg += "\r\n";
 	int failedsend = send(fd, msg.c_str(), msg.size(), 0);
 	if (failedsend == -1)
 	{
@@ -60,9 +62,11 @@ Channel *senderreur(int fd, std::string msg, bool hexChat)
 
 void Server::sendMsg(int fd, std::string msg)
 {
-	// std::cout << "im here in sendMsg and getIshexChat is " << this->getClient(fd)->getIsHexChat() << " and message is :" << msg << std::endl;
+	std::cout << "im here in sendMsg and getIshexChat is " << this->getClient(fd)->getIsHexChat() << " and message is :" << msg << std::endl;
 	if (!this->getClient(fd)->getIsHexChat())
 		msg = GREEN + msg + RESET + "\n";
+	else
+		msg += "\r\n";
 	int failedsend = send(fd, msg.c_str(), msg.size(), 0);
 	if (failedsend == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/21 02:25:03 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:12:30 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void Server::privmsg(std::string &msg, int fd) {
             senderreur(fd, ERR_NOSUCHNICK(cmd[1]));
             return;
         }
-        std::string resp = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost PRIVMSG " + cmd[1] + " :" + message + "\r";
+        std::string resp = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost PRIVMSG " + cmd[1] + " :" + message;
         sendMsg(client->getFd(), resp);
     } else {
         Channel *channel = getChannelByName(cmd[1].substr(1));
@@ -99,7 +99,7 @@ void Server::privmsg(std::string &msg, int fd) {
             senderreur(fd, ERR_CANNOTSENDTOCHAN(cmd[1]));
             return;
         }
-        std::string sender = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost PRIVMSG " + cmd[1] + " :" + message + "\r";
+        std::string sender = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost PRIVMSG " + cmd[1] + " :" + message;
         for (size_t i = 0; i < channel->getMembers().size(); ++i) {
             if (channel->getMembers()[i]->getFd() != fd) { // Don't send the message to the sender
                 sendMsg(channel->getMembers()[i]->getFd(), sender);
