@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:43 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/21 16:58:16 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/22 07:38:00 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ class Server {
 		std::vector<Channel *> channels;
 		std::vector<struct pollfd> fds;
 	public:
+	void displayChannels();
+	void displayInvitedChannels();
 		Server();
 		Server(int port, std::string& password);
 		Server(const Server& original);

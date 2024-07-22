@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/21 13:48:32 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/22 08:52:59 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,52 @@ void Server::handleSignal(int signum)
 	signal = true;
 }
 
+void Server::displayChannels() 
+{
+	if (!this->channels.size())
+	{
+		std::cout << "No channels yet." << std::endl;
+		return ;
+	}
+	std::cout << "Channels:" << std::endl;
+	for (size_t x = 0; x < this->channels.size(); x++)
+	{
+		for (size_t y = 0; y < this->channels[x]->getMembers().size(); y++)
+		{
+			std::vector<Client *> members_ = this->channels[x]->getMembers();
+			std::cout << "Channel: " << this->channels[x]->getName() << " has user (" << members_[y]->getFd() << ")" << std::endl;
+		}
+	}
+}
+
+void Server::displayInvitedChannels() 
+{
+	if (!this->channels.size())
+		return ;
+	std::cout << "Invited Channels:" << std::endl;
+	for (size_t x = 0; x < this->clients.size(); x++)
+	{
+		for (size_t y = 0; y < this->clients[x]->getInvitedChannels().size(); y++)
+		{
+			std::vector<Channel *> invitedChannels = this->clients[x]->getInvitedChannels();
+			std::cout << "Client <" << this->clients[x]->getNickname() << "> is invited to Channel <" << invitedChannels[y]->getName() << ">" << std::endl;
+		}
+	}
+}
+
+
+std::string trim(std::string &str)
+{
+    std::string whitespace = " \t";
+    size_t strBegin = str.find_first_not_of(whitespace);
+    if (strBegin == std::string::npos)
+        return "";
+
+    size_t strEnd = str.find_last_not_of(whitespace);
+    size_t strRange = strEnd - strBegin + 1;
+
+    return str.substr(strBegin, strRange);
+}
 
 void Server::init() {
 	std::cout << CYAN << "Initializing server..." << std::endl;
@@ -100,12 +146,10 @@ void Server::init() {
 				throw(std::runtime_error("poll() faild"));
 			for (unsigned int x = 0; x < this->fds.size(); x++)
 			{
-				if (fds[x].revents && fds[x].revents == POLLIN)
+				if (fds[x].revents && POLLIN)
 				{
 					if (fds[x].fd == this->fd)
-					{
-						std::cout << YELLOW << "New Clients wants to connect" << RESET <<std::endl;
-						
+					{	
 						struct sockaddr_in client_addr;
     					socklen_t addr_size;
 						addr_size = sizeof(client_addr);
@@ -129,44 +173,27 @@ void Server::init() {
 						client->setIpAddress(inet_ntoa(client_addr.sin_addr));
 						AddToClients(*client);
 						this->fds.push_back(client_fd);
-						std::cout << YELLOW <<"New connection! Socket fd: " << this->fd << ", client fd: " << clientSocket << std::endl;
+						std::cout << YELLOW <<"New connection! " << "Client fd <" << clientSocket << ">" << std::endl;
 					}
 					else
 					{
-						char buff[1024];
+						char buff[1024] = {0};
 						memset(buff, 0, sizeof(buff));
 						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff), 0);
+						std::cout << "receivedBytes: " << receivedBytes << std::endl;
 						if(receivedBytes <= 0)
 						{
+							// NEED TO HANDLE THIS
 							std::cout << "*************Client quit***************" << std::endl;
 							return ;
 						}
 						else
 						{
 							std::string buff_str(buff);
-							std::cout << "***********///////////*******" << buff_str << std::endl;
 							cmd_parser(buff_str, fds[x].fd);
-							// Display channels and subscribed users in each channel
-							std::cout << "Channels:" << std::endl;
-							for (size_t x = 0; x < this->channels.size(); x++)
-							{
-								for (size_t y = 0; y < this->channels[x]->getMembers().size(); y++)
-								{
-									std::vector<Client *> members_ = this->channels[x]->getMembers();
-									std::cout << "Channel: " << this->channels[x]->getName() << " has user (" << members_[y]->getFd() << ")" << std::endl;
-								}
-							}
+							displayChannels();
 							std::cout << "------------------------------------------------" <<std::endl;
-							std::cout << "Invited Channels:" << std::endl;
-							for (size_t x = 0; x < this->clients.size(); x++)
-							{
-								for (size_t y = 0; y < this->clients[x]->getInvitedChannels().size(); y++)
-								{
-									std::vector<Channel *> invitedChannels = this->clients[x]->getInvitedChannels();
-									std::cout << "Client <" << this->clients[x]->getNickname() << "> is invited to Channel <" << invitedChannels[y]->getName() << ">" << std::endl;
-								}
-							}
-							std::cout << "------------------------------------------------" <<std::endl;
+							displayInvitedChannels();
 						}
 					}
 				}
@@ -176,6 +203,7 @@ void Server::init() {
 		close(this->fd);
 	}
 }
+// INVITE FAILS and SEGV WHEN doing (invite #hi username) // NEED FIXING
 
 
 // GETTERS AND SETTERS
@@ -192,12 +220,6 @@ void Server::setPassword(std::string _password) {
 	this->password = _password;
 }
 
-// std::vector<Client *> Server::getClients() {
-// 	return this->clients;
-// }
-// void Server::setClients(std::vector<Client> _clients) {
-// 	this->clients = _clients;
-// }
 
 Client* Server::getClient(int _fd) {
 	for (std::vector<Client *>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
