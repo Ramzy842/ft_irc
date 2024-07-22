@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/22 00:58:44 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 00:21:12 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ Channel* Server::inviteErreurHandler(std::vector<std::string> cmd, int fd)
 		return (senderreur(fd, ERR_NOTPARAMS));
 	Channel *channel = this->getChannelByName(cmd[2].substr(1));
 	if(cmd[2][0] != '#' || !channel)
-		// failedsend = send(fd, "403 No such channel.\n", 21, 0);
 		return senderreur(fd, ERR_NOSUCHCHANNEL(cmd[2].substr(1)));
+	// failedsend = send(fd, "403 No such channel.\n", 21, 0);
 	if(!this->getClientByName(cmd[1]))
 		return senderreur(fd, ERR_NOSUCHCLIENT(cmd[1]));
 	if(channel->getMemberByName(cmd[1]))
@@ -44,9 +44,10 @@ void Server::invite(std::string &msg, int fd)
 	std::vector<std::string> cmd = split_command(msg);
 	std::cout << "invite command -> 0" << cmd[0] << std::endl;
 	Channel* channel = inviteErreurHandler(cmd, fd);
-	std::cout << channel->getName() << std::endl;
 	if(!channel)
 		return;
+	std::cout << "invite command -> 1" << cmd[0] << std::endl;
+	std::cout << channel->getName() << std::endl;
     // channel->addMember(*this->getClientByName(cmd[1]));
 	std::cout << "invite command ->" << cmd[0] << std::endl;
 	
