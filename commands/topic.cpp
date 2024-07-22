@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 22:50:10 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:26:23 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void Server::topic(std::string &msj, int fd)
 		std::string topic = channel->getTopic();
 		if(topic == "")
 		{
-			rps = ": 331 " + channel->getName() + " :No topic is set\n";
+			rps = ": 331 " + channel->getName() + " :No topic is set";
 			
 		}
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 20:23:34 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:31:15 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ Channel *Server::handlerkickcommand(std::vector<std::string> cmd, int fd)
     //     senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
     //     return NULL;
     // }
+	std::cout << "cmd :" << cmd[1] << cmd[2] << std::endl;
     Channel *channel = this->getChannelByName(cmd[1].substr(1));
     if(!channel)
     {
@@ -61,10 +62,16 @@ void Server::kick(std::string &msg, int fd)
     if(!channel)
         return;
     channel->removeMember(*channel->getMemberByName(cmd[2]));
+    std::string msj = ":" + this->getClient(fd)->getNickname() + "!~" + this->getClient(fd)->getHostname() + "@localhost KICK " + cmd[1] + " " + cmd[2];
+    for(size_t i = 0; i < channel->getMembers().size(); i++)
+    {
+        // if(channel->getMembers()[i]->getFd() != fd)
+            sendMsg(channel->getMembers()[i]->getFd(), msj);
+    }
     if(channel->getOperatorByName(cmd[2]))
         channel->removeOperator(*channel->getOperatorByName(cmd[2]));
     this->getClientByName(cmd[2])->removeChannel(*channel);
-    std::string msj = ":" + this->getClient(fd)->getNickname() + "!~" + this->getClient(fd)->getHostname() + "@localhost KICK " + cmd[1] + " " + cmd[2];
+    sendMsg(getClientByName(cmd[2])->getFd(), msj);
     // if(cmd.size() == 3)
     //     kickmsg += "\n";
     // else
@@ -79,10 +86,5 @@ void Server::kick(std::string &msg, int fd)
     //     if(channel->getMembers()[i]->getFd() != fd)
     //         sendMsg(channel->getMembers()[i]->getFd(), msg);
     // }
-    // for(size_t i = 0; i < channel->getMembers().size(); i++)
-    // {
-    //     if(channel->getMembers()[i]->getFd() != fd)
-    //         sendMsg(channel->getMembers()[i]->getFd(), msj);
-    // }
-    sendMsg(fd, msj);
+    // sendMsg(fd, msj);
 }

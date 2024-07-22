@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 22:10:09 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/22 00:58:44 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void Server::invite(std::string &msg, int fd)
 {
 	//! still need to add if else for erreur but i need other commands to be implemented first
 	std::vector<std::string> cmd = split_command(msg);
-	// std::cout << "invite command ->" << cmd[0] << std::endl;
+	std::cout << "invite command -> 0" << cmd[0] << std::endl;
 	Channel* channel = inviteErreurHandler(cmd, fd);
 	std::cout << channel->getName() << std::endl;
 	if(!channel)

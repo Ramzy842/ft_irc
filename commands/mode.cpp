@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 18:21:06 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:02:34 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 Channel *Server::handlermodecommand(std::vector<std::string> cmd, int fd)
 {
-	if (cmd.size() < 2)// || !isEmpyCmd(cmd))
+	if (cmd.size() < 3)// || !isEmpyCmd(cmd))
 	{
 		senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
 		return NULL;

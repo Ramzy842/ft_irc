@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 16:54:49 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:27:12 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,12 +268,26 @@ void Server::join(std::string &msg, int fd)
 						channels[x]->addMember(*client);
 						this->sendMsg(fd,
 							getServerResponse(client->getNickname(),
-								client->getHostname(), client->getIpAddress(),
+								client->getUsername(), client->getIpAddress(),
 								channels[x]->getName(), "", this->getClientList(channels[x]), "", "", "", ""));
+								
+						for(size_t i = 0; i < channels[x]->getMembers().size(); i++)
+						{
+							if (fd != channels[x]->getMembers()[i]->getFd())
+							{
+								sendMsg(channels[x]->getMembers()[i]->getFd(),
+									getServerResponse(client->getNickname(),
+								client->getHostname(), client->getIpAddress(),
+								channels[x]->getName(), "", "", "", "", "", ""));
+							}
+							
+						}
+						
 					}
 				}
 				else
 					this->sendMsg(fd, "Client " + this->getClient(fd)->getNickname() + " is already in channel " + this->channels[x]->getName());
+					
 				foundChannel = true;
 				break ;
 			}
@@ -287,7 +301,7 @@ void Server::join(std::string &msg, int fd)
 			channels[channels.size() - 1]->addMember(*client);
 			this->sendMsg(fd,
 				getServerResponse(client->getNickname(),
-					client->getHostname(), client->getIpAddress(),
+					client->getUsername(), client->getIpAddress(),
 						newChannel->getName(), "", this->getClientList(newChannel), "", "", "", ""));
 		}
 	}
