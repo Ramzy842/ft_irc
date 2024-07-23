@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:44:23 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 16:56:51 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:47:34 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,4 @@ void Server::nick(std::string &msg, int fd)
 	this->getClient(fd)->setNickname(cmd[1]);
 	this->getClient(fd)->setIsNickSet(true);
 	sendWelcome(fd);
-	// sendMsg(fd, "001 :Welcome to the Internet Relay Network " + this->getClient(fd)->getNickname());
 }
