@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/23 05:48:30 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 06:48:59 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ void Server::init() {
 						{
 							std::cout << "Client <" << fds[x].fd << "> has disconnected!" << std::endl;
 							// removeClientFromChannels(fds[x].fd);
-							if()
+							// if()
 							removeClient(fds[x].fd);
 							// for(std::vector<Channels *>::itterator )
 							close(fds[x].fd);
@@ -227,9 +227,9 @@ void Server::init() {
 				}
 			}
 		}
-		// removeClients();
-		// removeChannels();
-		// removePollFds();
+		removeClients();
+		removeChannels();
+		removePollFds();
 		close(this->fd);
 	}
 }
@@ -309,26 +309,18 @@ void Server::removeClientFromChannels(int _fd)
 
 void Server::removeClient(int _fd) {
 	// (void) _fd;	
-	for (size_t i = 0; i < clients.size();)
+	std::vector<Channel *> Channels = this->channels;
+	for (size_t i = 0; i < channels.size(); ++i)
 	{
-		if (clients[i]->getFd() == _fd)
+		if(clientAlreadyInChannel(_fd, channels[i]->getName()))
+			channels[i]->removeMember(*getClient(_fd));
+		
+	}
+	for(size_t i = 0; i < clients.size(); ++i)
+	{
+		if(clients[i]->getFd() == _fd)
 		{
-			// for (size_t j = 0; j < clients[i]->getInvitedChannels().size();)
-			// {
-			// 	delete clients[i]->getInvitedChannels()[j];
-        	// 	clients[i]->getInvitedChannels().erase(clients[i]->getInvitedChannels().begin() + j);
-			// }
-			// clients[i]->getInvitedChannels().clear();
-			// for (size_t j = 0; j < clients[i]->getChannels().size();)
-			// {
-			// 	delete clients[i]->getChannels()[j];
-        	// 	clients[i]->getChannels().erase(clients[i]->getChannels().begin() + j);
-			// }
-			// clients[i]->getChannels().clear();
-			delete clients[i];
 			clients.erase(clients.begin() + i);
-			// clients.clear();
-			break;
 		}
 	}
 }

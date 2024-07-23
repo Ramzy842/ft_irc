@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:49:41 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 05:44:21 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:11:42 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void Server::pass(std::string &msg, int fd)
 	if(!handlerpasscommand(cmd, fd))
 		return;
 	std::cout << "im here in pass :" << cmd[1] << std::endl;
-	if (this->checkpass(cmd[1].substr(0, cmd[1].size() - 1)))
+	if (this->checkpass(cmd[1]))
 	{
 		std::cout << "im here in pass inside" << cmd[1] << std::endl;
 		this->getClient(fd)->setIsLoggedIn();

@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 05:43:52 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:11:17 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ std::vector<std::string> split_command_Line(std::string& msg) // , int parm )
 	std::string word = "";
 	for (size_t i = 0; i < msg.size(); i++)
 	{
-		if (msg[i] == '\r') //* && parm > i);
+		if (msg[i] == '\r' || msg[i] == '\n') //* && parm > i);
 		{
 			if(msg[i + 1] == '\n')
 				i++;
-				cmd.push_back(word);
-				word = "";
+			cmd.push_back(word);
+			word = "";
 		}
 		else
 			word += msg[i];
