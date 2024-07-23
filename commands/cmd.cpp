@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 23:47:44 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 03:53:27 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:38:26 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void Server::handler_cmd_parser(std::string &msg, int fd)
 			this->nick(msg, fd);
 		else if (!msg.compare(0, 4, "USER") || !msg.compare(0, 4, "user"))
 			this->user(msg, fd);
+		else if(!getClient(fd)->getIsNickSet() || !getClient(fd)->getIsLoggedIn() || !getClient(fd)->getIsRegistered())
+			senderreur(fd, "451 :You have not registered");
 		else if (!msg.compare(0, 4, "JOIN") || !msg.compare(0, 4, "join"))
 			this->join(msg, fd);
 		else if (!msg.compare(0, 4, "KICK") || !msg.compare(0, 4, "kick"))
@@ -38,24 +40,9 @@ void Server::handler_cmd_parser(std::string &msg, int fd)
 			senderreur(fd, "421 :Unknown command");
 }
 
-std::vector<std::string> split_recivedBuffer(std::string str)
-{
-	std::vector<std::string> vec;
-	std::istringstream stm(str);
-	std::string line;
-	while(std::getline(stm, line))
-	{
-		size_t pos = line.find_first_of("\r\n");
-		if(pos != std::string::npos)
-			line = line.substr(0, pos);
-		vec.push_back(line);
-	}
-	return vec;
-}
-
 void Server::cmd_parser(std::string &msg, int fd)
 {
-	std::vector<std::string> lines = split_recivedBuffer(msg);
+	std::vector<std::string> lines = split_command_Line(msg);
 	for (size_t i = 0; i < lines.size(); i++)
 	{
 		std::vector<std::string> cmd = split_command(lines[i]);
@@ -63,14 +50,8 @@ void Server::cmd_parser(std::string &msg, int fd)
 		if(lines[i].empty())
 			continue;
 		else if(cmd[0] != "CAP")
-		{
-			// std::cout << "im in top of handler_cmd_parser " << lines[i] << std::endl;
 			handler_cmd_parser(lines[i], fd);
-		}
 		else 
-		{
-			// std::cout << "im here : and command is "<< cmd[0] << std::endl;
 			getClient(fd)->setIsHexChat(true);
-		}
 	}
 }

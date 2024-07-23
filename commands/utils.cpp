@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 01:35:45 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:34:56 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,29 @@ std::vector<std::string> split_command(std::string& msg) // , int parm )
 	cmd.push_back(word);
 	return cmd;
 }
+
+std::vector<std::string> split_command_Line(std::string& msg) // , int parm )
+{
+	std::vector<std::string> cmd;
+	std::string word = "";
+	for (size_t i = 0; i < msg.size(); i++)
+	{
+		if (msg[i] == '\r') //* && parm > i);
+		{
+			if(msg[i + 1] == '\n')
+				i++;
+				cmd.push_back(word);
+				word = "";
+		}
+		else
+			word += msg[i];
+	}
+	word = word.substr(0, word.size());
+	cmd.push_back(word);
+	return cmd;
+}
+
+
 
 Channel *Server::senderreur(int fd, std::string msg)
 {
