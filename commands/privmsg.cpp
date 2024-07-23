@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/23 01:48:18 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 02:40:59 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void Server::privmsg(std::string &msg, int fd) {
             return;
         }
         std::string resp = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost PRIVMSG " + cmd[1] + " :" + message;
-        sendMsg(client->getFd(), resp);
+        if(client->getFd() != fd)
+            sendMsg(client->getFd(), resp);
     } else {
         Channel *channel = getChannelByName(cmd[1].substr(1));
         if (!channel) {

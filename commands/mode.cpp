@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/22 01:02:34 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 02:57:20 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ Channel *Server::handlermodecommand(std::vector<std::string> cmd, int fd)
 	}
 	if(!channel->getOperatorByName(isClient->getNickname()))
 	{
-		senderreur(fd, ERR_CHANOPRIVSNEEDED(cmd[3]));
+		senderreur(fd, ERR_CHANOPRIVSNEEDED(getClient(fd)->getNickname()));
 		return NULL;
 	}
 	return channel;
@@ -78,8 +78,10 @@ void Server::mode(std::string &msg, int fd)
 			}
 			channel->addOperator(*client);
 			std::string msg = ":" + getClient(fd)->getNickname() + "!" + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +o " + client->getNickname();
-			sendMsg(fd, msg);
-			sendMsg(client->getFd(), msg);
+			// sendMsg(fd, msg);
+			// sendMsg(client->getFd(), msg);
+			for(std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
+				sendMsg((*it)->getFd(), msg);
 		}
 		else if(cmd[2][1] == 'i')
 		{

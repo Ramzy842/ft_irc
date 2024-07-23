@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 01:32:26 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 02:26:56 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ Channel *Server::handlerkickcommand(std::vector<std::string> cmd, int fd)
     Channel *channel = this->getChannelByName(cmd[1].substr(1));
     if(!channel)
     {
-        senderreur(fd, ERR_NOSUCHCHANNEL(cmd[1]));
+        senderreur(fd, ERR_NOSUCHCHANNEL(cmd[2]));
         return NULL;
     }
     Client *userToKick = channel->getMemberByName(cmd[2]);
