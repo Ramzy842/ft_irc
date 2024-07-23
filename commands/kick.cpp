@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 07:20:20 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:46:43 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 Channel *Server::handlerkickcommand(std::vector<std::string> cmd, int fd)
 {
-	// std::cout << "cmd :" << cmd[1] << cmd[2] << std::endl;
     Channel *channel = this->getChannelByName(cmd[1].substr(1));
     if(!channel)
     {

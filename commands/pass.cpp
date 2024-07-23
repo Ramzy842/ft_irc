@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:49:41 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 07:11:42 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:47:07 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,11 @@ void Server::pass(std::string &msg, int fd)
 	std::vector<std::string> cmd = split_command(msg);
 	if(!handlerpasscommand(cmd, fd))
 		return;
-	std::cout << "im here in pass :" << cmd[1] << std::endl;
 	if (this->checkpass(cmd[1]))
 	{
-		std::cout << "im here in pass inside" << cmd[1] << std::endl;
 		this->getClient(fd)->setIsLoggedIn();
 	}
 	else {
-		std::cout << "im here in pass outside" << cmd[1] << std::endl;
 		senderreur(fd, "464 :Password incorrect ");
 	} 
 }

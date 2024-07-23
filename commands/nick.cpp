@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:44:23 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 04:47:34 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:46:57 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 bool Server::handlernickcommand(std::vector<std::string> cmd, int fd)
 {
-	std::cout << "cmd[1] = " << cmd[1] << std::endl;
 	if (cmd.size() < 2 || cmd[1].empty())
 		return senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
 	if (getClientByName(cmd[1]))

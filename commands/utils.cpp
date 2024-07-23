@@ -6,20 +6,19 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 07:11:17 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:56:40 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
-std::vector<std::string> split_command(std::string& msg) // , int parm )
+std::vector<std::string> split_command(std::string& msg)
 {
 	std::vector<std::string> cmd;
 	std::string word = "";
 	for (size_t i = 0; i < msg.size(); i++)
 	{
-		if (msg[i] == ' ') //* && parm > i);
+		if (msg[i] == ' ')
 		{
-			std::cout << "word is :" << word << i << std::endl;
 			cmd.push_back(word);
 			word = "";
 		}
@@ -31,13 +30,13 @@ std::vector<std::string> split_command(std::string& msg) // , int parm )
 	return cmd;
 }
 
-std::vector<std::string> split_command_Line(std::string& msg) // , int parm )
+std::vector<std::string> split_command_Line(std::string& msg)
 {
 	std::vector<std::string> cmd;
 	std::string word = "";
 	for (size_t i = 0; i < msg.size(); i++)
 	{
-		if (msg[i] == '\r' || msg[i] == '\n') //* && parm > i);
+		if (msg[i] == '\r' || msg[i] == '\n')
 		{
 			if(msg[i + 1] == '\n')
 				i++;
@@ -84,7 +83,6 @@ Channel *senderreur(int fd, std::string msg, bool hexChat)
 
 void Server::sendMsg(int fd, std::string msg)
 {
-	std::cout << "im here in sendMsg and getIshexChat is " << this->getClient(fd)->getIsHexChat() << " and message is :" << msg << std::endl;
 	if (!this->getClient(fd)->getIsHexChat())
 		msg = GREEN + msg + RESET + "\n";
 	else

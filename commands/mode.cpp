@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 18:14:07 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 07:20:54 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:47:12 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void Server::mode(std::string &msg, int fd)
 				return;
 			}
 			channel->setPassword(cmd[3]);
-			// std::cout << "im here" << std::endl;
 			std::string msg = ":" + getClient(fd)->getNickname() + "!"  + getClient(fd)->getHostname() + " MODE #" + channel->getName() + " +k " + cmd[3];
 			for (std::vector<Client *>::iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it)
 				sendMsg((*it)->getFd(), msg);

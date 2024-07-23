@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:21:00 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 04:41:20 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:54:36 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,14 @@ Channel* Server::inviteErreurHandler(std::vector<std::string> cmd, int fd)
 void Server::invite(std::string &msg, int fd)
 {
 	std::vector<std::string> cmd = split_command(msg);
-	std::cout << "invite command -> 0" << cmd[0] << std::endl;
 	Channel* channel = inviteErreurHandler(cmd, fd);
 	if(!channel)
 		return;
-	std::cout << "invite command -> 1" << cmd[0] << std::endl;
-	std::cout << channel->getName() << std::endl;
-	std::cout << "invite command ->" << cmd[0] << std::endl;
-	
 	Client *client = this->getClientByName(cmd[1]);
 	std::vector<Channel *>invChannels = client->getInvitedChannels();
 	invChannels.push_back(channel);
 	client->setInvitedChannels(invChannels);
-	std::string rps = ": 341 " + cmd[1] + " :User has been invited"; /* + this->getClientByName(cmd[1])->getInvitedChannels()[0]->getName() */;
+	std::string rps = ": 341 " + cmd[1] + " :User has been invited";
 	sendMsg(fd, rps);
 	std::string rps2 = ":" + this->getClient(fd)->getNickname() + " INVITE " + cmd[1] + " to " + cmd[2];
 	sendMsg(this->getClientByName(cmd[1])->getFd(), rps2);

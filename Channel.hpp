@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:49 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 01:09:02 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:55:39 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Channel {
 		Channel(const Channel& original);
 		Channel& operator=(const Channel& original);
 
-		//******GETTERS AND SETTERS ******//
+
 		void setName(const std::string& newName);
 		std::string getName();
 		std::string getPassword();

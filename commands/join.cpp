@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 07:04:52 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:56:15 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,69 +98,19 @@ std::string Server::getClientList(Channel *channel)
 }
 
 
-std::string getServerResponse(const std::string& nickname, 
+std::string getServerResponse(const std::string& nickname,
                               const std::string& hostname, 
                               const std::string& ipaddress, 
-                              const std::string& channelname, 
-                              const std::string& arguments, 
-                              const std::string& clientList, 
-                              const std::string& creationTime, 
-                              const std::string& mode, 
-                              const std::string& oldNickname, 
-                              const std::string& topic) {
-  std::string response;
-
-  // Welcome message
-  if (!nickname.empty() && hostname.empty() && ipaddress.empty()
-  		&& channelname.empty() && arguments.empty() && clientList.empty()
-		&& creationTime.empty() && mode.empty() && oldNickname.empty() && topic.empty())
-    response += ": 001 " + nickname + " : Welcome to the IRC server!\n";
-
-  // User mode info
-  if (!hostname.empty() && !channelname.empty() && !mode.empty() && !arguments.empty())
-    response += ":" + hostname + " MODE " + channelname + " " + mode + " " + arguments + "\n";
-
-  // Channel creation time
-  if (!nickname.empty() && !channelname.empty() && !creationTime.empty()) {
-    response += ": 329 " + nickname + " #" + channelname + " " + creationTime + "\n";
-  }
-
-  // Channel modes
-  if (!nickname.empty() && !channelname.empty() && !mode.empty()) {
-    response += ": 324 " + nickname + " #" + channelname + " " + mode + "\n";
-  }
-
-  // Channel mode change
-  if (!hostname.empty() && !channelname.empty() && !mode.empty() && !arguments.empty()) {
-    response += ":" + hostname + " MODE #" + channelname + " " + mode + " " + arguments + "\n";
-  }
-
-  // Nick change
-  if (!oldNickname.empty() && !nickname.empty()) {
-    response += ":" + oldNickname + " NICK " + nickname + "\n";
-  }
-
-  // Join message
-  if (!nickname.empty() && !hostname.empty() && !ipaddress.empty() && !channelname.empty()) {
-    response += ":" + nickname + "!" + hostname + "@" + ipaddress + " JOIN #" + channelname + "\n";
-  }
-
-  // User list in channel reply
-  if (!nickname.empty() && !channelname.empty() && !clientList.empty()) {
-    response += ": 353 " + nickname + " @ #" + channelname + " :@" + clientList + "\n";
-  }
-
-  // End of names list
-  if (!nickname.empty() && !channelname.empty()) {
-    response += ": 366 " + nickname + " #" + channelname + " :END of /NAMES list" + "\n";
-  }
-
-  // Channel topic
-  if (!nickname.empty() && !channelname.empty() && !topic.empty()) {
-    response += ": 332 " + nickname + " #" + channelname + " :" + topic + "\r\n";
-  }
-
-  return response;
+                              const std::string& channelname,
+                              const std::string& clientList) {
+	std::string response;
+  	if (!nickname.empty() && !hostname.empty() && !ipaddress.empty() && !channelname.empty())
+  		response += ":" + nickname + "!" + hostname + "@" + ipaddress + " JOIN #" + channelname + "\n";
+  	if (!nickname.empty() && !channelname.empty() && !clientList.empty())
+    	response += ": 353 " + nickname + " @ #" + channelname + " :@" + clientList + "\n";
+  	if (!nickname.empty() && !channelname.empty())
+    	response += ": 366 " + nickname + " #" + channelname + " :END of /NAMES list";
+	return response;
 }
 
 bool Server::clientAlreadyInChannel(int fd, std::string channelName)
@@ -182,7 +132,6 @@ bool Server::clientIsInvited(int fd,Channel *channel)
 {
 	for (size_t y = 0; y < this->getClient(fd)->getInvitedChannels().size(); y++)
 	{
-		std::cout << RED << "channel ivited : " << getClient(fd)->getInvitedChannels()[y]->getName() << RESET << std::endl;
 		if (this->getClient(fd)->getInvitedChannels()[y]->getName() == channel->getName())
 			return true;
 	}
@@ -208,34 +157,40 @@ void Server::join(std::string &msg, int fd)
 		{
 			if (channels[x]->getName() == tokens[i].first)
 			{
-				// HANDLE EXISTING CHANNEL
 				if (!clientAlreadyInChannel(fd,channels[x]->getName()))
 				{
 					if (!this->channels[x]->getPassword().empty() && this->channels[x]->getPassword() != tokens[i].second)
-						std::cout << "Channel " << this->channels[x]->getName() << " password incorrect"  << std::endl;
+					{
+						std::string msg = ":localhost 475 " + client->getNickname() + " #" + channels[x]->getName() + " :Cannot join channel (+k) - bad key";
+						senderreur(fd, msg);		
+					}
 					else if (this->channels[x]->getIsInviteOnly() && !clientIsInvited(fd, channels[x]))
 					{
 						std::string msg = ":localhost 473 " + client->getNickname() + " #" + channels[x]->getName() + " :Cannot join channel (+i)";
 						senderreur(fd, msg);
 					}
 					else if (this->channels[x]->getLimit() && this->channels[x]->getMembers().size() >= this->channels[x]->getLimit())
-						std::cout << "Channel " << this->channels[x]->getName() << " limit is surpassed. Client " << this->getClient(fd)->getNickname() << " not allowed to join"  << std::endl;
+					{
+						std::string msg = ":localhost 471 " + client->getNickname() + " #" + channels[x]->getName() + " :Cannot join channel (+l)";
+						senderreur(fd, msg);
+						
+					}
 					else
 					{
 						channels[x]->addMember(*client);
 						this->sendMsg(fd,
 							getServerResponse(client->getNickname(),
 								client->getUsername(), client->getIpAddress(),
-								channels[x]->getName(), "", this->getClientList(channels[x]), "", "", "", ""));
+								channels[x]->getName(), this->getClientList(channels[x])));
 								
 						for(size_t i = 0; i < channels[x]->getMembers().size(); i++)
 						{
 							if (fd != channels[x]->getMembers()[i]->getFd())
 							{
 								sendMsg(channels[x]->getMembers()[i]->getFd(),
-									getServerResponse(client->getNickname(),
+									getServerResponse(client->getNickname(), "",
 								client->getHostname(), client->getIpAddress(),
-								channels[x]->getName(), "", "", "", "", "", ""));
+								channels[x]->getName()));
 							}
 							
 						}
@@ -256,8 +211,7 @@ void Server::join(std::string &msg, int fd)
 			this->sendMsg(fd,
 				getServerResponse(client->getNickname(),
 					client->getUsername(), client->getIpAddress(),
-						newChannel->getName(), "", this->getClientList(newChannel), "", "", "", ""));
-			std::cout << "================== HERE ==================" << std::endl;
+						newChannel->getName(), this->getClientList(newChannel)));
 		}
 	}
 	

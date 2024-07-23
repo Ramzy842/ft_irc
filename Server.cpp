@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/23 06:48:59 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 07:55:59 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ bool Server::signal = false;
 void Server::handleSignal(int signum)
 {
 	(void)signum;
-	std::cout << "Signal Received!" << std::endl;
 	signal = true;
 }
 
@@ -206,10 +205,7 @@ void Server::init() {
 						if(receivedBytes <= 0)
 						{
 							std::cout << "Client <" << fds[x].fd << "> has disconnected!" << std::endl;
-							// removeClientFromChannels(fds[x].fd);
-							// if()
 							removeClient(fds[x].fd);
-							// for(std::vector<Channels *>::itterator )
 							close(fds[x].fd);
 							removeFd(fds[x].fd);
 						}
@@ -217,11 +213,6 @@ void Server::init() {
 						{
 							std::string buff_str(buff);
 							cmd_parser(buff_str, fds[x].fd);
-							displayClients();
-							std::cout << "------------------------------------------------" <<std::endl;
-							displayChannels();
-							std::cout << "------------------------------------------------" <<std::endl;
-							displayInvitedChannels();
 						}
 					}
 				}
@@ -296,7 +287,6 @@ void Server::removeClientFromChannels(int _fd)
 		{
 			if (channels[i]->getMembers()[j]->getFd() == _fd)
 			{
-				// delete clients[i]->getChannels()[j];
         		channels[i]->getMembers().erase(channels[i]->getMembers().begin() + j);
 				break;
 			}
@@ -308,7 +298,6 @@ void Server::removeClientFromChannels(int _fd)
 
 
 void Server::removeClient(int _fd) {
-	// (void) _fd;	
 	std::vector<Channel *> Channels = this->channels;
 	for (size_t i = 0; i < channels.size(); ++i)
 	{
