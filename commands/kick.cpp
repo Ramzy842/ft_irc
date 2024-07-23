@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:14:06 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/22 01:31:15 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 01:32:26 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,14 @@ void Server::kick(std::string &msg, int fd)
             sendMsg(channel->getMembers()[i]->getFd(), msj);
     }
     if(channel->getOperatorByName(cmd[2]))
-        channel->removeOperator(*channel->getOperatorByName(cmd[2]));
+    {
+      channel->removeOperator(*channel->getOperatorByName(cmd[2]));
+    }
+    //channel->removeMember(*channel->getMemberByName(cmd[2])); 
     this->getClientByName(cmd[2])->removeChannel(*channel);
     sendMsg(getClientByName(cmd[2])->getFd(), msj);
+
+
     // if(cmd.size() == 3)
     //     kickmsg += "\n";
     // else

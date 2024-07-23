@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:44:07 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/21 15:12:30 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 01:48:18 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@
 #define ERR_NOTOPLEVEL(mask) "413 " + mask + " :No toplevel domain specified"
 #define ERR_WILDTOPLEVEL(mask) "414 " + mask + " :Wildcard in toplevel domain"
 #define ERR_TOOMANYTARGETS(target) "407 " + target + " :Too many recipients"
+#define ERR_NOTONCHANNEL(channel) "442 " + channel + " :You're not on that channel"
 
 void Server::privmsg(std::string &msg, int fd) {
     std::vector<std::string> cmd = split_command(msg);
@@ -97,6 +98,12 @@ void Server::privmsg(std::string &msg, int fd) {
         Channel *channel = getChannelByName(cmd[1].substr(1));
         if (!channel) {
             senderreur(fd, ERR_CANNOTSENDTOCHAN(cmd[1]));
+            return;
+        }
+        Client *client = getClient(fd);
+        if(!channel->getMemberByName(client->getNickname()))
+        {
+            senderreur(fd, ERR_NOTONCHANNEL(cmd[1]));
             return;
         }
         std::string sender = ":" + getClient(fd)->getNickname() + "!~" + getClient(fd)->getUsername() + "@localhost PRIVMSG " + cmd[1] + " :" + message;
