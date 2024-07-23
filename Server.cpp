@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/22 08:52:59 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 01:28:59 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,12 +180,10 @@ void Server::init() {
 						char buff[1024] = {0};
 						memset(buff, 0, sizeof(buff));
 						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff), 0);
-						std::cout << "receivedBytes: " << receivedBytes << std::endl;
 						if(receivedBytes <= 0)
 						{
-							// NEED TO HANDLE THIS
-							std::cout << "*************Client quit***************" << std::endl;
-							return ;
+							removeClient(fds[x].fd);
+							removeFd(fds[x].fd);
 						}
 						else
 						{
@@ -203,7 +201,6 @@ void Server::init() {
 		close(this->fd);
 	}
 }
-// INVITE FAILS and SEGV WHEN doing (invite #hi username) // NEED FIXING
 
 
 // GETTERS AND SETTERS
@@ -281,4 +278,16 @@ void Server::sendResponse(std::string response, int fd)
 {
 	if(send(fd, response.c_str(), response.size(), 0) == -1)
 		std::cerr << "Response send() failed" << std::endl;
+}
+
+void Server::removeFd(int _fd)
+{
+	for (std::vector<struct pollfd>::iterator it = this->fds.begin(); it != this->fds.end(); ++it)
+	{
+		if ((*it).fd == _fd)
+		{
+			this->fds.erase(it);
+			break;
+		}
+	}
 }
