@@ -6,12 +6,11 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 13:17:42 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 04:49:58 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:52:29 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
-//! need to devlope
 
 // Error message macros
 #define ERR_NEEDMOREPARAMS "461 USER :Not enough parameters"

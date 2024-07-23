@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:26 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 06:54:05 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:51:31 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,6 @@ void Client::setIsRegistered(bool _isRegistered) {
 void Client::sendMsgClient(std::string msg) {
 	send(this->fd, msg.c_str(), msg.length(), 0);
 }
-
-//! comment because Channel is not used yet 
-// std::vector<Channel *>& Client::getChannels() {
-// 	return this->channels;
-// }
-
-
-// void Client::setChannels(std::vector<Channel *>& _channels) {
-// 	this->channels = _channels;
-// }
-
-
-// void Client::addChannel(Channel& channel) {
-// 	this->channels.push_back(channel);
-// }
 
 void Client::removeChannel(Channel& channel) {
 	for (std::vector<Channel *>::iterator it = this->channels.begin(); it != this->channels.end(); ++it)
