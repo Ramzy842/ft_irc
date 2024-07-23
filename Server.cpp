@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/23 01:32:18 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 01:41:12 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,8 @@ void Server::init() {
 						ssize_t receivedBytes = recv(fds[x].fd, buff, sizeof(buff), 0);
 						if(receivedBytes <= 0)
 						{
+							std::cout << "Client <" << fds[x].fd << "> has disconnected!" << std::endl;
+							close(fds[x].fd);
 							removeClient(fds[x].fd);
 							removeFd(fds[x].fd);
 						}
