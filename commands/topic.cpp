@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 00:25:19 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/22 01:26:23 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:49:38 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@
 
 Channel *Server::topicErreurHandler(std::vector<std::string> cmd, int fd)
 {
-	// if (cmd.size() < 2 || !isEmpyCmd(cmd))
-	// {
-	// 	senderreur(fd, ERR_NEEDMOREPARAMS(cmd[0]));
-	// 	return NULL;
-	// }
 	Channel *channel = this->getChannelByName(cmd[1].substr(1));
 	if (!channel)
 	{
@@ -46,7 +41,6 @@ Channel *Server::topicErreurHandler(std::vector<std::string> cmd, int fd)
 
 void Server::topic(std::string &msj, int fd)
 {
-	// std::string channel = msj.substr(6);
 	std::vector<std::string> cmd = split_command(msj);
 	Channel *channel = topicErreurHandler(cmd, fd);
 	if (!channel)

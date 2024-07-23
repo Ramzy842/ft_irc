@@ -6,7 +6,7 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 13:17:42 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/21 16:59:57 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:49:58 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void Server::user(std::string &msg, int fd) {
 		senderreur(fd, "YOU NEED TO LOGIN FIRST");
 		return;
 	}
-	if (cmd.size() < 5 )//|| !isEmpyCmd(cmd)) {
+	if (cmd.size() < 5 )
 	{
 		sendMsg(fd, ERR_NEEDMOREPARAMS);
 		return;
@@ -40,8 +40,6 @@ void Server::user(std::string &msg, int fd) {
 	this->getClient(fd)->setHostname(cmd[2]);
 	this->getClient(fd)->setServername(cmd[3]);
 	this->getClient(fd)->setRealname(cmd[4]);
-
-	// sendMsg(fd, "001 :Welcome to the Internet Relay Network " + this->getClient(fd)->getNickname());
 	this->getClient(fd)->setIsRegistered(true);
 	sendWelcome(fd);
 }

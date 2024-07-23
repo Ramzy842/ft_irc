@@ -6,12 +6,11 @@
 /*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 04:34:56 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:50:11 by yaidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.hpp"
-//! ADD other parammetres number of params to set last words in one string 
 std::vector<std::string> split_command(std::string& msg) // , int parm )
 {
 	std::vector<std::string> cmd;
@@ -57,7 +56,6 @@ std::vector<std::string> split_command_Line(std::string& msg) // , int parm )
 Channel *Server::senderreur(int fd, std::string msg)
 {
 
-	// std::cout << RED << "im here in sendERRUER and getIshexChat is " << this->getClient(fd)->getIsHexChat() << " and message is :" << msg << RESET << std::endl;
 	if (!this->getClient(fd)->getIsHexChat())
 		msg = GREEN + msg + RESET + "\n";
 	else
