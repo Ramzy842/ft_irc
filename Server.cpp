@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:17:18 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/23 01:41:12 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 05:48:30 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,15 @@ Server& Server::operator=(const Server& original)
 
 Server::~Server()
 {
+	for (std::vector<Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+            delete *it;
+        }
+        clients.clear();
+
+        for (std::vector<Channel*>::iterator it = channels.begin(); it != channels.end(); ++it) {
+            delete *it;
+        }
+        channels.clear();
 }
 bool Server::signal = false;
 void Server::handleSignal(int signum)
@@ -65,6 +74,20 @@ void Server::displayChannels()
 			std::vector<Client *> members_ = this->channels[x]->getMembers();
 			std::cout << "Channel: " << this->channels[x]->getName() << " has user (" << members_[y]->getFd() << ")" << std::endl;
 		}
+	}
+}
+
+void Server::displayClients() 
+{
+	if (!this->clients.size())
+	{
+		std::cout << "No clients yet." << std::endl;
+		return ;
+	}
+	std::cout << "Clients:" << std::endl;
+	for (size_t x = 0; x < this->clients.size(); x++)
+	{
+		std::cout << "Client <" << this->clients[x]->getUsername() << "> | FD <" << this->clients[x]->getFd() << ">" << std::endl;
 	}
 }
 
@@ -183,14 +206,19 @@ void Server::init() {
 						if(receivedBytes <= 0)
 						{
 							std::cout << "Client <" << fds[x].fd << "> has disconnected!" << std::endl;
-							close(fds[x].fd);
+							// removeClientFromChannels(fds[x].fd);
+							if()
 							removeClient(fds[x].fd);
+							// for(std::vector<Channels *>::itterator )
+							close(fds[x].fd);
 							removeFd(fds[x].fd);
 						}
 						else
 						{
 							std::string buff_str(buff);
 							cmd_parser(buff_str, fds[x].fd);
+							displayClients();
+							std::cout << "------------------------------------------------" <<std::endl;
 							displayChannels();
 							std::cout << "------------------------------------------------" <<std::endl;
 							displayInvitedChannels();
@@ -199,7 +227,9 @@ void Server::init() {
 				}
 			}
 		}
-		
+		// removeClients();
+		// removeChannels();
+		// removePollFds();
 		close(this->fd);
 	}
 }
@@ -258,12 +288,46 @@ Client* Server::getClientByName(std::string name) {
 	return NULL;
 }
 
-void Server::removeClient(int _fd) {
-	for (std::vector<Client *>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
+void Server::removeClientFromChannels(int _fd)
+{
+	for (size_t i = 0; i < channels.size(); i++)
 	{
-		if ((*it)->getFd() == _fd)
+		for (size_t j = 0; j < channels[i]->getMembers().size(); j++)
 		{
-			this->clients.erase(it);
+			if (channels[i]->getMembers()[j]->getFd() == _fd)
+			{
+				// delete clients[i]->getChannels()[j];
+        		channels[i]->getMembers().erase(channels[i]->getMembers().begin() + j);
+				break;
+			}
+		}
+	}
+}
+
+
+
+
+void Server::removeClient(int _fd) {
+	// (void) _fd;	
+	for (size_t i = 0; i < clients.size();)
+	{
+		if (clients[i]->getFd() == _fd)
+		{
+			// for (size_t j = 0; j < clients[i]->getInvitedChannels().size();)
+			// {
+			// 	delete clients[i]->getInvitedChannels()[j];
+        	// 	clients[i]->getInvitedChannels().erase(clients[i]->getInvitedChannels().begin() + j);
+			// }
+			// clients[i]->getInvitedChannels().clear();
+			// for (size_t j = 0; j < clients[i]->getChannels().size();)
+			// {
+			// 	delete clients[i]->getChannels()[j];
+        	// 	clients[i]->getChannels().erase(clients[i]->getChannels().begin() + j);
+			// }
+			// clients[i]->getChannels().clear();
+			delete clients[i];
+			clients.erase(clients.begin() + i);
+			// clients.clear();
 			break;
 		}
 	}
@@ -291,5 +355,34 @@ void Server::removeFd(int _fd)
 			this->fds.erase(it);
 			break;
 		}
+	}
+}
+void Server::removeClients() {
+    for (size_t i = 0; i < clients.size();) {
+		for (size_t j = 0; j < clients[i]->getInvitedChannels().size();)
+		{
+			delete clients[i]->getInvitedChannels()[j];
+        	clients[i]->getInvitedChannels().erase(clients[i]->getInvitedChannels().begin() + j);
+		}
+        delete clients[i];
+        clients.erase(clients.begin() + i);
+    }
+}
+
+void Server::removeChannels()
+{
+	for (size_t i = 0; i < channels.size(); )
+	{
+		delete channels[i];
+		this->channels.erase(channels.begin() + i);
+	}
+}
+
+void Server::removePollFds()
+{
+	for (int x = 0; fds.size(); )
+	{
+		close(fds[x].fd);
+		this->fds.erase(fds.begin() + x);
 	}
 }

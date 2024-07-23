@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 22:08:41 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 04:50:24 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:31:31 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ class Client {
 		void sendMsgClient(std::string msg);
 		Client *getMembeByName(std::string name);
 		void removeChannel(Channel& channel);
-		std::vector<Channel>& getChannels();
+		std::vector<Channel*>& getChannels();
 		void setChannels(std::vector<Channel>& _channels);
 		void addChannel(Channel& channel);
 		void ckeckpass(std::string pass);

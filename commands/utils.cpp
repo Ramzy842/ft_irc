@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 21:07:22 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 04:50:11 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 05:43:52 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ std::vector<std::string> split_command(std::string& msg) // , int parm )
 	{
 		if (msg[i] == ' ') //* && parm > i);
 		{
+			std::cout << "word is :" << word << i << std::endl;
 			cmd.push_back(word);
 			word = "";
 		}

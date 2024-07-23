@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:52:51 by rchahban          #+#    #+#             */
-/*   Updated: 2024/07/20 01:08:50 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 04:35:23 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@ Channel::Channel(std::string name)
 Channel::~Channel()
 {
 	std::cout << "Channel destructor called" << std::endl;
+	for (std::vector<Client*>::iterator it = operators.begin(); it != operators.end(); ++it) {
+            delete *it;
+        }
+        operators.clear();
+
+        for (std::vector<Client*>::iterator it = members.begin(); it != members.end(); ++it) {
+            delete *it;
+        }
+        members.clear();
 }
 Channel::Channel(const Channel& original) {
 	(void) original;

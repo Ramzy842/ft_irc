@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yaidriss <yaidriss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 13:17:42 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/23 04:52:29 by yaidriss         ###   ########.fr       */
+/*   Updated: 2024/07/23 05:34:17 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 
 void Server::user(std::string &msg, int fd) {
 	std::vector<std::string> cmd = split_command(msg);
-	if(!this->getClient(fd)->getIsLoggedIn())
-	{
-		senderreur(fd, "YOU NEED TO LOGIN FIRST");
-		return;
-	}
+	// if(!this->getClient(fd)->getIsLoggedIn())
+	// {
+	// 	senderreur(fd, "YOU NEED TO LOGIN FIRST");
+	// 	return;
+	// }
 	if (cmd.size() < 5 )
 	{
 		sendMsg(fd, ERR_NEEDMOREPARAMS);

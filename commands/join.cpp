@@ -6,7 +6,7 @@
 /*   By: rchahban <rchahban@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:07:27 by yaidriss          #+#    #+#             */
-/*   Updated: 2024/07/22 01:27:12 by rchahban         ###   ########.fr       */
+/*   Updated: 2024/07/23 02:48:20 by rchahban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ void Server::join(std::string &msg, int fd)
 				std::cout << "Channel " << tokens[i].first << " already exists" << std::endl;
 				std::cout << "Channel " << tokens[i].first << " password: " << this->channels[x]->getPassword() << std::endl;
 				std::cout << "tokens[i].second (password): " << tokens[i].second << std::endl;	
-				if (!clientAlreadyInChannel(fd,channels[x]->getName() ))
+				if (!clientAlreadyInChannel(fd,channels[x]->getName()))
 				{
 					if (!this->channels[x]->getPassword().empty() && this->channels[x]->getPassword() != tokens[i].second)
 						std::cout << "Channel " << this->channels[x]->getName() << " password incorrect"  << std::endl;
@@ -303,6 +303,7 @@ void Server::join(std::string &msg, int fd)
 				getServerResponse(client->getNickname(),
 					client->getUsername(), client->getIpAddress(),
 						newChannel->getName(), "", this->getClientList(newChannel), "", "", "", ""));
+			std::cout << "================== HERE ==================" << std::endl;
 		}
 	}
 	
